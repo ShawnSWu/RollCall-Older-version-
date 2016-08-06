@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">RollCall_1.0</string>
+
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+
+
+    <string name="Home">首頁</string>
+    <string name="Set_People">設定人數</string>
+    <string name="Edit_List">編輯清單</string>
+
+
+
+
+</resources>

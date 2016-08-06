@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+    <item android:title="@string/Home"
+        android:icon="@mipmap/home128"
+        android:id="@+id/Home"/>
+
+    <item android:title="@string/Set_People"
+        android:icon="@mipmap/setpeople128"
+        android:id="@+id/Set_People"/>
+
+    <item android:title="@string/Edit_List"
+        android:icon="@mipmap/list128"
+        android:id="@+id/Edit_List"/>
+
+</group>
+    <!--<item android:title="Communicate">-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_share"-->
+    <!--android:title="Share" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_send"-->
+    <!--android:title="Send" />-->
+    <!--</menu>-->
+    <!--</item>-->
+</menu>
