@@ -327,7 +327,7 @@ MainActivity mainActivity=new MainActivity();
 
 
 
-    
+
 
 
 
@@ -367,6 +367,7 @@ MainActivity mainActivity=new MainActivity();
 
     }
 
+    
 
     //**Toolbar元鍵控制
     public boolean onOptionsItemSelected(MenuItem item) {
