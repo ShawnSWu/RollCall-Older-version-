@@ -11,4 +11,14 @@
 
     </style>
 
+
+    <style parent="Theme.AppCompat.Light.NoActionBar" name="ScanTheme">
+
+        <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/Gray</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
 </resources>

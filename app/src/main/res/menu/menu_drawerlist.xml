@@ -16,14 +16,20 @@
         android:id="@+id/Edit_List"/>
 
 </group>
-    <!--<item android:title="Communicate">-->
-    <!--<menu>-->
-    <!--<item-->
-    <!--android:id="@+id/nav_share"-->
-    <!--android:title="Share" />-->
-    <!--<item-->
-    <!--android:id="@+id/nav_send"-->
-    <!--android:title="Send" />-->
-    <!--</menu>-->
-    <!--</item>-->
+
+    <item android:title="Here">
+
+    <menu>
+    <item
+    android:id="@+id/Question"
+    android:icon="@mipmap/questionperson128"
+    android:title="@string/Question" />
+
+    <item
+    android:id="@+id/Contact_Us"
+    android:icon="@mipmap/contactus128"
+    android:title="@string/Contact_Us" />
+    </menu>
+
+    </item>
 </menu>

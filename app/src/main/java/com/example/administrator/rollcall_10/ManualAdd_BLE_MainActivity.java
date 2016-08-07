@@ -3,21 +3,18 @@ package com.example.administrator.rollcall_10;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -34,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
@@ -45,12 +42,14 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
     private ListAdapter_BTLE_Devices adapter;
     private ListView listView;
 
-MainActivity mainActivity=new MainActivity();
+    MainActivity mainActivity=new MainActivity();
     private ActionBar actionBar;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
-    private Scanner_BTLE mBTLeScanner;
+    private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
 
+
+    public int DeviceAmount = 0;
 
 
     @Override
@@ -85,7 +84,7 @@ MainActivity mainActivity=new MainActivity();
 
 
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new Scanner_BTLE(this,10000, -75);
+        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,10000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -107,6 +106,8 @@ MainActivity mainActivity=new MainActivity();
 //        findViewById(R.id.btn_scan).setOnClickListener(this);
         //*****原本scan按鍵  End***\\\
         startScan();
+
+        mainActivity.file.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
 
     }
 
@@ -181,14 +182,13 @@ MainActivity mainActivity=new MainActivity();
         else if (requestCode == BTLE_SERVICES) {
             // Do something
         }
-
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Context context = view.getContext();
 
-//        Utils.toast(context, "List Item clicked");
+        //        Utils.toast(context, "List Item clicked");
 
         // do something with the text views and start the next activity.
 
@@ -204,12 +204,6 @@ MainActivity mainActivity=new MainActivity();
         startActivityForResult(intent, BTLE_SERVICES);
 
     }
-
-    public void getnamedata(String name){
-
-
-    }
-
 
 
 
@@ -246,75 +240,80 @@ MainActivity mainActivity=new MainActivity();
 
 
 
-
-
     public void addDevice(BluetoothDevice device, int rssi) {
 
         String address = device.getAddress();
-        String[] list = new String[15];
-
         if (!mBTDevicesHashMap.containsKey(address)) {
 
 
-            String s = "";
+            BTLE_Device btleDevice = new BTLE_Device(device);
+            btleDevice.setRSSI(rssi);
 
-            int abc = 0;
-
-            FileReader fr = null;
-
-            try {
-                fr = new FileReader(mainActivity.file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            BufferedReader br = new BufferedReader(fr);
+            mBTDevicesHashMap.put(address, btleDevice);
+            mBTDevicesArrayList.add(btleDevice);
 
 
-            do {
-                try {
-                    s = br.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                list[abc] = s;
-                abc++;
-
-            } while (s != null);
-
-
-
-
-            if (Arrays.asList(list).contains(address)) {
-
-
-                if (device.getName().startsWith("KSU")) {//////////////////////////////開頭限制
-
-
-                    BTLE_Device btleDevice = new BTLE_Device(device);
-                    btleDevice.setRSSI(rssi);
-
-                    mBTDevicesHashMap.put(address, btleDevice);
-
-
-                    mBTDevicesArrayList.add(btleDevice);
-                }
-
-            }
-
-
-
-
+            //***Dialog
+            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+            rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
+            rollCall_dialog.setMessage(ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Message_AddYesOrNo));
+            rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
+            rollCall_dialog.setCancelable(false);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
+            rollCall_dialog.show();
+            //***Dialog
 
 
         }
+
+
+
         else {
             mBTDevicesHashMap.get(address).setRSSI(rssi);
 
         }
 
         adapter.notifyDataSetChanged();
+    }
+
+    public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+                    DeviceAmount++;
+
+                    String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+
+
+
+              writeData(address,true);
+        }
+
+    };
+
+
+
+
+
+    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+        }
+
+    };
+
+
+
+
+
+    public BTLE_Device getDevice(int position) {
+
+        return mBTDevicesArrayList.get(position);
+
     }
 
 
@@ -326,8 +325,100 @@ MainActivity mainActivity=new MainActivity();
 
 
 
+    //****************************************************************************************寫入寫法 Start***\\\
+    public void writeData(String sad,boolean append){
 
-    
+        try {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(mainActivity.file,append);
+
+
+
+
+
+            fileOutputStream.write(sad.getBytes());
+
+            fileOutputStream.write("\n".getBytes());
+
+
+            fileOutputStream.close();
+
+
+            Toast.makeText(this, "儲存成功", Toast.LENGTH_SHORT).show();
+            Log.e("1","shawn succ");
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    //****************************************************************************************寫入寫法 End*****\\\
+
+
+
+    //******************************************************************************************************讀出寫法 Start***\\\
+    public String[] readData(File file,String x) {
+        {
+            FileInputStream fis = null;
+
+            try {
+                fis = new FileInputStream(file);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String test="";
+            int anzahl = 0;
+
+
+            try {
+                while (( br.readLine()) != null) {
+                    anzahl++;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                fis.getChannel().position(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String[] array = new String[anzahl];
+
+
+            String line;
+            int i = 0;
+            try {
+                while ((line = br.readLine()) != null) {
+                    array[i] = line;
+                    i++;
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return array;
+        }
+    }
+    //******************************************************************************************************讀出寫法 End******\\\
+
+
+
+
+
+
+
+
 
 
 
@@ -344,7 +435,7 @@ MainActivity mainActivity=new MainActivity();
         mBTDevicesArrayList.clear();
         mBTDevicesHashMap.clear();
 
-        mBTLeScanner.start();
+        manualAdd_ble_scanner_btle.start();
     }
 
     public void stopScan() {
@@ -353,7 +444,7 @@ MainActivity mainActivity=new MainActivity();
         //*****原本scan按鍵
 
 
-        mBTLeScanner.stop();
+        manualAdd_ble_scanner_btle.stop();
     }
 
 
@@ -373,7 +464,7 @@ MainActivity mainActivity=new MainActivity();
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_scan:
-                if (!mBTLeScanner.isScanning()) {
+                if (!manualAdd_ble_scanner_btle.isScanning()) {
                     startScan();
 
                 }

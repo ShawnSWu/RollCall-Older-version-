@@ -1,17 +1,57 @@
 <resources>
     <string name="app_name">RollCall_1.0</string>
-
-
     <string name="open">open</string>
     <string name="close">close</string>
 
 
 
+
+
+    <!--左側選單  Start-->
     <string name="Home">首頁</string>
     <string name="Set_People">設定人數</string>
     <string name="Edit_List">編輯清單</string>
+    <string name="Question">問題</string>
+    <string name="Contact_Us">聯絡我們</string>
+    <!--左側選單  End-->
+
+
+    <!--setting(右上角三個點)內容  Start-->
+    <string name="action_setting_DATAsortby">依日期排序</string>
+    <string name="action_setting_NAMEsorby">依名字排序</string>
+    <!--setting(右上角三個點)內容  End-->
+
+
+    <!--首頁需要的string  Start-->
+    <string name="Home_StartRollCall">點名</string>
+    <string name="Home_Set">設定</string>
+    <string name="Home_SeeList">查看清單</string>
+    <string name="Home_Note">記事本</string>
+    <!--首頁需要的string  End-->
+
+
+    <!--RollCall_Dialog的string  Start-->
+    <string name="RollCall_Dialog_Title_ListEmpty">目前清單是空的喔</string>
+    <string name="RollCall_Dialog__Message_GoToScan">想新增裝置可以前往掃描</string>
+    <string name="RollCall_Dialog__Button_close">關閉</string>
+
+
+    <string name="RollCall_Dialog_Title_NoAnyDevice">您還沒加入任何裝置</string>
+    <string name="RollCall_Dialog_Message_DoYouScanAdd">是否以掃描新增?</string>
+    <string name="RollCall_Dialog__Button_GoToAddDevice">前往新增裝置</string>
 
 
 
+
+
+    <string name="RollCall_Dialog_Title_FindDevice">找到裝置</string>
+    <string name="RollCall_Dialog__Message_AddYesOrNo">是否新增?</string>
+    <string name="RollCall_Dialog__Button_Yes">是</string>
+    <string name="RollCall_Dialog__Button_No">否</string>
+    <!--RollCall_Dialog的string  End-->
+
+
+
+    <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
 
 </resources>

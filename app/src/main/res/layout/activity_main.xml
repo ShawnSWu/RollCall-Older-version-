@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    style="@style/AppTheme"
     tools:context="com.example.administrator.rollcall_10.MainActivity">
 
     <android.support.v4.widget.DrawerLayout
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_fragment"
-        />
+        android:background="#ffffff" />
 
     <!-- The navigation drawer -->
 

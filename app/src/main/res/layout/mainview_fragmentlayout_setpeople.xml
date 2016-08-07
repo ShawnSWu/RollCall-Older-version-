@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
-</LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/menualadd_img"
+        android:src="@mipmap/menualadd256"
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffff"
+        android:layout_marginTop="61dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/autoadd_group_img" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="手動加入"
+        android:id="@+id/menualadd_txt"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/menualadd_img"
+        android:layout_alignStart="@+id/autoadd_group_txt" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/autoadd_group_img"
+        android:src="@mipmap/autoadd_group256"
+        android:layout_marginTop="123dp"
+        android:layout_below="@+id/menualadd_txt"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="自動加入"
+        android:id="@+id/autoadd_group_txt"
+        android:layout_below="@+id/autoadd_group_img"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

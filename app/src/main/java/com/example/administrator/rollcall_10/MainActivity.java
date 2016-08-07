@@ -1,20 +1,31 @@
 package com.example.administrator.rollcall_10;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.Toast;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
+
+    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file";//新增檔案
+
+    File file  =new File(path + "/PeopleList.txt" );//文字檔
 
     //Toolbar
     private DrawerLayout mDrawerLayout;
@@ -26,6 +37,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //****************新增資料夾
+        File peoplefile = new File(path);
+        peoplefile.mkdirs();
+        //****************新增資料夾
 
         //**Toolbar"三"線的變化
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,7 +96,7 @@ public class MainActivity extends AppCompatActivity
     //**Toolbar其他元件點擊事件
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_drawerlist, menu);
+        getMenuInflater().inflate(R.menu.setting, menu);
         return true;
     }
     //**Toolbar其他元件點擊事件
@@ -91,6 +107,7 @@ public class MainActivity extends AppCompatActivity
 
 
     //**左選單項目點擊事件
+    @TargetApi(Build.VERSION_CODES.M)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -108,6 +125,14 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.Edit_List:
                 mainview=new mainview_fragmentlayout_EditList();
+                break;
+
+            case R.id.Question:
+                mainview=new mainview_fragmentlayout_Question();
+                break;
+
+            case R.id.Contact_Us:
+                mainview=new mainview_fragmentlayout_ContactUs();
                 break;
         }
 
