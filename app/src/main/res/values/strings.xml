@@ -25,20 +25,20 @@
     <!--首頁需要的string  Start-->
     <string name="Home_StartRollCall">點名</string>
     <string name="Home_Set">設定</string>
-    <string name="Home_SeeList">查看清單</string>
+    <string name="Home_SeeList">查看目前清單</string>
     <string name="Home_Note">記事本</string>
     <!--首頁需要的string  End-->
 
 
     <!--RollCall_Dialog的string  Start-->
     <string name="RollCall_Dialog_Title_ListEmpty">目前清單是空的喔</string>
-    <string name="RollCall_Dialog__Message_GoToScan">想新增裝置可以前往掃描</string>
+    <string name="RollCall_Dialog__Message_GoToScan">想新增裝置可以前往設定頁面</string>
     <string name="RollCall_Dialog__Button_close">關閉</string>
 
 
     <string name="RollCall_Dialog_Title_NoAnyDevice">您還沒加入任何裝置</string>
     <string name="RollCall_Dialog_Message_DoYouScanAdd">是否以掃描新增?</string>
-    <string name="RollCall_Dialog__Button_GoToAddDevice">前往新增裝置</string>
+    <string name="RollCall_Dialog__Button_GoToAddDevice">前往設定頁面</string>
 
 
 

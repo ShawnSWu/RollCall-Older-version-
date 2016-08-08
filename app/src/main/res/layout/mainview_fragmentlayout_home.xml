@@ -4,8 +4,6 @@
     android:layout_height="match_parent">
 
 
-
-
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,26 +27,6 @@
 
 
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Home_set_img"
-        android:src="@mipmap/personset256"
-        android:background="#ffffff"
-        android:layout_alignTop="@+id/Home_SeeList_img"
-        android:layout_toStartOf="@+id/Home_note_img"
-        android:layout_marginEnd="28dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/Home_Set"
-        android:id="@+id/Home_set_txt"
-        android:layout_below="@+id/Home_set_img"
-        android:layout_alignStart="@+id/Home_set_img"
-        android:layout_marginStart="28dp" />
-
 
 
 
@@ -63,10 +41,9 @@
         android:src="@mipmap/setlist256"
         android:background="#ffffff"
 
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="47dp"
-        android:layout_below="@+id/Home_RollCall_txt"
-        android:layout_toEndOf="@+id/Home_RollCall_img" />
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/Home_RollCall_img"
+        android:layout_marginBottom="126dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,7 +51,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/Home_SeeList"
         android:id="@+id/Home_SeeList_txt"
-        android:layout_below="@+id/Home_SeeList_img"
+        android:layout_below="@+id/Home_note_img"
         android:layout_alignStart="@+id/Home_SeeList_img" />
 
 
@@ -91,9 +68,9 @@
         android:src="@mipmap/memorandum256"
         android:background="#ffffff"
 
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/Home_SeeList_txt"
-        android:layout_toStartOf="@+id/Home_SeeList_img" />
+        android:layout_marginStart="31dp"
+        android:layout_alignTop="@+id/Home_SeeList_img"
+        android:layout_toEndOf="@+id/Home_RollCall_img" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -102,5 +79,6 @@
         android:text="@string/Home_Note"
         android:id="@+id/Home_note_txt"
         android:layout_below="@+id/Home_note_img"
-        android:layout_alignEnd="@+id/Home_RollCall_txt" />
+        android:layout_alignStart="@+id/Home_note_img" />
+
 </RelativeLayout>
