@@ -28,6 +28,8 @@ public class mainview_fragmentlayout_SetPeople extends Fragment {
 
         View frist_view=inflater.inflate(R.layout.mainview_fragmentlayout_setpeople,null);
         return frist_view;
+
+
     }
 
     @Override

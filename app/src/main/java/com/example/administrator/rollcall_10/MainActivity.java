@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
@@ -22,7 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
-
+    private Context context;
     String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file";//新增檔案
 
     File file  =new File(path + "/PeopleList.txt" );//文字檔
