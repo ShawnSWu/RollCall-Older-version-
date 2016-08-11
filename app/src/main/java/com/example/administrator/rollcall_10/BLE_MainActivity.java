@@ -80,12 +80,13 @@ MainActivity mainActivity=new MainActivity();
 
 
         }
+        
 
 
 
 
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new Scanner_BTLE(this,10000, -75);
+        mBTLeScanner = new Scanner_BTLE(this,30000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();

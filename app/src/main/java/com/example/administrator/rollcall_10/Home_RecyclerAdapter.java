@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -180,13 +184,16 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
             }
             else {
 
+
+
+
                 Intent it = new Intent(Intent.ACTION_VIEW);
-                it.setClass(v.getContext(), Watch_List.class);
+                it.setClass(v.getContext(), Recyclerview_WatchList.class);
 
                 String x = "";
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("devicename",manualAdd_ble_mainActivity.readData(mainActivity.file, x));
+                bundle.putStringArray("devicename",   manualAdd_ble_mainActivity.readData(mainActivity.file, x));
                 it.putExtras(bundle);
 
                 v.getContext(). startActivity(it);
