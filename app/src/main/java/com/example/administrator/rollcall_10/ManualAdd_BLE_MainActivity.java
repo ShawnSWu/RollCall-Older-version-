@@ -283,7 +283,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         public void onClick(DialogInterface dialog, int which) {
                     DeviceAmount++;
 
-              String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+             String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
 
 
 
