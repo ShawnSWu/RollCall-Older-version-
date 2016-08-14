@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
     private Context context;
-    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file";//新增檔案
-
-    File file  =new File(path + "/PeopleList.txt" );//文字檔
 
     //Toolbar
     private DrawerLayout mDrawerLayout;
@@ -39,10 +36,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        //****************新增資料夾
-        File peoplefile = new File(path);
-        peoplefile.mkdirs();
-        //****************新增資料夾
 
         //**Toolbar"三"線的變化
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

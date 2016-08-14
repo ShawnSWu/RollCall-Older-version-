@@ -45,12 +45,12 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
     private ListAdapter_BTLE_Devices adapter;
     private ListView listView;
 
-MainActivity mainActivity=new MainActivity();
     private ActionBar actionBar;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private Scanner_BTLE mBTLeScanner;
 
+    Device_IO device_io=new Device_IO();
 
 
     @Override
@@ -80,7 +80,7 @@ MainActivity mainActivity=new MainActivity();
 
 
         }
-        
+
 
 
 
@@ -264,7 +264,7 @@ MainActivity mainActivity=new MainActivity();
             FileReader fr = null;
 
             try {
-                fr = new FileReader(mainActivity.file);
+                fr = new FileReader(device_io.file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -370,7 +370,7 @@ MainActivity mainActivity=new MainActivity();
 
     
 
-    //**Toolbar元鍵控制
+    //**Actionbar元鍵控制
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -388,7 +388,7 @@ MainActivity mainActivity=new MainActivity();
                 return super.onOptionsItemSelected(item);
         }
     }
-    //**Toolbar元鍵控制
+    //**Actionbar元鍵控制
 
 
 

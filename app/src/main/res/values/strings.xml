@@ -48,18 +48,15 @@
     <string name="RollCall_Dialog__Message_AddYesOrNo">是否新增?</string>
     <string name="RollCall_Dialog__Button_Yes">是</string>
     <string name="RollCall_Dialog__Button_No">否</string>
+
+
+    <string name="RollCall__NewFile_Dialog__Button_okay">確定</string>
+    <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
     <!--RollCall_Dialog的string  End-->
 
 
 
-
-    <array name="test">
-
-
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </array>
+    <string name="RollCall_local_folder">本地清單</string>
 
 
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>

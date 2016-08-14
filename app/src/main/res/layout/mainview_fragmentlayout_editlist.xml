@@ -4,25 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton3"
-        android:src="@mipmap/free256_1"
-        android:layout_gravity="center_horizontal"
-        android:background="#ffffff"
-        android:layout_alignBottom="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="ZZZ"
-        android:id="@+id/textView4"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="214dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/relativelayout"
+        android:background="#524f4f">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/RollCall_local_folder"
+
+            android:id="@+id/textView"
+            android:textColor="#ffffff"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="113dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/locallist128"
+            android:id="@+id/imageView2"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/textView"
+            android:layout_marginEnd="32dp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/list"
+        android:layout_below="@+id/relativelayout" />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/recyclerView_shawn">-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+
 </RelativeLayout>

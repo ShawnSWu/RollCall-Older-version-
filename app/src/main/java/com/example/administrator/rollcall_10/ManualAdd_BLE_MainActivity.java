@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
     private final static String TAG = MainActivity.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
@@ -42,7 +43,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
     private ListAdapter_BTLE_Devices adapter;
     private ListView listView;
 
-    MainActivity mainActivity=new MainActivity();
     private ActionBar actionBar;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
@@ -51,6 +51,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
     public int DeviceAmount = 0;
 
+    Device_IO device_io =new Device_IO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         //*****原本scan按鍵  End***\\\
         startScan();
 
-        mainActivity.file.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
+        device_io.file.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
 
     }
 
@@ -282,11 +283,11 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         public void onClick(DialogInterface dialog, int which) {
                     DeviceAmount++;
 
-                    String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+              String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
 
 
 
-              writeData(address,true);
+              device_io.writeData(address,true);
         }
 
     };
@@ -315,109 +316,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         return mBTDevicesArrayList.get(position);
 
     }
-
-
-
-
-
-
-
-
-
-
-    //****************************************************************************************寫入寫法 Start***\\\
-    public void writeData(String sad,boolean append){
-
-        try {
-
-            FileOutputStream fileOutputStream = new FileOutputStream(mainActivity.file,append);
-
-
-
-
-
-            fileOutputStream.write(sad.getBytes());
-
-            fileOutputStream.write("\n".getBytes());
-
-
-            fileOutputStream.close();
-
-
-            Toast.makeText(this, "儲存成功", Toast.LENGTH_SHORT).show();
-            Log.e("1","shawn succ");
-
-
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-    //****************************************************************************************寫入寫法 End*****\\\
-
-
-
-    //******************************************************************************************************讀出寫法 Start***\\\
-    public String[] readData(File file,String x) {
-        {
-            FileInputStream fis = null;
-
-            try {
-                fis = new FileInputStream(file);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            String test="";
-            int anzahl = 0;
-
-
-            try {
-                while (( br.readLine()) != null) {
-                    anzahl++;
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                fis.getChannel().position(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String[] array = new String[anzahl];
-
-
-            String line;
-            int i = 0;
-            try {
-                while ((line = br.readLine()) != null) {
-                    array[i] = line;
-                    i++;
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return array;
-        }
-    }
-    //******************************************************************************************************讀出寫法 End******\\\
-
-
-
-
-
-
-
 
 
 

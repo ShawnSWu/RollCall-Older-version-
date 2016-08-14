@@ -26,12 +26,14 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
     private Context context;
     FragmentManager manager;
     ManualAdd_BLE_MainActivity manualAdd_ble_mainActivity =new ManualAdd_BLE_MainActivity();
-    MainActivity mainActivity =new MainActivity();
+
+    Device_IO device_io =new Device_IO();
 
     public Home_RecyclerAdapter(Context context) {
 
      this.context=context;
     }
+
 
 
     private String[] titles = {"點名",
@@ -43,6 +45,8 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
             "未開放",
         };
 
+
+
     private String[] details = {
             "開始點名",
             "可以查看目前要掃描的清單",
@@ -52,6 +56,8 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
             "修復中,近期開放!",
             "修復中,近期開放!",
            };
+
+
 
     private int[] images = {
 
@@ -161,7 +167,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
         public void WatchList(View v){
 
-            if(mainActivity.file.length()==0){
+            if(device_io.file.length()==0){
 
 
                 RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
@@ -193,7 +199,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                 String x = "";
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("devicename",   manualAdd_ble_mainActivity.readData(mainActivity.file, x));
+                bundle.putStringArray("devicename",   device_io.readData(device_io.file, x));
                 it.putExtras(bundle);
 
                 v.getContext(). startActivity(it);

@@ -1,6 +1,5 @@
 package com.example.administrator.rollcall_10;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,25 +7,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.io.FilenameUtils;
+
+
 import java.util.ArrayList;
 
+
 /**
- * Created by Administrator on 2016/8/11.
+ * Created by Administrator on 2016/8/14.
  */
-public class RecyclerviewAdapter_WatchList extends RecyclerView.Adapter<RecyclerviewAdapter_WatchList.ViewHolder> {
+
+
+public class RecyclerviewAdapter_EditList extends RecyclerView.Adapter<RecyclerviewAdapter_EditList.ViewHolder> {
 
     String [] name;
 
+    private ArrayList<Recyclerview_ItemData> arrayList =new ArrayList<>();
 
-    public RecyclerviewAdapter_WatchList(String[] name) {
-        this.name=name;
+    public RecyclerviewAdapter_EditList(ArrayList<Recyclerview_ItemData> arrayList){
+
+        this.arrayList =arrayList;
     }
 
     @Override
-    public RecyclerviewAdapter_WatchList.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerviewAdapter_EditList.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_watchlist_item_layout, parent, false);
         ViewHolder viewholder = new ViewHolder(view);
+
 
         return viewholder;
     }
@@ -64,4 +72,7 @@ public class RecyclerviewAdapter_WatchList extends RecyclerView.Adapter<Recycler
 
 
     }
+
+
+
 }
