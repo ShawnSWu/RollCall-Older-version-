@@ -126,9 +126,17 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                     switch (getAdapterPosition()){
                         case 0:
 
-                            Intent intent = new Intent();
-                            intent.setClass(v.getContext(), BLE_MainActivity.class);
-                            v.getContext().startActivity(intent);
+                            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
+                            rollCall_dialog.setTitle("想要掃描的清單");
+//                          rollCall_dialog.setContentView();
+                            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+                            rollCall_dialog.setCancelable(false);
+                            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_close), close);
+                            rollCall_dialog.show();
+
+
+
+//                            startscan(v);
                             break;
 
 
@@ -210,22 +218,6 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
         }
 
-//        DialogInterface.OnClickListener GoToSetPeople = new DialogInterface.OnClickListener() {
-//
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//
-//                ((Activity)context).getFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.main_fragment, new mainview_fragmentlayout_SetPeople())
-//                        .commit();
-//
-//            }
-//
-//        };
-//
 
 
 
@@ -241,6 +233,11 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
         };
 
 
+        public void startscan(View v){
+            Intent intent = new Intent();
+            intent.setClass(v.getContext(), BLE_MainActivity.class);
+            v.getContext().startActivity(intent);
+        }
 
 
 
