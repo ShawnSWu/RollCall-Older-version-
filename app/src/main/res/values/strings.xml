@@ -3,8 +3,9 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
-
-
+    <string name="RollCall_Fragment_Title_EditList">編輯清單</string>
+    <string name="RollCall_Fragment_Title_Home">首頁</string>
+    <string name="RollCall_Fragment_Title_Setpeople">設定人數</string>
 
 
     <!--左側選單  Start-->
@@ -41,9 +42,6 @@
     <string name="RollCall_Dialog__Button_GoToAddDevice">前往設定頁面</string>
 
 
-
-
-
     <string name="RollCall_Dialog_Title_FindDevice">找到裝置</string>
     <string name="RollCall_Dialog__Message_AddYesOrNo">是否新增?</string>
     <string name="RollCall_Dialog__Button_Yes">是</string>
@@ -55,9 +53,19 @@
     <!--RollCall_Dialog的string  End-->
 
 
-
     <string name="RollCall_local_folder">本地清單</string>
 
+    <string name="RollCall_local_folder_ForJudgement">本地清單</string>
+
+    <string name="RollCall_List_Delete_Title">刪除清單</string>
+    <string name="RollCall_List_Delete_Message">你確定刪除清單</string>
+    <string name="RollCall_List_Delete_Message2">嗎?</string>
+    <string name="RollCall_List_Delete_Button_yes">確定</string>
+    <string name="RollCall_List_Delete_Button_close">關閉</string>
+
+
+    <string name="RollCall_List_Cant_Delete_Title">無法刪除</string>
+    <string name="RollCall_List_Cant_Delete_Message">本地清單無法刪除</string>
 
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
 

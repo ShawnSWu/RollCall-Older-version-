@@ -33,6 +33,11 @@ import java.util.HashMap;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    File selected;
+
+    private ArrayList<File> files;
+
+
     private final static String TAG = MainActivity.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
@@ -283,11 +288,16 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         public void onClick(DialogInterface dialog, int which) {
                     DeviceAmount++;
 
-             String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+                    String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+
+
+            Bundle bundle = getIntent().getExtras();
+          String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
 
-              device_io.writeData(address,true);
+
+              device_io.writeData(address,true,Seletor_File);
         }
 
     };
@@ -316,6 +326,10 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         return mBTDevicesArrayList.get(position);
 
     }
+
+
+
+
 
 
 

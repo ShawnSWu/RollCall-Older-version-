@@ -370,7 +370,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
     
 
-    //**Actionbar元鍵控制
+    //**Toolbar元鍵控制
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -388,7 +388,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
                 return super.onOptionsItemSelected(item);
         }
     }
-    //**Actionbar元鍵控制
+    //**Toolbar元鍵控制
 
 
 

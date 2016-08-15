@@ -135,7 +135,6 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                             rollCall_dialog.show();
 
 
-
 //                            startscan(v);
                             break;
 
@@ -145,16 +144,12 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                             break;
 
                         case 2:
-                            Snackbar.make(v, "尚未開放" ,
-                                    Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-
+                            Set_BLEDevice(v);
                             break;
                         case 3:
                             Snackbar.make(v, "尚未開放" ,
                                     Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
-
                             break;
 
                         case 4:
@@ -173,26 +168,50 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //**開始掃描
+        public void startscan(View v){
+            Intent intent = new Intent();
+            intent.setClass(v.getContext(), BLE_MainActivity.class);
+            v.getContext().startActivity(intent);
+        }
+
+
+
+
+
+
+
+        //**查看清單
         public void WatchList(View v){
 
             if(device_io.file.length()==0){
 
 
-                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
-                rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_ListEmpty);
-                rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Dialog__Message_GoToScan));
-                rollCall_dialog.setIcon(R.mipmap.exclamation128);
-                rollCall_dialog.setCancelable(false);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getResources().getString(R.string.RollCall_Dialog__Button_GoToAddDevice),GoToSetPeople);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getResources().getString(R.string.RollCall_Dialog__Button_close), close);
-
-                rollCall_dialog.show();
-
-
-
-                TextView messageText = (TextView)rollCall_dialog.findViewById( android.R.id.message );
-                messageText.setGravity( Gravity.CENTER_HORIZONTAL );
-
+                Snackbar.make(v, "當前清單是空的" ,
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
 
             }
@@ -219,30 +238,26 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
         }
 
 
-
-
         DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-
-
-            }
+            public void onClick(DialogInterface dialog, int which) {         }
 
         };
 
 
-        public void startscan(View v){
-            Intent intent = new Intent();
-            intent.setClass(v.getContext(), BLE_MainActivity.class);
-            v.getContext().startActivity(intent);
+
+
+
+        //**設置藍芽裝置
+        public void Set_BLEDevice(View v){
+            Intent it = new Intent(Intent.ACTION_VIEW);
+            it.setClass(v.getContext(), Set_BLE_Device.class);
+            v.getContext(). startActivity(it);
         }
 
 
 
-
-
+        public void Note(View v){}
 
 
 

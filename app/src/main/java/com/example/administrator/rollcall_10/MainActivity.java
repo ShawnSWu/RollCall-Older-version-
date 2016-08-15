@@ -19,11 +19,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
+    Device_IO device_io =new Device_IO();
+
     private Context context;
+
+    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file/People_List";//新增檔案
+
+
+
+
+
 
     //Toolbar
     private DrawerLayout mDrawerLayout;
@@ -34,6 +45,18 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //**內鍵創建文字檔 strat--->
+        File peoplefile = new File(path + "/" + R.string.RollCall_local_folder + ".txt");
+
+        try {
+            FileWriter fw = new FileWriter(peoplefile, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //**自行創建文字檔 End--->
+
 
 
 
