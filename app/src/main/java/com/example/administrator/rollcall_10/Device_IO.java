@@ -17,23 +17,34 @@ import java.io.InputStreamReader;
  */
 public class Device_IO {
 
-    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file";//新增檔案
 
-    File file  =new File(path + "/PeopleList.txt" );//文字檔
+
+
+
+
+    //要寫入的文字檔
+    File file  =new File(I_File_Path.main_path + I_File_Path.Built_TextFile);//文字檔
+
 
 
 
 
     //****************************************************************************************寫入寫法 Start***\\\
-    public void writeData(String sad,boolean append){
+    public void writeData(String sad,boolean append,String path){
+
+        File seletor_File= new File(path);
+
+
 
         try {
-            File peoplefile = new File(path);
+           //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
             peoplefile.mkdirs();
 
-            FileOutputStream fileOutputStream = new FileOutputStream(file,append);
 
 
+            //寫入文字檔
+            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File,append);
 
             fileOutputStream.write(sad.getBytes());
 
