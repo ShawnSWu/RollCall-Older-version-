@@ -117,6 +117,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
+        ///***每個Item的事件
         FileList = (ListView)getActivity().findViewById(R.id.list);
 
         FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,50 +129,33 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     ///****important code  新建文字檔
                     selected = new File(String.valueOf(files.get(position)));
 
-                    Intent intent = new Intent( Intent.ACTION_VIEW );
-                    intent.setDataAndType( Uri.fromFile(selected), "text/*" );
-                    startActivity(intent);
+                if(selected.length()==0){
 
-                    Log.e("1","是"+selected.getName()+"這個檔案");
+                    Snackbar.make(v, "清單是空的" ,
+                            Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
-                    Toast.makeText(getActivity(), selected.toString() + " selected",
-                            Toast.LENGTH_LONG).show();
-                       ///****important code   新建文字檔
-
-                        Log.e("1",":"+selected.getPath());
+                }
+                else {
 
 
 
 
+                    Intent it = new Intent(Intent.ACTION_VIEW);
+                    it.setClass(v.getContext(), Recyclerview_WatchList.class);
 
+                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    String x = "";
 
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("devicename",   device_io.readData(selected, x));
 
+                    bundle.putString("List_Name",selected.getName());
+                            it.putExtras(bundle);
 
+                    v.getContext(). startActivity(it);
 
-
-                //**成功將每個資料夾寫入
-//                Intent it = new Intent(Intent.ACTION_VIEW);
-//                it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
-//
-//                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putString("Selected_File_Path",selected.getPath());
-//                it.putExtras(bundle);
-//
-//                v.getContext(). startActivity(it);
-
-
-
-
-
-
-
-
-
-
-
+                }
 
 
             }
@@ -274,35 +258,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     View.OnClickListener local_list =new View.OnClickListener() {
         @Override
 
@@ -365,7 +320,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-
+    //****新增檔案的Dialog
     public void Create_File_Dialog(){
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -481,7 +436,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.folder128);
+            holder.imageView.setImageResource(R.mipmap.txt128);
 
 
 

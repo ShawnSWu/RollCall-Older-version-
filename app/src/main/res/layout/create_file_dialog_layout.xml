@@ -9,5 +9,6 @@
         android:id="@+id/create_file_name_edit"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:maxLength="20"
         android:layout_marginTop="28dp" />
 </RelativeLayout>

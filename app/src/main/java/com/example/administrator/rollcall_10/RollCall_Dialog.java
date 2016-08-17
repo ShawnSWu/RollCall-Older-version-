@@ -7,4 +7,6 @@ public class RollCall_Dialog extends AlertDialog {
     public RollCall_Dialog(Context context){
         super(context);
     }
+
+
 }

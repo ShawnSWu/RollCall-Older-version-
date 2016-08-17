@@ -31,6 +31,19 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
 
 
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_List_File=  bundle.getString("List_Name");
+
+
+
+        //換標題
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(Seletor_List_File);
+
+
+
+
+
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recyclerView_watchlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -39,7 +52,7 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
 
 
-        Bundle bundle = getIntent().getExtras();
+
         final String[] name = bundle.getStringArray("devicename");
 
 

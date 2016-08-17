@@ -64,8 +64,15 @@
     <string name="RollCall_List_Delete_Button_close">關閉</string>
 
 
+    <string name="RollCall_List_Dialog_Title_WantToScan">想要點名的清單</string>
+    <string name="RollCall_List_Dialog_Title_WantToAdd">想要加入人數的清單</string>
+
+
     <string name="RollCall_List_Cant_Delete_Title">無法刪除</string>
     <string name="RollCall_List_Cant_Delete_Message">本地清單無法刪除</string>
+
+
+
 
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
 

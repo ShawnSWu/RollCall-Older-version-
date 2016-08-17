@@ -10,24 +10,40 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Administrator on 2016/8/9.
  */
 public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdapter.ViewHolder> {
     private Context context;
-    FragmentManager manager;
-    ManualAdd_BLE_MainActivity manualAdd_ble_mainActivity =new ManualAdd_BLE_MainActivity();
 
-    Device_IO device_io =new Device_IO();
+    File selected;
+
+    private ListView FileList;
+
+
+    private Context mContext;
+    private ArrayList<File> files;
+
+    private File PeopleList;
+
+
 
     public Home_RecyclerAdapter(Context context) {
 
@@ -79,9 +95,21 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                 .inflate(R.layout.home_recyclerview_cardview, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
 
+        mContext = v.getContext().getApplicationContext();
+
+        PeopleList =new File(I_File_Path.path_People_list);
+        PeopleList.mkdirs();
+
+        files = filter(PeopleList.listFiles());
         return viewHolder;
 
     }
+    DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {         }
+
+    };
+
 
 
 
@@ -126,16 +154,9 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
                     switch (getAdapterPosition()){
                         case 0:
 
-                            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
-                            rollCall_dialog.setTitle("想要掃描的清單");
-//                          rollCall_dialog.setContentView();
-                            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
-                            rollCall_dialog.setCancelable(false);
-                            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_close), close);
-                            rollCall_dialog.show();
 
 
-//                            startscan(v);
+                            startscan(v);
                             break;
 
 
@@ -192,9 +213,56 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
         //**開始掃描
         public void startscan(View v){
-            Intent intent = new Intent();
-            intent.setClass(v.getContext(), BLE_MainActivity.class);
-            v.getContext().startActivity(intent);
+
+            LayoutInflater inflater = (LayoutInflater) v.getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.dialog_listview_seleted, null);
+
+            final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
+            rollCall_dialog.setTitle(R.string.RollCall_List_Dialog_Title_WantToScan);
+            rollCall_dialog.setView(layout);
+            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+            rollCall_dialog.setCancelable(false);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_close), close);
+            rollCall_dialog.setCancelable(true);
+            rollCall_dialog.show();
+
+
+            FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
+            FileList.setAdapter(new File_RollCAll_Adapter());
+
+
+            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+
+
+
+                    selected = new File(String.valueOf(files.get(position)));
+
+                    Log.e("1",":AA"+selected.getName());
+
+
+                    Intent it = new Intent(Intent.ACTION_VIEW);
+                    it.setClass(v.getContext(), BLE_MainActivity.class);
+
+                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Selected_File_Path",selected.getPath());
+                    bundle.putString("Selected_File_Name",selected.getName());
+                    it.putExtras(bundle);
+
+                    v.getContext(). startActivity(it);
+
+                    rollCall_dialog.dismiss();
+
+
+                }
+            });
+
+
         }
 
 
@@ -206,34 +274,29 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
         //**查看清單
         public void WatchList(View v){
 
-            if(device_io.file.length()==0){
+
+            Snackbar.make(v, "暫不開放" ,
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
 
 
-                Snackbar.make(v, "當前清單是空的" ,
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-
-            }
-            else {
-
-
-
-
-                Intent it = new Intent(Intent.ACTION_VIEW);
-                it.setClass(v.getContext(), Recyclerview_WatchList.class);
-
-                String x = "";
-
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("devicename",   device_io.readData(device_io.file, x));
-                it.putExtras(bundle);
-
-                v.getContext(). startActivity(it);
-
-            }
-
-
+//            if(device_io.file.length()==0){
+//                Snackbar.make(v, "當前清單是空的" ,
+//                        Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//            else {
+//                Intent it = new Intent(Intent.ACTION_VIEW);
+//                it.setClass(v.getContext(), Recyclerview_WatchList.class);
+//
+//                String x = "";
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArray("devicename",   device_io.readData(device_io.file, x));
+//                it.putExtras(bundle);
+//
+//                v.getContext(). startActivity(it);
+//            }
 
         }
 
@@ -262,6 +325,86 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
 
     }
+
+
+
+
+    public ArrayList<File> filter(File[] fileList) {
+        ArrayList<File> files = new ArrayList<File>();
+        if(fileList == null){
+            return files;
+        }
+        for(File file: fileList) {
+            if(!file.isDirectory() && file.isHidden()) {
+                continue;
+            }
+            files.add(file);
+        }
+        Collections.sort(files);
+        return files;
+    }
+
+
+
+    private class File_RollCAll_Adapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return files.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            Holder holder;
+            if(v == null){
+
+
+                v = LayoutInflater.from(mContext).inflate(R.layout.editlist_file, null);
+
+                holder = new Holder();
+                holder.textView = (TextView) v.findViewById(R.id.text);
+                holder.imageView =(ImageView)v.findViewById(R.id.imageView);
+                v.setTag(holder);
+
+
+            } else{
+
+                holder = (Holder) v.getTag();
+
+            }
+
+            String filePath = files.get(position).getPath();
+            String fileName = FilenameUtils.getName(filePath);
+            holder.textView.setText(fileName);
+            holder.imageView.setImageResource(R.mipmap.txt128);
+
+
+
+
+            return v;
+        }
+
+        private class Holder{
+            TextView textView;
+            ImageView imageView;
+
+        }
+
+
+    }
+
+
 
 
 }

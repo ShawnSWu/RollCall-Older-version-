@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,8 +35,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
     private final static String TAG = MainActivity.class.getSimpleName();
+
+    int Scan_Btn_Count=1;
 
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
@@ -45,12 +48,14 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
     private ListAdapter_BTLE_Devices adapter;
     private ListView listView;
 
-    private ActionBar actionBar;
+
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private Scanner_BTLE mBTLeScanner;
 
-    Device_IO device_io=new Device_IO();
+
+    private ToggleButton Scan_toggleButton;
+
 
 
     @Override
@@ -64,10 +69,13 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
 
 
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
 
-
-
-
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name);
 
 
         // Use this check to determine whether BLE is supported on the device. Then
@@ -76,13 +84,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
 
-
-
-
         }
-
-
-
 
 
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
@@ -103,13 +105,40 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        //*****原本scan按鍵  Start***\\\
-//        btn_Scan = (Button) findViewById(R.id.btn_scan);
-//        findViewById(R.id.btn_scan).setOnClickListener(this);
+
+        Scan_toggleButton=(ToggleButton)findViewById(R.id.Scan_toggleButton);
+        Scan_toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Scan_Btn_Count++;
+
+
+                if (Scan_toggleButton.isChecked()) {
+
+                    startScan();
+
+                    Log.e("1","開始掃描");
+                }
+                // 当按钮再次被点击时候响应的事件
+                else {
+                    stopScan();
+
+                    Log.e("1","停止掃描");
+                }
+            }
+        });
+
+
+
+
         //*****原本scan按鍵  End***\\\
         startScan();
 
     }
+
+
+
+
 
 
 
@@ -138,6 +167,11 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
         registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -145,14 +179,27 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 //        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
+
+
+
+
+    ///**暫時停時 停止掃描
     @Override
     protected void onPause() {
         super.onPause();
 
 //        unregisterReceiver(mBTStateUpdateReceiver);
+        Log.e("1","shawn-pause停止掃描");
         stopScan();
     }
 
+
+
+
+
+
+
+    ///***停止掃描
     @Override
     protected void onStop() {
         super.onStop();
@@ -160,11 +207,22 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
         unregisterReceiver(mBTStateUpdateReceiver);
         stopScan();
     }
+    ///***停止掃描
+
+
+
+
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
+
+
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -176,7 +234,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 //                Utils.toast(getApplicationContext(), "Thank you for turning on Bluetooth");
             }
             else if (resultCode == RESULT_CANCELED) {
-                Utils.toast(getApplicationContext(), "Please turn on Bluetooth");
+                Utils.toast(getApplicationContext(), "請打開藍芽");
             }
         }
         else if (requestCode == BTLE_SERVICES) {
@@ -185,6 +243,8 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+
+    ///**掃描到的每個裝置
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Context context = view.getContext();
@@ -206,10 +266,6 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void getnamedata(String name){
-
-
-    }
 
 
 
@@ -218,30 +274,6 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-    //******************************原本scan按鍵，暫時不用
-   @Override
-   public void onClick(View v) {
-//
-//        switch (v.getId()) {
-//
-//            case R.id.btn_scan:
-//                Utils.toast(getApplicationContext(), "Scan Button Pressed");
-//
-//                if (!mBTLeScanner.isScanning()) {
-//                    startScan();
-//                }
-//                else {
-//                    stopScan();
-//                }
-//
-//                break;
-//            default:
-//                break;
-//        }
-
-//
-    }
-    //******************************原本scan按鍵，暫時不用
 
 
 
@@ -249,10 +281,19 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 
 
 
+    ///***由Bundle過來的路徑去掃描要的檔案
     public void addDevice(BluetoothDevice device, int rssi) {
 
         String address = device.getAddress();
         String[] list = new String[15];
+
+
+
+        //**從首頁 點名Bundle過來的資料
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File = bundle.getString("Selected_File_Path");
+
+
 
         if (!mBTDevicesHashMap.containsKey(address)) {
 
@@ -264,7 +305,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
             FileReader fr = null;
 
             try {
-                fr = new FileReader(device_io.file);
+                fr = new FileReader(Seletor_File);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -346,6 +387,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
         mBTDevicesHashMap.clear();
 
         mBTLeScanner.start();
+        Scan_toggleButton.setText("停止掃描");
     }
 
     public void stopScan() {
@@ -353,7 +395,7 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
 //        btn_Scan.setText("Scan Again");
         //*****原本scan按鍵
 
-
+        Scan_toggleButton.setText("開始掃描");
         mBTLeScanner.stop();
     }
 
@@ -389,6 +431,10 @@ public class BLE_MainActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     //**Toolbar元鍵控制
+
+
+
+
 
 
 

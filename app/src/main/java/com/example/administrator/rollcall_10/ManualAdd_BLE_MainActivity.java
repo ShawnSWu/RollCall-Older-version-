@@ -67,7 +67,13 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //****Scan返回鍵監聽事件 End****\\
 
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
 
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name);
 
 
 
@@ -88,9 +94,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
 
 
-
+        //**掃描時間 先給1分鐘
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,10000, -75);
+        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,60000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();

@@ -19,11 +19,12 @@
         android:id="@+id/scrollView">
     </ScrollView>
 
-    <Button
-        android:layout_width="351dp"
+    <ToggleButton
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button" />
+        android:text="New ToggleButton"
+        android:textColor="@color/snow"
+        android:id="@+id/Scan_toggleButton" />
 
     <!--<Button-->
         <!--android:layout_width="match_parent"-->

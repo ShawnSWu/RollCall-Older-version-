@@ -20,7 +20,7 @@ public class Device_IO {
 
 
 
-    
+
 
 
     //要寫入的文字檔
