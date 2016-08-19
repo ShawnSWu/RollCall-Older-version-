@@ -258,42 +258,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-    View.OnClickListener local_list =new View.OnClickListener() {
-        @Override
-
-        public void onClick(View v) {
-            if(device_io.file.length()==0){
-
-                Snackbar.make(v, "清單是空的" ,
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-            else {
-
-
-
-
-                Intent it = new Intent(Intent.ACTION_VIEW);
-                it.setClass(v.getContext(), Recyclerview_WatchList.class);
-
-                String x = "";
-
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("devicename",   device_io.readData(device_io.file, x));
-                it.putExtras(bundle);
-
-                v.getContext(). startActivity(it);
-
-            }
-
-        }
-    };
-
-
-
-
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

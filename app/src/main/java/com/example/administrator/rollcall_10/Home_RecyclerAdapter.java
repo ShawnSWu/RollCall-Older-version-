@@ -52,25 +52,25 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
 
 
-    private String[] titles = {"點名",
-            "查看清單",
-            "設置藍芽裝置",
-            "記事本",
-            "未開放",
-            "未開放",
-            "未開放",
+    private String[] titles = {I_CardView.RollCall,
+            I_CardView.Watch_list,
+            I_CardView.Set_BLE_Device,
+            I_CardView.Memorandum,
+            I_CardView.Not_Open,
+            I_CardView.Not_Open,
+            I_CardView.Not_Open,
         };
 
 
 
     private String[] details = {
-            "開始點名",
-            "可以查看目前要掃描的清單",
-            "設定您的藍芽追蹤器",
-            "可以記錄下代辦事項",
-            "修復中,近期開放!",
-            "修復中,近期開放!",
-            "修復中,近期開放!",
+            I_CardView.RollCall_detail,
+            I_CardView.Watch_list_detail,
+            I_CardView.Set_BLE_Device_detail,
+            I_CardView.Memorandum_detail,
+            I_CardView.Not_Open_detail,
+            I_CardView.Not_Open_detail,
+            I_CardView.Not_Open_detail,
            };
 
 
@@ -325,6 +325,10 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
 
     }
+
+
+
+
 
 
 

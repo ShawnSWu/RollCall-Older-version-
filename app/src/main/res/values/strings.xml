@@ -73,6 +73,10 @@
 
 
 
+    <string name="RollCall_List_CardView_ManualAdd">手動加入</string>
+    <string name="RollCall_List_CardView_AutoAdd">自動加入</string>
+
+
 
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
 

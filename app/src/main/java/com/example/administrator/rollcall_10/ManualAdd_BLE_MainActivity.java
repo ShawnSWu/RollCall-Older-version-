@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,9 +32,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    int Scan_Btn_Count=1;
 
-    File selected;
+
 
     private ArrayList<File> files;
 
@@ -57,6 +59,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
     public int DeviceAmount = 0;
 
     Device_IO device_io =new Device_IO();
+
+    private ToggleButton Scan_toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +90,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
-
-
-
-
         }
 
 
@@ -112,14 +112,33 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
 
 
+        ///***
+        Scan_toggleButton=(ToggleButton)findViewById(R.id.Scan_toggleButton);
+        Scan_toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Scan_Btn_Count++;
 
-        //*****原本scan按鍵  Start***\\\
-//        btn_Scan = (Button) findViewById(R.id.btn_scan);
-//        findViewById(R.id.btn_scan).setOnClickListener(this);
-        //*****原本scan按鍵  End***\\\
+
+                if (Scan_toggleButton.isChecked()) {
+
+                    startScan();
+
+                    Log.e("1","開始掃描");
+                }
+                // 当按钮再次被点击时候响应的事件
+                else {
+                    stopScan();
+
+                    Log.e("1","停止掃描");
+                }
+            }
+        });
+
+
+
+
         startScan();
-
-        device_io.file.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
 
     }
 
@@ -223,32 +242,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
 
 
-    //******************************原本scan按鍵，暫時不用
-   @Override
-   public void onClick(View v) {
-//
-//        switch (v.getId()) {
-//
-//            case R.id.btn_scan:
-//                Utils.toast(getApplicationContext(), "Scan Button Pressed");
-//
-//                if (!mBTLeScanner.isScanning()) {
-//                    startScan();
-//                }
-//                else {
-//                    stopScan();
-//                }
-//
-//                break;
-//            default:
-//                break;
-//        }
-
-//
-    }
-    //******************************原本scan按鍵，暫時不用
-
-
 
 
 
@@ -292,14 +285,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
     public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
                     DeviceAmount++;
 
-                    String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+                     String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
 
 
-            Bundle bundle = getIntent().getExtras();
-          String Seletor_File=  bundle.getString("Selected_File_Path");
-
+                     Bundle bundle = getIntent().getExtras();
+                     String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
 
@@ -345,15 +338,23 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
     public void startScan(){
 
-        //*****原本scan按鍵
-//        btn_Scan.setText("Scanning...");
-        //*****原本scan按鍵
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File=  bundle.getString("Selected_File_Path");
+        File peoplefile = new File(Seletor_File);
 
+        peoplefile.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
 
+        //****剛剛把資料刪掉 在建一個一樣的
+        try {
+            peoplefile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mBTDevicesArrayList.clear();
         mBTDevicesHashMap.clear();
 
         manualAdd_ble_scanner_btle.start();
+        Scan_toggleButton.setText("停止掃描");
     }
 
     public void stopScan() {
@@ -363,6 +364,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Vie
 
 
         manualAdd_ble_scanner_btle.stop();
+        Scan_toggleButton.setText("開始掃描");
     }
 
 
