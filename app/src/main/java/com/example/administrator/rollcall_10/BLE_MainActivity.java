@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,9 +37,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
-    private final static String TAG = MainActivity.class.getSimpleName();
+//    private final static String TAG = MainActivity.class.getSimpleName();
+//    int Scan_Btn_Count=1;
 
-    int Scan_Btn_Count=1;
 
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
@@ -54,28 +55,20 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
     private Scanner_BTLE mBTLeScanner;
 
 
-    private ToggleButton Scan_toggleButton;
-
+    Menu mymenu;
+    MenuItem progress_menu_item;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.ble_activity_main);
 
-        //****Scan返回鍵監聽事件 Start****\\
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //****Scan返回鍵監聽事件 End****\\
+        Acttionbar_TitleData();
 
 
 
-        //**掃描的清單名稱
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
-
-        //清單名稱當標題
-        ActionBar actionBar =getSupportActionBar();
-        actionBar.setTitle(Seletor_File_Name);
 
 
         // Use this check to determine whether BLE is supported on the device. Then
@@ -105,32 +98,6 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
 
 
-
-        Scan_toggleButton=(ToggleButton)findViewById(R.id.Scan_toggleButton);
-        Scan_toggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Scan_Btn_Count++;
-
-
-                if (Scan_toggleButton.isChecked()) {
-
-                    startScan();
-
-                    Log.e("1","開始掃描");
-                }
-                // 当按钮再次被点击时候响应的事件
-                else {
-                    stopScan();
-
-                    Log.e("1","停止掃描");
-                }
-            }
-        });
-
-
-
-
         //*****原本scan按鍵  End***\\\
         startScan();
 
@@ -138,6 +105,21 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
 
 
+
+    //**Actionbar跟標題
+    public void Acttionbar_TitleData(){
+
+        //****Scan返回鍵監聽事件
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name);
+    }
 
 
 
@@ -387,7 +369,7 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
         mBTDevicesHashMap.clear();
 
         mBTLeScanner.start();
-        Scan_toggleButton.setText("停止掃描");
+
     }
 
     public void stopScan() {
@@ -395,7 +377,7 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 //        btn_Scan.setText("Scan Again");
         //*****原本scan按鍵
 
-        Scan_toggleButton.setText("開始掃描");
+
         mBTLeScanner.stop();
     }
 
@@ -406,6 +388,11 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.scan_set, menu);
+        mymenu = menu;
+        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
+
+        //**一開始就掃描progress
+        progress_menu_item.setActionView(R.layout.progress_scantime);
         return true;
 
     }
@@ -419,10 +406,13 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
             case R.id.action_scan:
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
-
+                    //**progress開始
+                    progress_menu_item.setActionView(R.layout.progress_scantime);
                 }
                 else {
                     stopScan();
+                    //**progress停止
+                    progress_menu_item.setActionView(null);
                 }
                 return true;
 

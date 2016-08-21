@@ -11,6 +11,10 @@
     style="@style/ScanTheme"
     tools:context="com.example.administrator.rollcall_10.MainActivity">
 
+
+
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -19,19 +23,33 @@
         android:id="@+id/scrollView">
     </ScrollView>
 
-    <ToggleButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New ToggleButton"
 
-        android:textColor="@color/snow"
-        android:id="@+id/Scan_toggleButton" />
 
-    <!--<Button-->
+
+
+
+
+
+    <!--<ScrollView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Start Scan"-->
-        <!--android:id="@+id/btn_scan"/>-->
+        <!--android:layout_weight="6.49"-->
+        <!--android:fillViewport="true"-->
+        <!--android:id="@+id/scrollView">-->
+    <!--</ScrollView>-->
 
+    <!--<ToggleButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="New ToggleButton"-->
+
+        <!--android:textColor="@color/snow"-->
+        <!--android:id="@+id/Scan_toggleButton" />-->
+
+
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/listView"-->
+        <!--android:layout_gravity="center_horizontal" />-->
 </LinearLayout>

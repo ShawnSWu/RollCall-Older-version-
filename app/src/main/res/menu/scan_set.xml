@@ -9,5 +9,8 @@
         android:icon="@mipmap/scan128"
         app:showAsAction="always" />
 
-
+    <item
+        android:id="@+id/action_progress_show"
+        android:title=""
+        app:showAsAction="always" />
 </menu>

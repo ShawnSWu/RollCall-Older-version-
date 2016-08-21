@@ -58,7 +58,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-
     File selected;
 
     private ListView FileList;
@@ -170,22 +169,45 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
             selected = new File(String.valueOf(files.get(position)));
 
-            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-            rollCall_dialog.setTitle(R.string.RollCall_List_Delete_Title);
-            rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message)+"  " + selected.getName() + "  " + getActivity().getResources().getString(R.string.RollCall_List_Delete_Message2) );
 
-            rollCall_dialog.setIcon(R.mipmap.garbagecan128);
-            rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes),Delete_List);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close),close);
+            if(selected.length() !=0){
+
+                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
+                rollCall_dialog.setTitle(getActivity().getResources().getString(R.string.RollCall_List_Delete_Title_therearestilldata));
+                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message_therearestilldata));
+                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
+                rollCall_dialog.setCancelable(false);
+                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
+                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
+
+
+                rollCall_dialog.show();
+
+                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
+                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            }else {
+
+
+                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
+                rollCall_dialog.setTitle(R.string.RollCall_List_Delete_Title);
+                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message) + "  " + selected.getName() + "  " + getActivity().getResources().getString(R.string.RollCall_List_Delete_Message2));
+
+                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
+                rollCall_dialog.setCancelable(false);
+                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
+                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
+
+
+                rollCall_dialog.show();
+
+                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
+                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
+            }
 
 
 
 
-            rollCall_dialog.show();
-
-            TextView messageText = (TextView)rollCall_dialog.findViewById( android.R.id.message );
-            messageText.setGravity( Gravity.CENTER_HORIZONTAL );
 
             //**若是flase就會長短按都觸發
          return true;
@@ -206,26 +228,35 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-            if(I_File_Path.Local_List_Text_File.equals(selected.getName())){
+//            if(I_File_Path.Local_List_Text_File.equals(selected.getName())){
+//
+//
+//
+//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
+//                rollCall_dialog.setTitle(R.string.RollCall_List_Cant_Delete_Title);
+//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Cant_Delete_Message) );
+//
+//                rollCall_dialog.setIcon(R.mipmap.cantdelete128);
+//                rollCall_dialog.setCancelable(false);
+//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close),close);
+//
+//
+//
+//                rollCall_dialog.show();
+//                TextView messageText = (TextView)rollCall_dialog.findViewById( android.R.id.message );
+//                messageText.setGravity( Gravity.CENTER_HORIZONTAL );
+//
+//
+//            }
+
+
+//
+//
+//            else {
 
 
 
-                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-                rollCall_dialog.setTitle(R.string.RollCall_List_Cant_Delete_Title);
-                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Cant_Delete_Message) );
 
-                rollCall_dialog.setIcon(R.mipmap.cantdelete128);
-                rollCall_dialog.setCancelable(false);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close),close);
-
-
-
-                rollCall_dialog.show();
-                TextView messageText = (TextView)rollCall_dialog.findViewById( android.R.id.message );
-                messageText.setGravity( Gravity.CENTER_HORIZONTAL );
-
-
-            }else {
 
                  selected.delete();
 
@@ -235,8 +266,8 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                 fragmentManager.beginTransaction()
                         .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
                         .commitAllowingStateLoss();
-                //***重新載入一次 suck code
-            }
+//                //***重新載入一次 suck code
+//            }
 
 
         }
@@ -262,6 +293,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.create_file, menu);
+
         super.onCreateOptionsMenu(menu,inflater);
     }
 
@@ -273,6 +305,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
         switch (id) {
             case R.id.action_create_file:
                 Create_File_Dialog();
+
                 return true;
 
 

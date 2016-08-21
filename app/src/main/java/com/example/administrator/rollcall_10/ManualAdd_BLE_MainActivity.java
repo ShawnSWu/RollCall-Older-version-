@@ -8,15 +8,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -33,24 +39,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    int Scan_Btn_Count=1;
-
-
-
-    private ArrayList<File> files;
-
-
-    private final static String TAG = MainActivity.class.getSimpleName();
-
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
 
     private HashMap<String, BTLE_Device> mBTDevicesHashMap;
     private ArrayList<BTLE_Device> mBTDevicesArrayList;
     private ListAdapter_BTLE_Devices adapter;
-    private ListView listView;
 
-    private ActionBar actionBar;
+    ListView listView;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
@@ -60,32 +56,26 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     Device_IO device_io =new Device_IO();
 
-    private ToggleButton Scan_toggleButton;
+
+
+
+    Menu mymenu;
+    MenuItem progress_menu_item;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.ble_activity_main);
 
-        //****Scan返回鍵監聽事件 Start****\\
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //****Scan返回鍵監聽事件 End****\\
-
-        //**掃描的清單名稱
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
-
-        //清單名稱當標題
-        ActionBar actionBar =getSupportActionBar();
-        actionBar.setTitle(Seletor_File_Name);
+        //**Actionbar跟標題資料
+        Acttionbar_TitleData();
 
 
 
-
-
-
-
-        // Use this check to determine whether BLE is supported on the device. Then
+        //用以檢查,是否用在設備上
         // you can selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
@@ -112,32 +102,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-        ///***
-        Scan_toggleButton=(ToggleButton)findViewById(R.id.Scan_toggleButton);
-        Scan_toggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Scan_Btn_Count++;
-
-
-                if (Scan_toggleButton.isChecked()) {
-
-                    startScan();
-
-                    Log.e("1","開始掃描");
-                }
-                // 当按钮再次被点击时候响应的事件
-                else {
-                    stopScan();
-
-                    Log.e("1","停止掃描");
-                }
-            }
-        });
-
-
-
-
         startScan();
 
     }
@@ -156,8 +120,20 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
+    //**Actionbar跟標題
+    public void Acttionbar_TitleData(){
 
+        //****Scan返回鍵監聽事件
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name);
+    }
 
 
 
@@ -350,22 +326,26 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         mBTDevicesArrayList.clear();
         mBTDevicesHashMap.clear();
 
         manualAdd_ble_scanner_btle.start();
-        Scan_toggleButton.setText("停止掃描");
+
+
+
     }
 
     public void stopScan() {
-        //*****原本scan按鍵
-//        btn_Scan.setText("Scan Again");
-        //*****原本scan按鍵
-
 
         manualAdd_ble_scanner_btle.stop();
-        Scan_toggleButton.setText("開始掃描");
+
+
     }
+
+
+
 
 
 
@@ -374,6 +354,11 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.scan_set, menu);
+        mymenu = menu;
+        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
+
+        //**一開始就掃描progress
+        progress_menu_item.setActionView(R.layout.progress_scantime);
         return true;
 
     }
@@ -386,10 +371,13 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             case R.id.action_scan:
                 if (!manualAdd_ble_scanner_btle.isScanning()) {
                     startScan();
-
+                    //**progress開始
+                    progress_menu_item.setActionView(R.layout.progress_scantime);
                 }
                 else {
                     stopScan();
+                    //**progress停止
+                    progress_menu_item.setActionView(null);
                 }
                 return true;
 

@@ -8,7 +8,7 @@
     android:id="@+id/card_view"
     android:layout_width="fill_parent"
     android:layout_height="200dp"
-    card_view:cardBackgroundColor="#8fbc8f"
+    card_view:cardBackgroundColor="#D3D3D3"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp"
     card_view:cardCornerRadius="20dp"

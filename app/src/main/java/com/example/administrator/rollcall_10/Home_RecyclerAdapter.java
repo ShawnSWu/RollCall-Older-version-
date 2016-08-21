@@ -20,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -153,9 +154,6 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
                     switch (getAdapterPosition()){
                         case 0:
-
-
-
                             startscan(v);
                             break;
 
@@ -241,22 +239,38 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
                     selected = new File(String.valueOf(files.get(position)));
 
-                    Log.e("1",":AA"+selected.getName());
 
 
-                    Intent it = new Intent(Intent.ACTION_VIEW);
-                    it.setClass(v.getContext(), BLE_MainActivity.class);
+                    if(selected.length() ==0) {
 
-                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Toast.makeText(v.getContext(), "清單是空的!!", Toast.LENGTH_LONG).show();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Selected_File_Path",selected.getPath());
-                    bundle.putString("Selected_File_Name",selected.getName());
-                    it.putExtras(bundle);
 
-                    v.getContext(). startActivity(it);
 
-                    rollCall_dialog.dismiss();
+                    }else {
+
+                        Log.e("1", ":AA" + selected.getName());
+
+
+                        Intent it = new Intent(Intent.ACTION_VIEW);
+                        it.setClass(v.getContext(), BLE_MainActivity.class);
+
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Selected_File_Path", selected.getPath());
+                        bundle.putString("Selected_File_Name", selected.getName());
+                        it.putExtras(bundle);
+
+                        v.getContext().startActivity(it);
+
+                        rollCall_dialog.dismiss();
+
+                    }
+
+
+
+
 
 
                 }
