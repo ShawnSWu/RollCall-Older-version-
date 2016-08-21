@@ -56,7 +56,7 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
 
     Menu mymenu;
-    MenuItem progress_menu_item;
+    MenuItem progress_menu_item,scan;
 
 
     @Override
@@ -199,12 +199,15 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopScan();
     }
 
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopScan();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -393,6 +396,8 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
         //**一開始就掃描progress
         progress_menu_item.setActionView(R.layout.progress_scantime);
+
+        scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
         return true;
 
     }
@@ -406,13 +411,18 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
             case R.id.action_scan:
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
+
                     //**progress開始
                     progress_menu_item.setActionView(R.layout.progress_scantime);
+
+                    scan.setIcon(R.drawable.stopscanbtn);
                 }
                 else {
                     stopScan();
                     //**progress停止
                     progress_menu_item.setActionView(null);
+
+                    scan.setIcon(R.drawable.startscanbtn);
                 }
                 return true;
 

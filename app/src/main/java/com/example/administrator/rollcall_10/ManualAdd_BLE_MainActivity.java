@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -60,7 +62,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
     Menu mymenu;
-    MenuItem progress_menu_item;
+    MenuItem progress_menu_item,scan;
 
 
 
@@ -171,6 +173,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopScan();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopScan();
     }
 
     @Override
@@ -356,9 +366,10 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         getMenuInflater().inflate(R.menu.scan_set, menu);
         mymenu = menu;
         progress_menu_item = mymenu.findItem(R.id.action_progress_show);
-
         //**一開始就掃描progress
         progress_menu_item.setActionView(R.layout.progress_scantime);
+
+        scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
         return true;
 
     }
@@ -373,11 +384,16 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
                     startScan();
                     //**progress開始
                     progress_menu_item.setActionView(R.layout.progress_scantime);
+
+
+                    scan.setIcon(R.drawable.stopscanbtn);
+
                 }
                 else {
                     stopScan();
                     //**progress停止
                     progress_menu_item.setActionView(null);
+                    scan.setIcon(R.drawable.startscanbtn);
                 }
                 return true;
 
