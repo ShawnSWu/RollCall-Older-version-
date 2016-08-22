@@ -23,9 +23,6 @@ public interface I_File_Path {
     //路徑用的斜線
     String Slash ="/";
 
-    //**判斷用
-    String Local_List_Text_File ="本地清單.txt";
-
     //內建文字檔
-    String Built_TextFile ="/People_List/Local_List.txt";
+    String Built_TextFile ="/People_List/本地清單.txt";
 }

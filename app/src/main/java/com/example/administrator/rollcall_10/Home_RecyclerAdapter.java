@@ -214,10 +214,10 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.dialog_listview_seleted, null);
+            final View layout = inflater.inflate(R.layout.dialog_listview_rollcall_seleted, null);
 
             final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
-            rollCall_dialog.setTitle(R.string.RollCall_List_Dialog_Title_WantToScan);
+//            rollCall_dialog.setTitle(R.string.RollCall_List_Dialog_Title_WantToScan);
             rollCall_dialog.setView(layout);
             rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
             rollCall_dialog.setCancelable(false);

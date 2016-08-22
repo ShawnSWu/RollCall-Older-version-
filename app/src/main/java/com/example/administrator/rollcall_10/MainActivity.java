@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        //**內鍵創建文字檔 strat--->
-        File peoplefile = new File(path + "/" + R.string.RollCall_local_folder + ".txt");
-
-        try {
-            FileWriter fw = new FileWriter(peoplefile, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //**自行創建文字檔 End--->
+//        //**內鍵創建文字檔 strat--->
+//        File peoplefile = new File(path + "/" + I_File_Path.Local_List_Text_File + ".txt");
+//
+//        try {
+//            FileWriter fw = new FileWriter(peoplefile, false);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        //**內鍵創建文字檔 End--->
 
 
 
@@ -117,14 +117,14 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-    //**Toolbar其他元件點擊事件
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.setting, menu);
-        return true;
-    }
-    //**Toolbar其他元件點擊事件
+//
+//    //**Toolbar其他元件點擊事件
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.setting, menu);
+//        return true;
+//    }
+//    //**Toolbar其他元件點擊事件
 
 
 

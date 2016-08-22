@@ -16,8 +16,6 @@
         app:showAsAction="always" />
 
 
-
-
     <!--ifRoom - 如果有ActionBar有空間的話會就會顯示item出來-->
     <!--withText - 顯示item的文字，可以搭配|來使用，例如ifRoom|withText-->
     <!--never - 不會顯示在ActionBar上面-->

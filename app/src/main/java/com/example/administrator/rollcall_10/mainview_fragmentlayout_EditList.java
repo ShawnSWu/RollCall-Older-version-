@@ -325,7 +325,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
         new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.RollCall__NewFile_Dialog__Title_NewFile)
+//                .setTitle(R.string.RollCall__NewFile_Dialog__Title_NewFile)
                 .setView(v)
                 .setPositiveButton(R.string.RollCall__NewFile_Dialog__Button_okay, new DialogInterface.OnClickListener() {
                     @Override
@@ -345,6 +345,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                             FileWriter fw = new FileWriter(peoplefile, false);
                         } catch (IOException e) {
                             e.printStackTrace();
+                            Log.e("1","shawn");
                         }
                         //**自行創建文字檔 End--->
 

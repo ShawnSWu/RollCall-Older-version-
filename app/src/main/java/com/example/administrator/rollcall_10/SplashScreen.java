@@ -21,6 +21,9 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen_layout);
 
+
+
+
         LoGo_text=(ImageView)findViewById(R.id.Logo_text);
         LoGo_text.setAnimation(AnimationUtils.loadAnimation(this, R.anim.translate));
 

@@ -24,7 +24,7 @@ public class Device_IO {
 
 
     //要寫入的文字檔
-    File file  =new File(I_File_Path.main_path + I_File_Path.Built_TextFile);//文字檔
+//    File file  =new File(I_File_Path.main_path + I_File_Path.Built_TextFile);//文字檔
 
 
 

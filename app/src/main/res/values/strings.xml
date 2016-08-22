@@ -49,7 +49,11 @@
 
 
     <string name="RollCall__NewFile_Dialog__Button_okay">確定</string>
+    <string name="RollCall__NewFile_Dialog__Messages">名稱內不能只有特殊服號*/@#$...</string>
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
+
+    <string name="RollCall__NewFile_Dialog__Title_WanttoAdd">想要加入人數的清單</string>
+    <string name="RollCall__NewFile_Dialog__Title_RollCall">想要點名的清單</string>
     <!--RollCall_Dialog的string  End-->
 
 
@@ -62,6 +66,11 @@
     <string name="RollCall_List_Delete_Message2">嗎?</string>
     <string name="RollCall_List_Delete_Button_yes">確定</string>
     <string name="RollCall_List_Delete_Button_close">關閉</string>
+
+
+
+
+
 
 
     <string name="RollCall_List_Delete_Title_therearestilldata">還有資料的清單！！！</string>

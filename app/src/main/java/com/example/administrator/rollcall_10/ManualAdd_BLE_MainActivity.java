@@ -370,6 +370,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         progress_menu_item.setActionView(R.layout.progress_scantime);
 
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
+
+
         return true;
 
     }
@@ -387,6 +389,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
                     scan.setIcon(R.drawable.stopscanbtn);
+
+
 
                 }
                 else {
