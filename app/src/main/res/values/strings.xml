@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RollCall_1.0</string>
+    <string name="app_name">RollCall</string>
     <string name="open">open</string>
     <string name="close">close</string>
 
@@ -49,7 +49,7 @@
 
 
     <string name="RollCall__NewFile_Dialog__Button_okay">確定</string>
-    <string name="RollCall__NewFile_Dialog__Messages">名稱內不能只有特殊服號*/@#$...</string>
+    <string name="RollCall__NewFile_Dialog__Messages">名稱不能包含 / ， 或是開頭結尾有空白</string>
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
 
     <string name="RollCall__NewFile_Dialog__Title_WanttoAdd">想要加入人數的清單</string>

@@ -13,7 +13,7 @@ import android.widget.ImageView;
  */
 public class SplashScreen extends Activity {
 
-    public static final int SplashScreen_Time=5000;
+    public static final int SplashScreen_Time=4000;
     ImageView LoGo_text;
 
     @Override

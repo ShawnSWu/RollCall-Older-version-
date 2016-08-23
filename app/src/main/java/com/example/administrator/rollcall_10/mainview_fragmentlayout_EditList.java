@@ -336,19 +336,25 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                         String Filename_string =FileName_edit.getText().toString();
 
+                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ")) {
+
+                            Toast.makeText(getActivity(), "名稱內不能有/,或者開頭結尾不能有空白", Toast.LENGTH_SHORT).show();
 
 
-                        //**自行創建文字檔 strat--->
-                        File peoplefile = new File(I_File_Path.path_People_list   +  I_File_Path.Slash  +   Filename_string    + I_File_Path.TextFile);
-
-                        try {
-                            FileWriter fw = new FileWriter(peoplefile, false);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Log.e("1","shawn");
                         }
-                        //**自行創建文字檔 End--->
+                        else {
+                            //**自行創建文字檔 strat--->
+                            File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
 
+                            try {
+                                FileWriter fw = new FileWriter(peoplefile, false);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Log.e("1", "shawn");
+                            }
+                            //**自行創建文字檔 End--->
+
+                        }
 
 
                         //***重新載入一次 suck code

@@ -49,6 +49,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     private ListAdapter_BTLE_Devices adapter;
 
     ListView listView;
+    
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
