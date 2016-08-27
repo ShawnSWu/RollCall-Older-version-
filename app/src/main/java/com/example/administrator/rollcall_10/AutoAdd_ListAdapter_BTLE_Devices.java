@@ -1,6 +1,5 @@
 package com.example.administrator.rollcall_10;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,29 +12,36 @@ import java.util.ArrayList;
 /**
  * Created by Kelvin on 5/7/16.
  */
-public class ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
+public class AutoAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
 
-    Activity activity;
+    Context context;
     int layoutResourceID;
     ArrayList<BTLE_Device> devices;
 
-    public ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<BTLE_Device> objects) {
-        super(activity.getApplicationContext(), resource, objects);
 
-        this.activity = activity;
-        layoutResourceID = resource;
-        devices = objects;
+    public AutoAdd_ListAdapter_BTLE_Devices(Context context, int resource, ArrayList<BTLE_Device> objects) {
+        super(context.getApplicationContext(), resource, objects);
+
+        this.context = context;
+      this.layoutResourceID = resource;
+       this.devices = objects;
+
+
     }
 
 
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
 
         if (convertView == null) {
             LayoutInflater inflater =
-                    (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layoutResourceID, parent, false);
+
+
         }
 
         BTLE_Device device = devices.get(position);
@@ -48,30 +54,36 @@ public class ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
         tv = (TextView) convertView.findViewById(R.id.tv_name);
         if (name != null && name.length() > 0) {
             tv.setText(device.getName());
-        }
-        else {
+        } else {
             tv.setText("No Name");
         }
 
-        tv = (TextView) convertView.findViewById(R.id.tv_rssi);
-        tv.setText("RSSI: " + Integer.toString(rssi));
+
+
+//        tv = (TextView) convertView.findViewById(R.id.tv_rssi);
+//        tv.setText("RSSI: " + Integer.toString(rssi));
 
         tv = (TextView) convertView.findViewById(R.id.tv_macaddr);
         if (address != null && address.length() > 0) {
             tv.setText(device.getAddress());
-        }
-        else {
+        } else {
             tv.setText("No Address");
         }
 
+
+
+
         return convertView;
+
+    }
+
+
+    public void remove(int i) {
+        devices.remove(devices.get(i));
     }
 
 
 
-    //**0826
-//    public void remove(int i) {
-//        devices.remove(devices.get(i));
-//}
 
 }
+

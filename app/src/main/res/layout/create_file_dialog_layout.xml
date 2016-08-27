@@ -11,7 +11,7 @@
         android:hint="清單名稱"
         android:background="@null"
         android:drawableBottom="@drawable/dialog_add_file"
-        android:maxLength="15"
+        android:maxLength="12"
         android:layout_marginTop="24dp"
         android:layout_below="@+id/Dialog_Title_layout"
         android:layout_centerHorizontal="true" />
@@ -45,5 +45,6 @@
         android:text="@string/RollCall__NewFile_Dialog__Messages"
         android:id="@+id/Dialog_Message"
         android:layout_below="@+id/create_file_name_edit"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="12dp" />
 </RelativeLayout>

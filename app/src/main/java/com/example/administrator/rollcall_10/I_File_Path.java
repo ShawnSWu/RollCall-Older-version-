@@ -23,6 +23,8 @@ public interface I_File_Path {
     //路徑用的斜線
     String Slash ="/";
 
+    String Slash2 ="\\";
+
     //內建文字檔
-    String Built_TextFile ="/People_List/本地清單.txt";
+    String Built_TextFile ="/第一個團.txt";
 }

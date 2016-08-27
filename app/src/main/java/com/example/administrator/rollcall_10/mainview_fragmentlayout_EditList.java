@@ -105,8 +105,13 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
         mContext = getActivity().getApplicationContext();
 
-        PeopleList =new File(I_File_Path.path_People_list);
-        PeopleList.mkdirs();
+
+
+            PeopleList =new File(I_File_Path.path_People_list);
+            PeopleList.mkdirs();
+
+
+
 
         files = filter(PeopleList.listFiles());
 
@@ -334,11 +339,12 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                         EditText FileName_edit = (EditText) (v.findViewById(R.id.create_file_name_edit));
 
 
+
                         String Filename_string =FileName_edit.getText().toString();
 
-                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ")) {
+                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
 
-                            Toast.makeText(getActivity(), "名稱內不能有/,或者開頭結尾不能有空白", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Messages), Toast.LENGTH_SHORT).show();
 
 
                         }

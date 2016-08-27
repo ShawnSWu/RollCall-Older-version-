@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity
 
     private Context context;
 
-    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file/People_List";//新增檔案
+//    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file/People_List";//新增檔案
 
 
-
+    File peoplefile;
 
 
 
@@ -46,17 +46,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-//        //**內鍵創建文字檔 strat--->
-//        File peoplefile = new File(path + "/" + I_File_Path.Local_List_Text_File + ".txt");
-//
-//        try {
-//            FileWriter fw = new FileWriter(peoplefile, false);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        //**內鍵創建文字檔 End--->
 
 
 

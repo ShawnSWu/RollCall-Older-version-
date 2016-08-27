@@ -8,6 +8,12 @@ import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * Created by Administrator on 2016/8/18.
  */
@@ -15,13 +21,29 @@ public class SplashScreen extends Activity {
 
     public static final int SplashScreen_Time=4000;
     ImageView LoGo_text;
-
+    File peoplefile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen_layout);
 
 
+        File  PeopleList =new File(I_File_Path.path_People_list);
+        PeopleList.mkdirs();
+
+        //**內鍵創建文字檔 strat--->
+        peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Built_TextFile);
+
+
+        try {
+            FileWriter fw = new FileWriter(peoplefile, false);
+            Log.e("1","內建文字檔建立成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("1","內建文字檔建立失敗");
+        }
+
+        //**內鍵創建文字檔 End--->
 
 
         LoGo_text=(ImageView)findViewById(R.id.Logo_text);

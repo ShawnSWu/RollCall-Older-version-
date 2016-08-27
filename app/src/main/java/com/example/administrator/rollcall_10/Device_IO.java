@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/8/12.
@@ -44,15 +45,15 @@ public class Device_IO {
 
 
 
-            //寫入文字檔
-            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File,append);
+                //寫入文字檔
+                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-            fileOutputStream.write(sad.getBytes());
+                fileOutputStream.write(sad.getBytes());
 
-            fileOutputStream.write("\n".getBytes());
+                fileOutputStream.write("\n".getBytes());
 
 
-            fileOutputStream.close();
+                fileOutputStream.close();
 
 
 
@@ -122,5 +123,53 @@ public class Device_IO {
     }
     //******************************************************************************************************讀出寫法 End******\\\
 
+
+
+
+
+
+
+
+
+
+
+
+
+    public void AutowriteData(ArrayList<String> sad, boolean append, String path){
+
+        File seletor_File= new File(path);
+
+
+
+        try {
+            //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
+            peoplefile.mkdirs();
+
+
+for(int i=0; i<sad.size();i++) {
+    //寫入文字檔
+    FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+
+    fileOutputStream.write(sad.get(i).getBytes());
+
+    fileOutputStream.write("\n".getBytes());
+
+
+    fileOutputStream.close();
+
+}
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 }

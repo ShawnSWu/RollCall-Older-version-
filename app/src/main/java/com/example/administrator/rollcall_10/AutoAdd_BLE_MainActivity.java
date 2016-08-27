@@ -3,16 +3,14 @@ package com.example.administrator.rollcall_10;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,88 +18,162 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
-public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
-//    private final static String TAG = MainActivity.class.getSimpleName();
-//    int Scan_Btn_Count=1;
-
-
+public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
 
     private HashMap<String, BTLE_Device> mBTDevicesHashMap;
     private ArrayList<BTLE_Device> mBTDevicesArrayList;
-    private ListAdapter_BTLE_Devices adapter;
-    private ListView listView;
+    private AutoAdd_ListAdapter_BTLE_Devices adapter;
 
+    ListView listView;
 
+    int a=0;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
-    private Scanner_BTLE mBTLeScanner;
 
+
+    private AutoAdd_BLE_Scanner_BTLE autoAdd_BLE_Scanner_BTLE;
+
+
+    public int DeviceAmount = 1;
+
+    Device_IO device_io =new Device_IO();
+
+
+    BTLE_Device btleDevice;
 
     Menu mymenu;
     MenuItem progress_menu_item,scan;
 
 
+
+
+    ArrayList<String> savepeople =new ArrayList<>();
+
+
+
+    @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.ble_activity_main);
+        setContentView(R.layout.test_ble_activity_main);
 
+        //**Actionbar跟標題資料
         Acttionbar_TitleData();
 
 
 
 
 
-        // Use this check to determine whether BLE is supported on the device. Then
+        Button buttons =(Button)findViewById(R.id.add);
+        assert buttons != null;
+
+        buttons.setOnClickListener(new View.OnClickListener() {
+
+    @Override
+    public void onClick(View view) {
+
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File=  bundle.getString("Selected_File_Path");
+
+
+        device_io.AutowriteData(savepeople,true,Seletor_File);
+
+        stopScan();
+
+
+        Toast.makeText(view.getContext(),"加入成功",Toast.LENGTH_SHORT).show();
+
+        finish();
+
+
+
+    }
+});
+
+
+
+
+
+
+
+        //用以檢查,是否用在設備上
         // you can selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
-
         }
 
 
+
+        //**掃描時間 先給1分鐘
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new Scanner_BTLE(this,30000, -75);
+        autoAdd_BLE_Scanner_BTLE = new AutoAdd_BLE_Scanner_BTLE(this,60000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
 
-        adapter = new ListAdapter_BTLE_Devices(this, R.layout.btle_device_list_item, mBTDevicesArrayList);
 
 
-        listView = new ListView(this);
+
+
+
+
+
+
+
+        adapter = new AutoAdd_ListAdapter_BTLE_Devices(this, R.layout.test_btle_device_list_item, mBTDevicesArrayList);
+
+        listView=(ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-
-        ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
 
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String address = mBTDevicesArrayList.get(i).getAddress();
 
 
-        //*****原本scan按鍵  End***\\\
+
+
+                  adapter.remove(i);
+                  savepeople.remove(address);
+                  mBTDevicesHashMap.remove(address);
+                  adapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+
+
         startScan();
 
     }
+
+
+
+
+
+
+
+    //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        finish();
+        return null;
+    }
+    //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
 
 
 
@@ -124,35 +196,12 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
 
 
-
-    //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
-    @Override
-    public Intent getSupportParentActivityIntent() {
-        finish();
-        return null;
-    }
-    //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
 
         registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
-
-
-
-
-
 
     @Override
     protected void onResume() {
@@ -161,27 +210,14 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 //        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
-
-
-
-
-    ///**暫時停時 停止掃描
     @Override
     protected void onPause() {
         super.onPause();
 
 //        unregisterReceiver(mBTStateUpdateReceiver);
-        Log.e("1","shawn-pause停止掃描");
         stopScan();
     }
 
-
-
-
-
-
-
-    ///***停止掃描
     @Override
     protected void onStop() {
         super.onStop();
@@ -189,12 +225,6 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
         unregisterReceiver(mBTStateUpdateReceiver);
         stopScan();
     }
-    ///***停止掃描
-
-
-
-
-
 
     @Override
     public void onDestroy() {
@@ -219,35 +249,29 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 //                Utils.toast(getApplicationContext(), "Thank you for turning on Bluetooth");
             }
             else if (resultCode == RESULT_CANCELED) {
-                Utils.toast(getApplicationContext(), "請打開藍芽");
+                Utils.toast(getApplicationContext(), "Please turn on Bluetooth");
             }
         }
         else if (requestCode == BTLE_SERVICES) {
             // Do something
         }
-
     }
-
-
-    ///**掃描到的每個裝置
+//
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Context context = view.getContext();
-//
-////        Utils.toast(context, "List Item clicked");
-//
-//        // do something with the text views and start the next activity.
-//
+        Context context = view.getContext();
+
+
+
+        //        Utils.toast(context, "List Item clicked");
+        // do something with the text views and start the next activity.
+
 //        stopScan();
-//        //********************* 裝置名稱
+        //********************* 裝置名稱
 //        String name = mBTDevicesArrayList.get(position).getName();
-//
+
 //        String address = mBTDevicesArrayList.get(position).getAddress();
-//
-//        Intent intent = new Intent(this, Activity_BTLE_Services.class);
-//        intent.putExtra(Activity_BTLE_Services.EXTRA_NAME, name);
-//        intent.putExtra(Activity_BTLE_Services.EXTRA_ADDRESS, address);
-//        startActivityForResult(intent, BTLE_SERVICES);
+
 
     }
 
@@ -260,82 +284,35 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
 
 
-
-
-
-
-
-
-    ///***由Bundle過來的路徑去掃描要的檔案
     public void addDevice(BluetoothDevice device, int rssi) {
 
         String address = device.getAddress();
-        String[] list = new String[15];
-
-
-
-        //**從首頁 點名Bundle過來的資料
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File = bundle.getString("Selected_File_Path");
-
-
-
         if (!mBTDevicesHashMap.containsKey(address)) {
 
 
-            String s = "";
+            BTLE_Device btleDevice = new BTLE_Device(device);
+            btleDevice.setRSSI(rssi);
 
-            int abc = 0;
+            mBTDevicesHashMap.put(address, btleDevice);
+            mBTDevicesArrayList.add(btleDevice);
 
-            FileReader fr = null;
+            savepeople.add(address);
 
-            try {
-                fr = new FileReader(Seletor_File);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            BufferedReader br = new BufferedReader(fr);
-
-
-            do {
-                try {
-                    s = br.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                list[abc] = s;
-                abc++;
-
-            } while (s != null);
-
-
-
-
-            if (Arrays.asList(list).contains(address)) {
-
-
-                if (device.getName().startsWith("KSU")) {//////////////////////////////開頭限制
-
-
-                    BTLE_Device btleDevice = new BTLE_Device(device);
-                    btleDevice.setRSSI(rssi);
-
-                    mBTDevicesHashMap.put(address, btleDevice);
-
-
-                    mBTDevicesArrayList.add(btleDevice);
-                }
-
-            }
-
-
+//            Bundle bundle = getIntent().getExtras();
+//            String Seletor_File=  bundle.getString("Selected_File_Path");
+//
+//
+//
+//            device_io.writeData(address,true,Seletor_File);
+//
 
 
 
 
         }
+
+
+
         else {
             mBTDevicesHashMap.get(address).setRSSI(rssi);
 
@@ -344,12 +321,49 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
         adapter.notifyDataSetChanged();
     }
 
+//    public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//
+////                    DeviceAmount++;
+////
+////                     String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
+////
+////
+////                     Bundle bundle = getIntent().getExtras();
+////                     String Seletor_File=  bundle.getString("Selected_File_Path");
+////
+////
+////
+////              device_io.writeData(address,true,Seletor_File);
+//        }
+//
+//    };
 
 
 
 
 
+    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
 
+
+
+
+        }
+
+    };
+
+
+
+
+
+    public BTLE_Device getDevice(int position) {
+
+        return mBTDevicesArrayList.get(position);
+
+    }
 
 
 
@@ -363,26 +377,38 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
 
     public void startScan(){
 
-        //*****原本scan按鍵
-//        btn_Scan.setText("Scanning...");
-        //*****原本scan按鍵
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File=  bundle.getString("Selected_File_Path");
+        File peoplefile = new File(Seletor_File);
+
+        peoplefile.delete();////////////////////////////////////////////下次加入時 刪除之前的資料
+
+        //****剛剛把資料刪掉 在建一個一樣的
+        try {
+            peoplefile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         mBTDevicesArrayList.clear();
         mBTDevicesHashMap.clear();
 
-        mBTLeScanner.start();
+        autoAdd_BLE_Scanner_BTLE.start();
+
+
 
     }
 
     public void stopScan() {
-        //*****原本scan按鍵
-//        btn_Scan.setText("Scan Again");
-        //*****原本scan按鍵
+
+        autoAdd_BLE_Scanner_BTLE.stop();
 
 
-        mBTLeScanner.stop();
     }
+
+
+
 
 
 
@@ -393,35 +419,37 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
         getMenuInflater().inflate(R.menu.scan_set, menu);
         mymenu = menu;
         progress_menu_item = mymenu.findItem(R.id.action_progress_show);
-
         //**一開始就掃描progress
         progress_menu_item.setActionView(R.layout.progress_scantime);
 
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
+
+
         return true;
 
     }
 
-    
 
     //**Toolbar元鍵控制
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_scan:
-                if (!mBTLeScanner.isScanning()) {
+                if (!autoAdd_BLE_Scanner_BTLE.isScanning()) {
                     startScan();
-
                     //**progress開始
                     progress_menu_item.setActionView(R.layout.progress_scantime);
 
+
                     scan.setIcon(R.drawable.stopscanbtn);
+
+
+
                 }
                 else {
                     stopScan();
                     //**progress停止
                     progress_menu_item.setActionView(null);
-
                     scan.setIcon(R.drawable.startscanbtn);
                 }
                 return true;
@@ -431,10 +459,6 @@ public class BLE_MainActivity extends AppCompatActivity implements  AdapterView.
         }
     }
     //**Toolbar元鍵控制
-
-
-
-
 
 
 

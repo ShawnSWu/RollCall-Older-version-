@@ -49,7 +49,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     private ListAdapter_BTLE_Devices adapter;
 
     ListView listView;
-    
+
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
@@ -59,7 +59,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     Device_IO device_io =new Device_IO();
 
-
+    BTLE_Device btleDevice;
 
 
     Menu mymenu;
@@ -204,22 +204,34 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+
         Context context = view.getContext();
 
         //        Utils.toast(context, "List Item clicked");
 
         // do something with the text views and start the next activity.
 
-        stopScan();
+//        stopScan();
         //********************* 裝置名稱
         String name = mBTDevicesArrayList.get(position).getName();
 
         String address = mBTDevicesArrayList.get(position).getAddress();
 
-        Intent intent = new Intent(this, Activity_BTLE_Services.class);
-        intent.putExtra(Activity_BTLE_Services.EXTRA_NAME, name);
-        intent.putExtra(Activity_BTLE_Services.EXTRA_ADDRESS, address);
-        startActivityForResult(intent, BTLE_SERVICES);
+
+        //***Dialog
+        RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+        rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
+        rollCall_dialog.setMessage(ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Message_AddYesOrNo));
+        rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
+        rollCall_dialog.setCancelable(false);
+        rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
+        rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
+        rollCall_dialog.show();
+        //***Dialog
+
 
     }
 
@@ -238,11 +250,12 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         if (!mBTDevicesHashMap.containsKey(address)) {
 
 
-            BTLE_Device btleDevice = new BTLE_Device(device);
+           btleDevice = new BTLE_Device(device);
             btleDevice.setRSSI(rssi);
 
             mBTDevicesHashMap.put(address, btleDevice);
             mBTDevicesArrayList.add(btleDevice);
+
 
 
             //***Dialog
@@ -295,6 +308,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
 
 
 

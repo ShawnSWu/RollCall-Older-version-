@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -131,6 +132,9 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                         case 0:
                             ManualAdd(v);
                             break;
+                        case 1:
+                            AutoAdd(v);
+                            break;
                     }
 
 
@@ -200,6 +204,57 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
         ///***自動加入監聽事件
         public void AutoAdd(View v){
+
+            LayoutInflater inflater = (LayoutInflater) v.getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.dialog_listview_addpeople_seleted, null);
+
+            final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
+//            rollCall_dialog.setTitle(R.string.RollCall_List_Dialog_Title_WantToAdd);
+            rollCall_dialog.setView(layout);
+            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+            rollCall_dialog.setCancelable(false);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_close), close);
+            rollCall_dialog.setCancelable(true);
+            rollCall_dialog.show();
+
+
+
+
+            FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
+            FileList.setAdapter(new File_AddList_Adapter());
+
+
+            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+
+
+                    //**成功將每個資料夾寫入
+                    selected = new File(String.valueOf(files.get(position)));
+
+                    Log.e("1",":"+selected.getPath());
+                    Intent it = new Intent(Intent.ACTION_VIEW);
+                    it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+
+                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Selected_File_Path",selected.getPath());
+                    bundle.putString("Selected_File_Name",selected.getName());
+                    it.putExtras(bundle);
+
+                    v.getContext(). startActivity(it);
+                    rollCall_dialog.dismiss();
+
+
+
+                }
+            });
+
+
 
         }
 

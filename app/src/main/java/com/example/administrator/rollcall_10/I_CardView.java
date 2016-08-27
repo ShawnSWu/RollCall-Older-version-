@@ -7,10 +7,11 @@ public interface I_CardView {
 
 
     ///***SetPeople CardView
-    String ManualAdd_Title ="手動加入";
-    String AutoAdd_Title="自動加入";
-    String ManualAdd_detail = "您可以手動選擇自己要的" ;
-    String AutoAdd_detail = "系統自動幫您編號" ;
+    String ManualAdd_Title ="手動編號加入";
+    String AutoAdd_Title="自動編號加入";
+    String ManualAdd_detail = "您可以手動編輯自己要的" ;
+    String AutoAdd_detail = "您只需要過濾自己不需要的" ;
+
 
 
 
