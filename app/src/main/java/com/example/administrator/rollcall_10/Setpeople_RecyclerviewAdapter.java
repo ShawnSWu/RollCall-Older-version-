@@ -234,7 +234,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                     //**成功將每個資料夾寫入
                     selected = new File(String.valueOf(files.get(position)));
 
-                    Log.e("1",":"+selected.getPath());
+                    Log.e("1",selected.getPath());
                     Intent it = new Intent(Intent.ACTION_VIEW);
                     it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
 
@@ -353,7 +353,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.txt128);
+            holder.imageView.setImageResource(R.mipmap.txt128_2);
 
 
 

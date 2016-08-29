@@ -54,7 +54,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
 
     private String[] titles = {I_CardView.RollCall,
-            I_CardView.Watch_list,
+            I_CardView.Watch_device_status,
             I_CardView.Set_BLE_Device,
             I_CardView.Memorandum,
             I_CardView.Not_Open,
@@ -66,7 +66,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
 
     private String[] details = {
             I_CardView.RollCall_detail,
-            I_CardView.Watch_list_detail,
+            I_CardView.Watch_device_status_detail,
             I_CardView.Set_BLE_Device_detail,
             I_CardView.Memorandum_detail,
             I_CardView.Not_Open_detail,
@@ -79,7 +79,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
     private int[] images = {
 
             R.mipmap.rollcallicon256,
-            R.mipmap.setlist256,
+            R.mipmap.device_status128,
             R.mipmap.bluetoothdevice128,
             R.mipmap.memorandum256,
             R.mipmap.worker256,
@@ -405,7 +405,7 @@ public class Home_RecyclerAdapter extends RecyclerView.Adapter<Home_RecyclerAdap
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.txt128);
+            holder.imageView.setImageResource(R.mipmap.txt128_2);
 
 
 

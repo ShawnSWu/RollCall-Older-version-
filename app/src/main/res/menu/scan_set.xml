@@ -11,9 +11,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_progress_show"
-        android:title=""
-        app:showAsAction="always" />
+        android:id="@+id/conutdown"
+        android:title="10"
+        app:showAsAction="ifRoom" />
 
 
     <!--ifRoom - 如果有ActionBar有空間的話會就會顯示item出來-->

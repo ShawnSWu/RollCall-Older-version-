@@ -1,5 +1,6 @@
 package com.example.administrator.rollcall_10;
 
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -39,6 +42,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static final int REQUEST_ENABLE_BT = 1;
@@ -63,14 +67,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
     Menu mymenu;
-    MenuItem progress_menu_item,scan;
+    MenuItem scan,countdown;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
         setContentView(R.layout.ble_activity_main);
 
         //**Actionbar跟標題資料
@@ -89,7 +93,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
         //**掃描時間 先給1分鐘
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,60000, -75);
+        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,10000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -339,6 +343,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     public void startScan(){
 
+
+
         Bundle bundle = getIntent().getExtras();
         String Seletor_File=  bundle.getString("Selected_File_Path");
         File peoplefile = new File(Seletor_File);
@@ -355,20 +361,48 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
         mBTDevicesArrayList.clear();
         mBTDevicesHashMap.clear();
-
         manualAdd_ble_scanner_btle.start();
+
 
 
 
     }
 
     public void stopScan() {
-
+//        progress_menu_item.setActionView(null);
         manualAdd_ble_scanner_btle.stop();
-
+        scan.setIcon(R.drawable.startscanbtn);
 
     }
 
+    public void countdown(final int timer)
+
+    {
+        new CountDownTimer(timer, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long millis = millisUntilFinished;
+
+                if (timer == 0) {
+                    onFinish();
+
+
+                }
+
+
+                String hms = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+                countdown.setTitle(hms);
+
+
+            }
+
+            public void onFinish() {
+                countdown.setTitle("done");
+            }
+        }.start();
+
+    }
 
 
 
@@ -380,10 +414,10 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
         getMenuInflater().inflate(R.menu.scan_set, menu);
         mymenu = menu;
-        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
+//        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
         //**一開始就掃描progress
-        progress_menu_item.setActionView(R.layout.progress_scantime);
-
+        countdown= mymenu.findItem(R.id.conutdown);
+        countdown(10000);
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
 
 
@@ -399,8 +433,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             case R.id.action_scan:
                 if (!manualAdd_ble_scanner_btle.isScanning()) {
                     startScan();
-                    //**progress開始
-                    progress_menu_item.setActionView(R.layout.progress_scantime);
+
+                    //**記時開始
+                    countdown(10000);
 
 
                     scan.setIcon(R.drawable.stopscanbtn);
@@ -410,8 +445,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
                 }
                 else {
                     stopScan();
-                    //**progress停止
-                    progress_menu_item.setActionView(null);
+                //**記時結束
+                    countdown(0);
+
                     scan.setIcon(R.drawable.startscanbtn);
                 }
                 return true;

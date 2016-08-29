@@ -446,7 +446,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.txt128);
+            holder.imageView.setImageResource(R.mipmap.txt128_2);
 
 
 

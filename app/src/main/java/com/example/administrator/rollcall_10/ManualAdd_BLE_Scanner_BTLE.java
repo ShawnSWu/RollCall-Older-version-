@@ -60,17 +60,17 @@ public class  ManualAdd_BLE_Scanner_BTLE {
 
             // Stops scanning after a pre-defined scan period.
             //**還不知道功能 暫留
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
 //                    Utils.toast(ma.getApplicationContext(), "Stopping BLE scan...");
-//
-//                    mScanning = false;
-//                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//
-//                    ma.stopScan();
-//                }
-//            }, scanPeriod);
+
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
+                    ma.stopScan();
+                }
+            }, scanPeriod);
 
             mScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
