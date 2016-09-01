@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="horizontal"
     style="@style/ScanTheme"
-    tools:context="com.example.administrator.rollcall_10.MainActivity"
+    tools:context=".main.MainActivity"
     android:weightSum="1">
 
 

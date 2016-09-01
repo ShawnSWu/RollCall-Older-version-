@@ -23,12 +23,12 @@
         android:theme="@style/AppTheme"
         >
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".main.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".SplashScreen"
+        <activity android:name=".splashscreen.SplashScreen"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,36 +39,38 @@
 
 
 
-        <activity android:name=".BLE_MainActivity"
+        <activity android:name=".demo.BLE_MainActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".AutoAdd_BLE_MainActivity"
+        <activity android:name=".auto_add.AutoAdd_BLE_MainActivity"
             android:screenOrientation="portrait" />
 
 
-        <activity android:name=".ManualAdd_BLE_MainActivity"
+        <activity android:name=".manual_add.ManualAdd_BLE_MainActivity"
             android:screenOrientation="portrait"  />
 
-        <activity android:name=".Test_ManualAdd_BLE_MainActivity"
+        <activity android:name=".z_only_test.Test_ManualAdd_BLE_MainActivity"
+            android:screenOrientation="portrait"  />
+
+        <activity android:name=".rollcall.RollCall_BLE_MainActivity"
             android:screenOrientation="portrait"  />
 
 
-
-        <activity android:name=".Activity_BTLE_Services"
+        <activity android:name=".demo.Activity_BTLE_Services"
             android:screenOrientation="portrait" />
 
 
 
 
-        <activity android:name=".Recyclerview_WatchList"
+        <activity android:name=".recyclerview.Recyclerview_WatchList"
             android:screenOrientation="portrait" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.administrator.rollcall_10.BLE_MainActivity" />
+            android:value=".demo.BLE_MainActivity" />
 
         <service
-            android:name=".Service_BTLE_GATT"
+            android:name=".demo.Service_BTLE_GATT"
             android:enabled="true"
             android:exported="true">
 
@@ -76,7 +78,7 @@
 
         <!-- Parent activity meta-data to support 4.0 and lower -->
 
-        <activity android:name=".Set_BLE_Device"
+        <activity android:name=".ble_device_setting.Set_BLE_Device"
             android:screenOrientation="portrait" />
     </application>
 
