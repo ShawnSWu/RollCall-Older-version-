@@ -1,5 +1,6 @@
 package com.example.administrator.rollcall_10.notifications;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -13,12 +14,13 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.auto_add.AutoAdd_BLE_MainActivity;
+import com.example.administrator.rollcall_10.main.MainActivity;
 
 /**
  * Created by Administrator on 2016/9/2.
  */
 public class Successful_NotificationDisplayService extends Service {
-
+    NotificationManager nManager;
 
     final int NOTIFICATION_ID = 16;
     public Successful_NotificationDisplayService() {
@@ -53,19 +55,20 @@ public class Successful_NotificationDisplayService extends Service {
 
     private void displayNotification(String title, String text){
 
-        Intent notificationIntent = new Intent(this, AutoAdd_BLE_MainActivity.class);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setSmallIcon(R.mipmap.tick512_2)
+                .setSmallIcon(R.mipmap.tick512)
                 //.setLargeIcon(BitmapFactory.decodeResource(R.drawable.xyz))
                 .setColor(getResources().getColor(R.color.color_fff))
                 .setVibrate(new long[]{0, 200, 200, 200})
                 //.setSound()
 //                .setLights(Color.WHITE, 1000, 5000)
                 //.setWhen(System.currentTimeMillis())
+
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -74,4 +77,9 @@ public class Successful_NotificationDisplayService extends Service {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification.build());
     }
+
+
+
+
+
 }

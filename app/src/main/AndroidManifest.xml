@@ -85,6 +85,14 @@
             android:name=".notifications.Successful_NotificationDisplayService"
             android:enabled="true"
             android:exported="true"/>
+
+        
+        
+        
+
+        
+        
+        
     </application>
 
 </manifest>
