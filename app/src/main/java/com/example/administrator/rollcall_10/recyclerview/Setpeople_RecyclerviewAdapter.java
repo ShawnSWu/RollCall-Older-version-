@@ -155,6 +155,8 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
         ///***手動加入監聽事件
         public void ManualAdd(View v){
+
+
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.dialog_listview_addpeople_seleted, null);

@@ -153,6 +153,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     bundle.putString("List_Name",selected.getName());
                             it.putExtras(bundle);
 
+
                     v.getContext(). startActivity(it);
 
                 }

@@ -80,6 +80,11 @@
 
         <activity android:name=".ble_device_setting.Set_BLE_Device"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name=".notifications.Successful_NotificationDisplayService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

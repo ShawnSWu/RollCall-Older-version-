@@ -2,16 +2,20 @@ package com.example.administrator.rollcall_10.auto_add;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.demo.Utils;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
+import com.example.administrator.rollcall_10.notifications.Successful_NotificationDisplayService;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.File;
@@ -66,6 +71,20 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
   public  ArrayList<String> savepeople =new ArrayList<>();
 
 
+    //**Actionbar跟標題
+    public void Acttionbar_TitleData(){
+
+        //****Scan返回鍵監聽事件
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name);
+    }
 
     @Nullable
     @Override
@@ -113,13 +132,24 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             finish();
 
         }else {
-            Toast.makeText(view.getContext(), "加入成功！！", Toast.LENGTH_SHORT).show();
+
+            Intent startNotificationServiceIntent = new Intent(AutoAdd_BLE_MainActivity.this, Successful_NotificationDisplayService.class);
+
+
+            Bundle bundle1=new Bundle();
+            bundle1.putInt("List_size",savepeople.size());
+            bundle1.putString("List_name",bundle.getString("Selected_File_Name"));
+
+            startNotificationServiceIntent.putExtras(bundle1);
+
+            startService(startNotificationServiceIntent);
+
+
+
             finish();
         }
     }
 });
-
-
 
 
 
@@ -247,20 +277,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
-    //**Actionbar跟標題
-    public void Acttionbar_TitleData(){
-
-        //****Scan返回鍵監聽事件
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //**掃描的清單名稱
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
-
-        //清單名稱當標題
-        ActionBar actionBar =getSupportActionBar();
-        actionBar.setTitle(Seletor_File_Name);
-    }
 
 
 
@@ -299,7 +315,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
     public void onDestroy() {
         super.onDestroy();
         stopScan();
-        
+        Log.e("1","123");
     }
 
 
@@ -307,6 +323,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
     public void onBackPressed() {
         super.onBackPressed();
         stopScan();
+
     }
 
     @Override
@@ -532,6 +549,7 @@ public void countdown(final int timer)
                 else {
                     stopScan();
                       countdown(0);
+
                     scan.setIcon(R.drawable.startscanbtn);
                 }
                 return true;
