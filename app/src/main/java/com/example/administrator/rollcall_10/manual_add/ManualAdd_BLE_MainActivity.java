@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     MenuItem scan,countdown;
 
 
-
+    private CountDownTimer mCountDown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -330,7 +331,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public void startScan(){
 
 
-
         Bundle bundle = getIntent().getExtras();
         String Seletor_File=  bundle.getString("Selected_File_Path");
         File peoplefile = new File(Seletor_File);
@@ -357,34 +357,40 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public void stopScan() {
 
         manualAdd_ble_scanner_btle.stop();
+        mCountDown.cancel();
 
 
     }
 
-    public void countdown(final int timer)
+    public void countdown()
 
     {
-        new CountDownTimer(timer, 1000) {
+        mCountDown = new CountDownTimer(10000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long millis = millisUntilFinished;
 
-                if (timer == 0) {
-                    onFinish();
 
 
+                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+                countdown.setTitle(countdown_time);
+                scan.setIcon(R.drawable.stopscanbtn);
+
+                if(countdown_time =="1"){
+                    mCountDown.onFinish();
                 }
 
-
-                String hms = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-
-                countdown.setTitle(hms);
 
 
             }
 
             public void onFinish() {
+
                 countdown.setTitle("done");
+                scan.setIcon(R.drawable.startscanbtn);
+                Log.e("1","倒數結束");
+
             }
         }.start();
 
@@ -403,7 +409,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 //        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
         //**一開始就掃描progress
         countdown= mymenu.findItem(R.id.conutdown);
-        countdown(10000);
+        countdown();
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
 
 
@@ -419,22 +425,16 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             case R.id.action_scan:
                 if (!manualAdd_ble_scanner_btle.isScanning()) {
                     startScan();
-
-                    //**記時開始
-                    countdown(10000);
-
-
-                    scan.setIcon(R.drawable.stopscanbtn);
-
-
+                    countdown();
 
                 }
                 else {
                     stopScan();
                 //**記時結束
-                    countdown(0);
+                     mCountDown.cancel();
+                    mCountDown.onFinish();
 
-                    scan.setIcon(R.drawable.startscanbtn);
+
                 }
                 return true;
 

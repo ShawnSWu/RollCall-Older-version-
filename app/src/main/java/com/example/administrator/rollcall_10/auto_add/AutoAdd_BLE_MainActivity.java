@@ -66,7 +66,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
     MenuItem scan,countdown;
 
 
-
+    private CountDownTimer mCountDown;
 
   public  ArrayList<String> savepeople =new ArrayList<>();
 
@@ -491,38 +491,43 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
         countdown= mymenu.findItem(R.id.conutdown);
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
-        countdown(10000);
+        countdown();
 
         return true;
 
     }
 
 
-public void countdown(final int timer)
+    public void countdown()
 
     {
-        new CountDownTimer(timer, 1000) {
+        mCountDown = new CountDownTimer(10000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long millis = millisUntilFinished;
 
-                if (timer == 0) {
-                    onFinish();
 
+
+                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+                countdown.setTitle(countdown_time);
+                scan.setIcon(R.drawable.stopscanbtn);
+
+
+                if(countdown_time =="1"){
+                    mCountDown.onFinish();
 
                 }
-
-
-                String hms = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-
-                countdown.setTitle(hms);
 
 
             }
 
             public void onFinish() {
-                countdown.setTitle("done");
 
+                countdown.setTitle("done");
+                scan.setIcon(R.drawable.startscanbtn);
+                Log.e("1","倒數結束");
+                
             }
         }.start();
 
@@ -539,18 +544,13 @@ public void countdown(final int timer)
             case R.id.action_scan:
                 if (!autoAdd_BLE_Scanner_BTLE.isScanning()) {
                     startScan();
-                    countdown(10000);
-
-                    scan.setIcon(R.drawable.stopscanbtn);
-
-
-
+                    countdown();
                 }
                 else {
                     stopScan();
-                      countdown(0);
-
-                    scan.setIcon(R.drawable.startscanbtn);
+                    //**記時結束
+                    mCountDown.cancel();
+                    mCountDown.onFinish();
                 }
                 return true;
 
