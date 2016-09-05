@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -213,21 +215,19 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-
-
         Context context = view.getContext();
 
-        //        Utils.toast(context, "List Item clicked");
 
-        // do something with the text views and start the next activity.
 
-//        stopScan();
+
+
         //********************* 裝置名稱
-        String name = mBTDevicesArrayList.get(position).getName();
+        String device_name = mBTDevicesArrayList.get(position).getName();
 
         String address = mBTDevicesArrayList.get(position).getAddress();
+
+
+
 
 
         LayoutInflater inflater = (LayoutInflater)this
@@ -238,6 +238,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         txt_device_address.setText(address);
 
 
+        ///**關閉dialog
         Button btn_close =(Button)layout.findViewById(R.id.btn_close);
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,24 +250,32 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
+        final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
+        edit_device.setHint(device_name);
+
+
+        //**編輯的dialog的確認鍵
         Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                String edit_device_name =edit_device.getText().toString();
+
+
+                Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
+
+
+
+
             }
         });
-
-
-
-
         rollCall_dialog.setView(layout);
         rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
         rollCall_dialog.setCancelable(false);
         rollCall_dialog.setCancelable(true);
         rollCall_dialog.show();
-
 
 
     }
@@ -276,13 +285,10 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-
-
-
-
     public void addDevice(BluetoothDevice device, int rssi) {
 
         String address = device.getAddress();
+        String device_name =device.getName();
         if (!mBTDevicesHashMap.containsKey(address)) {
 
 
@@ -316,6 +322,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             txt_device_address.setText(address);
 
 
+            ///**關閉dialog
             Button btn_close =(Button)layout.findViewById(R.id.btn_close);
             btn_close.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -327,18 +334,27 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
+            final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
+            edit_device.setHint(device_name);
+
+
+            //**編輯的dialog的確認鍵
             Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
+                    String edit_device_name =edit_device.getText().toString();
+
+
+                    Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
+
+
+
+
                 }
             });
-
-
-
-
             rollCall_dialog.setView(layout);
             rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
             rollCall_dialog.setCancelable(false);
@@ -442,10 +458,26 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public void stopScan() {
 
         manualAdd_ble_scanner_btle.stop();
-        mCountDown.cancel();
 
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.scan_set, menu);
+        mymenu = menu;
+
+        countdown= mymenu.findItem(R.id.conutdown);
+        scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
+        countdown();
+
+        return true;
+
+    }
+
 
     public void countdown()
 
@@ -462,7 +494,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
                 countdown.setTitle(countdown_time);
                 scan.setIcon(R.drawable.stopscanbtn);
 
-                if(countdown_time =="1"){
+                if(countdown_time== "1"){
                     mCountDown.onFinish();
                 }
 
@@ -486,21 +518,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.scan_set, menu);
-        mymenu = menu;
-//        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
-        //**一開始就掃描progress
-        countdown= mymenu.findItem(R.id.conutdown);
-        countdown();
-        scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
-
-
-        return true;
-
-    }
 
 
     //**Toolbar元鍵控制

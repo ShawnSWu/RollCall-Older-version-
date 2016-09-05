@@ -526,7 +526,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
                 countdown.setTitle("done");
                 scan.setIcon(R.drawable.startscanbtn);
-                Log.e("1","倒數結束");
+                Log.e("shawn","倒數結束");
 
             }
         }.start();
@@ -551,6 +551,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
                     //**記時結束
                     mCountDown.cancel();
                     mCountDown.onFinish();
+
+
                 }
                 return true;
 

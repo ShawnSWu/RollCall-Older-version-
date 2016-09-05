@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.rollcall_10.manual_add.ManualAdd_BLE_MainActivity;
 import com.example.administrator.rollcall_10.R;
@@ -155,7 +156,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
 
         ///***手動加入監聽事件
-        public void ManualAdd(View v){
+        public void ManualAdd(final View v){
 
 
             LayoutInflater inflater = (LayoutInflater) v.getContext()
@@ -192,33 +193,80 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
 
 
-                    //**成功將每個資料夾寫入
+                    //**成功
                     selected = new File(String.valueOf(files.get(position)));
 
-                    Log.e("1",":"+selected.getPath());
-                    Intent it = new Intent(Intent.ACTION_VIEW);
-                    it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
+                    if(selected.length() !=0){
 
-                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Selected_File_Path",selected.getPath());
-                    bundle.putString("Selected_File_Name",selected.getName());
-                    it.putExtras(bundle);
-
-                    v.getContext(). startActivity(it);
-                    rollCall_dialog.dismiss();
+                        Log.e("shawn","不是空的喔");
 
 
+                        RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
+                        rollCall_dialog.setMessage("此清單還有資料喔確定要覆寫嗎?");
+                        rollCall_dialog.setCancelable(false);
+                        rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
+                        rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
+                        rollCall_dialog.show();
+
+
+
+                    }else {
+
+
+                        Log.e("1", ":" + selected.getPath());
+                        Intent it = new Intent(Intent.ACTION_VIEW);
+                        it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
+
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Selected_File_Path", selected.getPath());
+                        bundle.putString("Selected_File_Name", selected.getName());
+                        it.putExtras(bundle);
+
+                        v.getContext().startActivity(it);
+                        rollCall_dialog.dismiss();
+
+                    }
+                    
 
                 }
+                public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent it = new Intent(Intent.ACTION_VIEW);
+                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Selected_File_Path", selected.getPath());
+                        bundle.putString("Selected_File_Name", selected.getName());
+                        it.putExtras(bundle);
+
+                        v.getContext().startActivity(it);
+                        rollCall_dialog.dismiss();
+                    }
+
+                };
+
+                public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                };
+
             });
 
 
         }
 
         ///***自動加入監聽事件
-        public void AutoAdd(View v){
+        public void AutoAdd(final View v){
 
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -251,33 +299,81 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
 
-
                     //**成功將每個資料夾寫入
                     selected = new File(String.valueOf(files.get(position)));
 
-                    Log.e("1",selected.getPath());
-                    Intent it = new Intent(Intent.ACTION_VIEW);
-                    it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+                    if(selected.length() !=0){
 
-                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Log.e("shawn","不是空的喔");
 
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Selected_File_Path",selected.getPath());
-                    bundle.putString("Selected_File_Name",selected.getName());
-                    it.putExtras(bundle);
+            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
+            rollCall_dialog.setMessage("此清單還有資料喔確定要覆寫嗎?");
+            rollCall_dialog.setCancelable(false);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
+            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
+            rollCall_dialog.show();
 
-                    v.getContext(). startActivity(it);
-                    rollCall_dialog.dismiss();
+
+
+                    }
+                    else {
+
+
+                        Log.e("1", selected.getPath());
+                        Intent it = new Intent(Intent.ACTION_VIEW);
+                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Selected_File_Path", selected.getPath());
+                        bundle.putString("Selected_File_Name", selected.getName());
+                        it.putExtras(bundle);
+
+                        v.getContext().startActivity(it);
+                        rollCall_dialog.dismiss();
+
+                    }
 
 
 
                 }
+                public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent it = new Intent(Intent.ACTION_VIEW);
+                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Selected_File_Path", selected.getPath());
+                        bundle.putString("Selected_File_Name", selected.getName());
+                        it.putExtras(bundle);
+
+                        v.getContext().startActivity(it);
+                        rollCall_dialog.dismiss();
+                    }
+
+                };
+
+                public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                };
             });
 
 
 
         }
+
 
 
     }
@@ -392,14 +488,6 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
     }
 
 
-
-
-
-//    DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {         }
-//
-//    };
 }
 
 

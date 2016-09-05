@@ -13,7 +13,7 @@ import com.example.administrator.rollcall_10.demo.Utils;
  */
 public class  ManualAdd_BLE_Scanner_BTLE {
 
-    private ManualAdd_BLE_MainActivity ma;
+    private ManualAdd_BLE_MainActivity manualAdd_ble_mainActivity;
 
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
@@ -23,7 +23,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
     private int signalStrength;
 
     public ManualAdd_BLE_Scanner_BTLE(ManualAdd_BLE_MainActivity manualAdd_ble_mainActivity, long scanPeriod, int signalStrength) {
-        ma = manualAdd_ble_mainActivity;
+        this.manualAdd_ble_mainActivity = manualAdd_ble_mainActivity;
 
         mHandler = new Handler();
 
@@ -31,7 +31,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
         this.signalStrength = signalStrength;
 
         final BluetoothManager bluetoothManager =
-                (BluetoothManager) ma.getSystemService(Context.BLUETOOTH_SERVICE);
+                (BluetoothManager) manualAdd_ble_mainActivity.getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
@@ -40,9 +40,11 @@ public class  ManualAdd_BLE_Scanner_BTLE {
     }
 
     public void start() {
+
         if (!Utils.checkBluetooth(mBluetoothAdapter)) {
-            Utils.requestUserBluetooth(ma);
-            ma.stopScan();
+            Utils.requestUserBluetooth(manualAdd_ble_mainActivity);
+            manualAdd_ble_mainActivity.stopScan();
+
         }
         else {
             scanLeDevice(true);
@@ -58,19 +60,19 @@ public class  ManualAdd_BLE_Scanner_BTLE {
     // providing an array of UUID objects that specify the GATT services your app supports.
     private void scanLeDevice(final boolean enable) {
         if (enable && !mScanning) {
-            Utils.toast(ma.getApplicationContext(), "請開始加入人數");
+            Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "請開始加入人數");
 
             // Stops scanning after a pre-defined scan period.
             //**還不知道功能 暫留
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    Utils.toast(ma.getApplicationContext(), "Stopping BLE scan...");
+//                    Utils.toast(autoAdd_ble_mainActivity.getApplicationContext(), "Stopping BLE scan...");
 
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
-                    ma.stopScan();
+                    manualAdd_ble_mainActivity.stopScan();
                 }
             }, scanPeriod);
 
@@ -79,7 +81,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
 //            mBluetoothAdapter.startLeScan(uuids, mLeScanCallback);
         }
         else {
-            Utils.toast(ma.getApplicationContext(), "停止加入人數");
+            Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "停止加入人數");
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
@@ -97,7 +99,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                ma.addDevice(device, new_rssi);
+                                manualAdd_ble_mainActivity.addDevice(device, new_rssi);
                             }
                         });
                     }
