@@ -49,7 +49,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView txtItem;
+        public TextView txtItem,txtItem_name;
         public ImageView image;
 
 
@@ -57,6 +57,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
         {
             super(v);
             txtItem = (TextView) v.findViewById(R.id.txtItem);
+//            txtItem_name=(TextView)v.findViewById(R.id.txtItem_name);
             image =(ImageView)v.findViewById(R.id.item_image);
 
         }

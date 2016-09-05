@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -218,13 +219,22 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.dialog_listview_rollcall_seleted, null);
-
             final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
-//            rollCall_dialog.setTitle(R.string.RollCall_List_Dialog_Title_WantToScan);
+            Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+
+            btn_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rollCall_dialog.dismiss();
+
+                }
+            });
+
+
+
             rollCall_dialog.setView(layout);
             rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
             rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_close), close);
             rollCall_dialog.setCancelable(true);
             rollCall_dialog.show();
 

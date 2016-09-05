@@ -12,12 +12,16 @@ import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.administrator.rollcall_10.R;
@@ -32,6 +36,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
 
@@ -58,6 +63,19 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
     private CountDownTimer mCountDown;
+
+    private void dialog_used(){
+
+
+
+
+    }
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +85,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         //**Actionbar跟標題資料
         Acttionbar_TitleData();
 
-
+        dialog_used();
 
         //用以檢查,是否用在設備上
         // you can selectively disable BLE-related features.
@@ -212,16 +230,43 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         String address = mBTDevicesArrayList.get(position).getAddress();
 
 
-        //***Dialog
-        RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
-        rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
-        rollCall_dialog.setMessage(ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Message_AddYesOrNo));
-        rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
+        LayoutInflater inflater = (LayoutInflater)this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
+        final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+        TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
+        txt_device_address.setText(address);
+
+
+        Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rollCall_dialog.dismiss();
+            }
+        });
+
+
+
+
+        Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+
+
+
+        rollCall_dialog.setView(layout);
+        rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
         rollCall_dialog.setCancelable(false);
-        rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
-        rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
+        rollCall_dialog.setCancelable(true);
         rollCall_dialog.show();
-        //***Dialog
+
 
 
     }
@@ -249,16 +294,56 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
+            //***Dialog１１１
+//            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+//            rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
+//            rollCall_dialog.setMessage(ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Message_AddYesOrNo));
+//            rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
+//            rollCall_dialog.setCancelable(false);
+//            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
+//            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
+//            rollCall_dialog.show();
             //***Dialog
-            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
-            rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
-            rollCall_dialog.setMessage(ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Message_AddYesOrNo));
-            rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
+
+
+
+
+            LayoutInflater inflater = (LayoutInflater)this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
+            final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+            TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
+            txt_device_address.setText(address);
+
+
+            Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+            btn_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rollCall_dialog.dismiss();
+                }
+            });
+
+
+
+
+            Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
+            btn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+
+
+
+
+            rollCall_dialog.setView(layout);
+            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
             rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
+            rollCall_dialog.setCancelable(true);
             rollCall_dialog.show();
-            //***Dialog
 
 
         }
@@ -296,17 +381,17 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-
-
-
-
-        }
-
-    };
+//    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//
+//
+//
+//
+//
+//        }
+//
+//    };
 
 
 
