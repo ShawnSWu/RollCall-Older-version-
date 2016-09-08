@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class RollCall_BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
 //    private final static String TAG = MainActivity.class.getSimpleName();
@@ -51,8 +53,8 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
     Menu mymenu;
-    MenuItem progress_menu_item,scan;
-
+    MenuItem scan,countdown;
+    private CountDownTimer mCountDown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new RollCall_Scanner_BTLE(this,30000, -75);
+        mBTLeScanner = new RollCall_Scanner_BTLE(this,10000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -84,13 +86,8 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         adapter = new RollCall_ListAdapter_BTLE_Devices(this, R.layout.btle_device_list_item, mBTDevicesArrayList);
 
 
-        listView = new ListView(this);
+        listView=(ListView)findViewById(R.id.listView_rollcall);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-
-        ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
-
-
 
 
         //*****原本scan按鍵  End***\\\
@@ -268,7 +265,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         String[] list = new String[15];
 
 
-
         //**從首頁 點名Bundle過來的資料
         Bundle bundle = getIntent().getExtras();
         String Seletor_File = bundle.getString("Selected_File_Path");
@@ -379,7 +375,39 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         mBTLeScanner.stop();
     }
 
+    public void countdown()
 
+    {
+        mCountDown = new CountDownTimer(10000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long millis = millisUntilFinished;
+
+
+
+                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+                countdown.setTitle(countdown_time);
+                scan.setIcon(R.drawable.stopscanbtn);
+
+                if(countdown_time== "1"){
+                    mCountDown.onFinish();
+                }
+
+
+
+            }
+
+            public void onFinish() {
+
+                countdown.setTitle("done");
+                scan.setIcon(R.drawable.startscanbtn);
+                Log.e("1","倒數結束");
+
+            }
+        }.start();
+
+    }
 
 
     @Override
@@ -387,10 +415,10 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
         getMenuInflater().inflate(R.menu.scan_set, menu);
         mymenu = menu;
-//        progress_menu_item = mymenu.findItem(R.id.action_progress_show);
 
-
+        countdown= mymenu.findItem(R.id.conutdown);
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
+        countdown();
         return true;
 
     }
@@ -404,14 +432,14 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
             case R.id.action_scan:
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
+                    countdown();
 
-                    scan.setIcon(R.drawable.stopscanbtn);
                 }
                 else {
                     stopScan();
-
-
-                    scan.setIcon(R.drawable.startscanbtn);
+                    //**記時結束
+                    mCountDown.cancel();
+                    mCountDown.onFinish();
                 }
                 return true;
 

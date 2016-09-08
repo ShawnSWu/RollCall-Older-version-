@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 
 import com.example.administrator.rollcall_10.R;
+import com.example.administrator.rollcall_10.auto_add.AutoAdd_ListAdapter_BTLE_Devices;
+import com.example.administrator.rollcall_10.demo.BTLE_Device;
 import com.example.administrator.rollcall_10.demo.Utils;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
@@ -66,12 +68,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
     private CountDownTimer mCountDown;
 
-    private void dialog_used(){
-
-
-
-
-    }
 
 
 
@@ -82,12 +78,18 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setProgressBarIndeterminateVisibility(true);
-        setContentView(R.layout.ble_activity_main);
+        setContentView(R.layout.manualadd_ble_activity_main);
+
+
+
+
+
+
 
         //**Actionbar跟標題資料
         Acttionbar_TitleData();
 
-        dialog_used();
+
 
         //用以檢查,是否用在設備上
         // you can selectively disable BLE-related features.
@@ -105,14 +107,11 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
 
-        adapter = new ManualAdd_ListAdapter_BTLE_Devices(this, R.layout.btle_device_list_item, mBTDevicesArrayList);
+        adapter = new ManualAdd_ListAdapter_BTLE_Devices(this, R.layout.manualadd_btle_device_list_item, mBTDevicesArrayList);
 
 
-        listView = new ListView(this);
+        listView=(ListView)findViewById(R.id.listView_manualadd);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-
-        ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
 
 
 
@@ -219,63 +218,61 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-
-
-        //********************* 裝置名稱
-        String device_name = mBTDevicesArrayList.get(position).getName();
-
-        String address = mBTDevicesArrayList.get(position).getAddress();
-
-
-
-
-
-        LayoutInflater inflater = (LayoutInflater)this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
-        final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
-        TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
-        txt_device_address.setText(address);
-
-
-        ///**關閉dialog
-        Button btn_close =(Button)layout.findViewById(R.id.btn_close);
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rollCall_dialog.dismiss();
-            }
-        });
-
-
-
-
-        final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
-        edit_device.setHint(device_name);
-
-
-        //**編輯的dialog的確認鍵
-        Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                String edit_device_name =edit_device.getText().toString();
-
-
-                Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
-
-
-
-
-            }
-        });
-        rollCall_dialog.setView(layout);
-        rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
-        rollCall_dialog.setCancelable(false);
-        rollCall_dialog.setCancelable(true);
-        rollCall_dialog.show();
+//
+//
+//        //********************* 裝置名稱
+//        String device_name = mBTDevicesArrayList.get(position).getName();
+//
+//        String address = mBTDevicesArrayList.get(position).getAddress();
+//
+//
+//
+//
+//
+//        LayoutInflater inflater = (LayoutInflater)this
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
+//        final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(this);
+//        TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
+//        txt_device_address.setText(address);
+//
+//
+//        ///**關閉dialog
+//        Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+//        btn_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                rollCall_dialog.dismiss();
+//            }
+//        });
+//
+//
+//
+//
+//        final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
+//        edit_device.setHint(device_name);
+//
+//
+//        //**編輯的dialog的確認鍵
+//        Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
+//        btn_ok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String edit_device_name =edit_device.getText().toString();
+//                Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
+//
+//
+//
+//
+//
+//
+//            }
+//        });
+//        rollCall_dialog.setView(layout);
+//        rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+//        rollCall_dialog.setCancelable(false);
+//        rollCall_dialog.setCancelable(true);
+//        rollCall_dialog.show();
 
 
     }
@@ -285,10 +282,12 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-    public void addDevice(BluetoothDevice device, int rssi) {
+    public void addDevice(final BluetoothDevice device, final int rssi) {
+        //**name
 
-        String address = device.getAddress();
-        String device_name =device.getName();
+
+        final String address = device.getAddress();
+      final String device_name =device.getName();
         if (!mBTDevicesHashMap.containsKey(address)) {
 
 
@@ -296,6 +295,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             btleDevice.setRSSI(rssi);
 
             mBTDevicesHashMap.put(address, btleDevice);
+
             mBTDevicesArrayList.add(btleDevice);
 
 
@@ -343,15 +343,21 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     String edit_device_name =edit_device.getText().toString();
-
-
                     Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
 
 
 
+                    //**/*/*/*/*/*/*(today)
+                    TextView tv=(TextView)findViewById(R.id.tv_name);
+                    tv.setText(edit_device_name);
+
+                    ManualAdd_BTLE_Device btleDevice = new ManualAdd_BTLE_Device(device);
+                    btleDevice.setName(edit_device_name);
+
+
+
+                    rollCall_dialog.dismiss();
 
                 }
             });

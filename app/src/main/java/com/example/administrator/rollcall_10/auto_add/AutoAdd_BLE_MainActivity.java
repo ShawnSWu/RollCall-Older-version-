@@ -91,7 +91,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.test_ble_activity_main);
+        setContentView(R.layout.autoadd_ble_activity_main);
 
         //**Actionbar跟標題資料
         Acttionbar_TitleData();
@@ -180,9 +180,9 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
-        adapter = new AutoAdd_ListAdapter_BTLE_Devices(this, R.layout.test_btle_device_list_item, mBTDevicesArrayList);
+        adapter = new AutoAdd_ListAdapter_BTLE_Devices(this, R.layout.autoadd_btle_device_list_item, mBTDevicesArrayList);
 
-        listView=(ListView)findViewById(R.id.listView);
+        listView=(ListView)findViewById(R.id.listView_autoadd);
         listView.setAdapter(adapter);
 
 
@@ -227,7 +227,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
                 return true;
             }
         });
-
 
 
 

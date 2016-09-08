@@ -50,11 +50,11 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
 
 
-        final String[] name = bundle.getStringArray("devicename");
+        final String[] address = bundle.getStringArray("device_address");
 
 
 
-        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(name);
+        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(address);
         recyclerView.setAdapter(recyclerviewAdapter_watchList);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -148,7 +149,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     String x = "";
 
                     Bundle bundle = new Bundle();
-                    bundle.putStringArray("devicename",   device_io.readData(selected, x));
+                    bundle.putStringArray("device_address",   device_io.readData(selected, x));
 
                     bundle.putString("List_Name",selected.getName());
                             it.putExtras(bundle);
@@ -323,51 +324,148 @@ public class mainview_fragmentlayout_EditList extends Fragment {
     public void Create_File_Dialog(){
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        final View v = inflater.inflate(R.layout.create_file_dialog_layout, null);
-
-
-        new AlertDialog.Builder(getActivity())
-//                .setTitle(R.string.RollCall__NewFile_Dialog__Title_NewFile)
-                .setView(v)
-                .setPositiveButton(R.string.RollCall__NewFile_Dialog__Button_okay, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        EditText FileName_edit = (EditText) (v.findViewById(R.id.create_file_name_edit));
+        final View layout = inflater.inflate(R.layout.dialog_create_file_layout, null);
 
 
 
-                        String Filename_string =FileName_edit.getText().toString();
+        final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(layout.getContext());
+        rollCall_dialog.setView(layout);
+        rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+        rollCall_dialog.setCancelable(false);
+        rollCall_dialog.setCancelable(true);
 
-                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
+        ///**關閉dialog
+        Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rollCall_dialog.dismiss();
+            }
+        });
 
-                            Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Messages), Toast.LENGTH_SHORT).show();
+        //**編輯的dialog的確認鍵
+        Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
-                        }
-                        else {
-                            //**自行創建文字檔 strat--->
-                            File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
+                EditText FileName_edit = (EditText) (layout.findViewById(R.id.create_file_name_edit));
 
-                            try {
-                                FileWriter fw = new FileWriter(peoplefile, false);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Log.e("1", "shawn");
-                            }
-                            //**自行創建文字檔 End--->
 
-                        }
 
-                        //***重新載入一次 suck code
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
-                                .commitAllowingStateLoss();
-                        //***重新載入一次 suck code
+                String Filename_string =FileName_edit.getText().toString();
+
+                if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
+
+                    Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages), Toast.LENGTH_SHORT).show();
+
+
+                }
+                else if(FileName_edit.length() ==0){
+
+                    Toast.makeText(getActivity(),"尚未輸入檔案名稱", Toast.LENGTH_SHORT).show();
+                }
+
+
+                else {
+                    //**自行創建文字檔 strat--->
+                    File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
+
+                    try {
+                        FileWriter fw = new FileWriter(peoplefile, false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e("1", "shawn");
                     }
-                })
-                .show();
+                    //**自行創建文字檔 End--->
+
+                }
+
+                //***重新載入一次 suck code
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
+                        .commitAllowingStateLoss();
+                //***重新載入一次 suck code
+
+                rollCall_dialog.dismiss();
+
+
+            }
+
+
+
+        });
+
+        rollCall_dialog.show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        new AlertDialog.Builder(getActivity())
+////                .setTitle(R.string.RollCall__NewFile_Dialog__Title_NewFile)
+//                .setView(v)
+//                .setPositiveButton(R.string.RollCall__NewFile_Dialog__Button_okay, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        EditText FileName_edit = (EditText) (v.findViewById(R.id.create_file_name_edit));
+//
+//
+//
+//                        String Filename_string =FileName_edit.getText().toString();
+//
+//                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
+//
+//                            Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages), Toast.LENGTH_SHORT).show();
+//
+//
+//                        }
+//                        else {
+//                            //**自行創建文字檔 strat--->
+//                            File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
+//
+//                            try {
+//                                FileWriter fw = new FileWriter(peoplefile, false);
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                                Log.e("1", "shawn");
+//                            }
+//                            //**自行創建文字檔 End--->
+//
+//                        }
+//
+//                        //***重新載入一次 suck code
+//                        FragmentManager fragmentManager = getFragmentManager();
+//                        fragmentManager.beginTransaction()
+//                                .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
+//                                .commitAllowingStateLoss();
+//                        //***重新載入一次 suck code
+//                    }
+//                })
+//                .show();
 
 
 

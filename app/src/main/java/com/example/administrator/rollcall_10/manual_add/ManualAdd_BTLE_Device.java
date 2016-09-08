@@ -9,6 +9,7 @@ public class ManualAdd_BTLE_Device {
 
     private BluetoothDevice bluetoothDevice;
     private int rssi;
+    String devicename;
 
     public ManualAdd_BTLE_Device(BluetoothDevice bluetoothDevice) {
         this.bluetoothDevice = bluetoothDevice;
@@ -22,11 +23,18 @@ public class ManualAdd_BTLE_Device {
         return bluetoothDevice.getName();
     }
 
+
+
     public void setRSSI(int rssi) {
         this.rssi = rssi;
     }
 
     public int getRSSI() {
         return rssi;
+    }
+
+
+    public void setName(String edit_device_name) {
+          devicename=edit_device_name;
     }
 }

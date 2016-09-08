@@ -18,16 +18,16 @@ import java.util.ArrayList;
  */
 public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_BTLE_Device> {
 
-    Activity activity;
+    Context context;
     int layoutResourceID;
     ArrayList<ManualAdd_BTLE_Device> devices;
 
-    public ManualAdd_ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<ManualAdd_BTLE_Device> objects) {
-        super(activity.getApplicationContext(), resource, objects);
+    public ManualAdd_ListAdapter_BTLE_Devices(Context context, int resource, ArrayList<ManualAdd_BTLE_Device> objects) {
+        super(context.getApplicationContext(), resource, objects);
 
-        this.activity = activity;
-        layoutResourceID = resource;
-        devices = objects;
+        this.context = context;
+        this.layoutResourceID = resource;
+        this.devices = objects;
     }
 
 
@@ -37,7 +37,7 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
 
         if (convertView == null) {
             LayoutInflater inflater =
-                    (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layoutResourceID, parent, false);
         }
 
@@ -56,8 +56,8 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
             tv.setText("No Name");
         }
 
-        tv = (TextView) convertView.findViewById(R.id.tv_rssi);
-        tv.setText("RSSI: " + Integer.toString(rssi));
+//        tv = (TextView) convertView.findViewById(R.id.tv_rssi);
+//        tv.setText("RSSI: " + Integer.toString(rssi));
 
         tv = (TextView) convertView.findViewById(R.id.tv_macaddr);
         if (address != null && address.length() > 0) {

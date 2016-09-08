@@ -50,6 +50,7 @@
 
     <string name="RollCall__NewFile_Dialog__Button_okay">確定</string>
     <string name="RollCall__NewFile_Dialog__Messages">◆名稱不能包含 ＼ 與 / ,或是開頭結尾有空白</string>
+    <string name="RollCall__NewFile_Dialog__Error_Messages">檔案名稱格式錯誤</string>
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
 
     <string name="RollCall__NewFile_Dialog__Title_WanttoAdd">想要加入人數的清單</string>
@@ -67,7 +68,7 @@
     <string name="RollCall_List_Delete_Button_yes">確定</string>
     <string name="RollCall_List_Delete_Button_close">關閉</string>
 
-
+    <string name="RollCall_Delete_Warning_Message">清單內還有資料！！確定要覆寫嗎?\n(進入後此清單資料會先被清空喔!!)</string>
 
 
 

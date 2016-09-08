@@ -28,7 +28,7 @@ public class Device_IO {
 
 
     //****************************************************************************************寫入寫法 Start***\\\
-    public void writeData(String sad,boolean append,String path){
+    public void writeData(String deta,boolean append,String path){
 
         File seletor_File= new File(path);
 
@@ -44,7 +44,7 @@ public class Device_IO {
                 //寫入文字檔
                 FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-                fileOutputStream.write(sad.getBytes());
+                fileOutputStream.write(deta.getBytes());
 
                 fileOutputStream.write("\n".getBytes());
 
@@ -118,6 +118,101 @@ public class Device_IO {
         }
     }
     //******************************************************************************************************讀出寫法 End******\\\
+
+
+
+
+
+    public String[] name_readData(File file, String x) {
+        {
+            FileInputStream fis = null;
+
+            try {
+                fis = new FileInputStream(file);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String test="";
+            int anzahl = 0;
+
+
+            try {
+                while (( br.readLine()) != null) {
+                    anzahl++;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                fis.getChannel().position(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String[] array = new String[anzahl];
+
+
+            String line;
+            int i = 0;
+            try {
+                while ((line = br.readLine()) != null) {
+                    array[i] = line;
+                    i++;
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return array;
+        }
+    }
+
+
+
+    public void name_writeData(ArrayList<String> sad,boolean append,String path){
+
+        File seletor_File= new File(path);
+
+
+
+        try {
+            //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
+            peoplefile.mkdirs();
+
+
+            for(int i=0; i<sad.size();i++) {
+                //寫入文字檔
+                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+
+                fileOutputStream.write(sad.get(i).getBytes());
+
+                fileOutputStream.write("\n".getBytes());
+
+
+                fileOutputStream.close();
+
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
 
 
 

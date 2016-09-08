@@ -28,7 +28,6 @@ public class AutoAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<Auto_BTLE_Dev
       this.layoutResourceID = resource;
        this.devices = objects;
 
-
     }
 
 

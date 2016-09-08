@@ -198,11 +198,11 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
                     if(selected.length() !=0){
 
-                        Log.e("shawn","不是空的喔");
+                        Log.e("shawn","此清單不是空的,跳覆寫警告");
 
-
+//                        getActivity().getResources().getString(R.string.RollCall_List_Delete_Message)
                         RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
-                        rollCall_dialog.setMessage("此清單還有資料喔確定要覆寫嗎?");
+                        rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
                         rollCall_dialog.setCancelable(false);
                         rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
                         rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
@@ -211,9 +211,9 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
 
                     }else {
+                        Log.e("shawn","選擇的資料路徑："+ selected.getPath());
 
 
-                        Log.e("1", ":" + selected.getPath());
                         Intent it = new Intent(Intent.ACTION_VIEW);
                         it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
 
@@ -228,13 +228,13 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                         rollCall_dialog.dismiss();
 
                     }
-                    
+
 
                 }
                 public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.e("shawn","確定覆寫! 進入加入人數畫面");
                         Intent it = new Intent(Intent.ACTION_VIEW);
                         it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
 
@@ -255,7 +255,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                 public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.e("shawn","關閉");
                     }
 
                 };
@@ -304,11 +304,11 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
                     if(selected.length() !=0){
 
-                        Log.e("shawn","不是空的喔");
+                        Log.e("shawn","此清單不是空的,跳覆寫警告");
 
 
             RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
-            rollCall_dialog.setMessage("此清單還有資料喔確定要覆寫嗎?");
+            rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
             rollCall_dialog.setCancelable(false);
             rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
             rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
@@ -318,9 +318,9 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
                     }
                     else {
+                        Log.e("shawn","選擇的資料路徑："+ selected.getPath());
 
 
-                        Log.e("1", selected.getPath());
                         Intent it = new Intent(Intent.ACTION_VIEW);
                         it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
 
@@ -344,6 +344,8 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        Log.e("shawn","確定覆寫! 進入加入人數畫面");
+
                         Intent it = new Intent(Intent.ACTION_VIEW);
                         it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
 
@@ -364,7 +366,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                 public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.e("shawn","關閉dialog");
                     }
 
                 };
