@@ -174,7 +174,7 @@ public class Device_IO {
 
 
 
-    public void name_writeData(ArrayList<String> sad,boolean append,String path){
+    public void name_writeData(ArrayList<String> address, ArrayList<String> name ,boolean append ,String path){
 
         File seletor_File= new File(path);
 
@@ -186,14 +186,15 @@ public class Device_IO {
             peoplefile.mkdirs();
 
 
-            for(int i=0; i<sad.size();i++) {
+            for(int i=0; i<address.size();i++) {
                 //寫入文字檔
                 FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-                fileOutputStream.write(sad.get(i).getBytes());
+                fileOutputStream.write(address.get(i).getBytes());
+
+                fileOutputStream.write(name.get(i).getBytes());
 
                 fileOutputStream.write("\n".getBytes());
-
 
                 fileOutputStream.close();
 

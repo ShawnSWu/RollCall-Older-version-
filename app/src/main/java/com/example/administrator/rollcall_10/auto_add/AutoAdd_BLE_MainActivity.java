@@ -68,7 +68,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
     private CountDownTimer mCountDown;
 
-  public  ArrayList<String> savepeople =new ArrayList<>();
+  public  ArrayList<String> savepeople_address =new ArrayList<>();
 
 
     //**Actionbar跟標題
@@ -120,12 +120,12 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-        device_io.AutowriteData(savepeople,true,Seletor_File);
+        device_io.AutowriteData(savepeople_address,true,Seletor_File);
 
         stopScan();
 
 
-        if(savepeople.size() ==0) {
+        if(savepeople_address.size() ==0) {
 
 
             Toast.makeText(view.getContext(), "未加入任何資料", Toast.LENGTH_SHORT).show();
@@ -137,7 +137,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
             Bundle bundle1=new Bundle();
-            bundle1.putInt("List_size",savepeople.size());
+            bundle1.putInt("List_size",savepeople_address.size());
             bundle1.putString("List_name",bundle.getString("Selected_File_Name"));
 
             startNotificationServiceIntent.putExtras(bundle1);
@@ -196,7 +196,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
                   adapter.remove(i);
-                  savepeople.remove(address);
+                savepeople_address.remove(address);
                   mBTDevicesHashMap.remove(address);
                   adapter.notifyDataSetChanged();
             }
@@ -382,7 +382,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             mBTDevicesHashMap.put(address, btleDevice);
             mBTDevicesArrayList.add(btleDevice);
 
-            savepeople.add(address);
+            savepeople_address.add(address);
 
 //            Bundle bundle = getIntent().getExtras();
 //            String Seletor_File=  bundle.getString("Selected_File_Path");

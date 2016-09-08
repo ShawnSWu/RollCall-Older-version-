@@ -357,6 +357,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
+
                     rollCall_dialog.dismiss();
 
                 }

@@ -376,7 +376,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                         FileWriter fw = new FileWriter(peoplefile, false);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Log.e("1", "shawn");
+
                     }
                     //**自行創建文字檔 End--->
 
