@@ -236,7 +236,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("shawn","確定覆寫! 進入加入人數畫面");
                         Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+                        it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
 
                         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

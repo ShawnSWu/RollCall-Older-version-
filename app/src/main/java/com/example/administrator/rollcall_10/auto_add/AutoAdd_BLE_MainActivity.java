@@ -122,8 +122,12 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-        //**2016/09/20 寫入同一行的寫法()
         device_io.Imperfect_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+
+//        device_io.AutowriteData(savepeople_address,true,Seletor_File);
+
+//        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+
 
 
         stopScan();
@@ -509,15 +513,15 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
     public void countdown()
 
     {
-        mCountDown = new CountDownTimer(10000, 1000) {
+        mCountDown = new CountDownTimer(120000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long millis = millisUntilFinished;
 
 
-
-                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-
+                String countdown_time = "剩下時間："+
+                        (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
+                        (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
                 countdown.setTitle(countdown_time);
                 scan.setIcon(R.drawable.stopscanbtn);
 

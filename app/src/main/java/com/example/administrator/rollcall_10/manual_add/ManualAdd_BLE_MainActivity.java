@@ -69,7 +69,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     private CountDownTimer mCountDown;
 
 
-
+    public  ArrayList<String> savepeople_address =new ArrayList<>();
+    public  ArrayList<String> savepeople_name =new ArrayList<>();
 
 
 
@@ -100,9 +101,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-        //**掃描時間 先給1分鐘
+        //**掃描時間 先給10分鐘
         mBTStateUpdateReceiver = new ManualAdd_BroadcastReceiver_BTState(getApplicationContext());
-        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,10000, -75);
+        manualAdd_ble_scanner_btle = new ManualAdd_BLE_Scanner_BTLE(this,600000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -285,7 +286,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public void addDevice(final BluetoothDevice device, final int rssi) {
         //**name
 
-
         final String address = device.getAddress();
       final String device_name =device.getName();
         if (!mBTDevicesHashMap.containsKey(address)) {
@@ -297,6 +297,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             mBTDevicesHashMap.put(address, btleDevice);
 
             mBTDevicesArrayList.add(btleDevice);
+
+            savepeople_address.add(address);
+
+
+
+
+
+
 
 
 
@@ -310,9 +318,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 //            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, ManualAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_Yes), yes);
 //            rollCall_dialog.show();
             //***Dialog
-
-
-
 
             LayoutInflater inflater = (LayoutInflater)this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -343,14 +348,21 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    Bundle bundle = getIntent().getExtras();
+                    String Seletor_File=  bundle.getString("Selected_File_Path");
+
                     String edit_device_name =edit_device.getText().toString();
                     Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
 
 
 
-                    //**/*/*/*/*/*/*(today)
+                    //**修改ＮＡＭＥ
                     TextView tv=(TextView)findViewById(R.id.tv_name);
                     tv.setText(edit_device_name);
+
+
+                    device_io.manual_writeData(edit_device_name,address,true,Seletor_File);
 
                     ManualAdd_BTLE_Device btleDevice = new ManualAdd_BTLE_Device(device);
                     btleDevice.setName(edit_device_name);
@@ -395,26 +407,13 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-              device_io.address_writeData(address,true,Seletor_File);
+//              device_io.address_writeData(address,true,Seletor_File);
         }
 
     };
 
 
 
-
-
-//    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//
-//
-//
-//
-//
-//        }
-//
-//    };
 
 
 
@@ -489,14 +488,17 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     public void countdown()
 
     {
-        mCountDown = new CountDownTimer(10000, 1000) {
+        mCountDown = new CountDownTimer(600000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long millis = millisUntilFinished;
 
 
-
-                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                String countdown_time =   //(TimeUnit.MILLISECONDS.toHours(millis))+  -------小時
+                        "剩下時間："+
+                        (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
+                        (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                countdown.setTitle(countdown_time);
 
                 countdown.setTitle(countdown_time);
                 scan.setIcon(R.drawable.stopscanbtn);

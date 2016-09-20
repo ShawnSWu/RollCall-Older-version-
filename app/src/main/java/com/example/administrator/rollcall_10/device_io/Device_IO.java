@@ -22,6 +22,7 @@ public class Device_IO {
 
 ///******************************************************************************************************************* shawn 2016/09/20
     /**
+     * 自動編號寫法
      * Created by Shawn Wu on 2016/09/20.
      * 架構有點爛 要在想一下
      */
@@ -142,30 +143,14 @@ public class Device_IO {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
+     * 手動編號寫法
      * Created by Shawn Wu on 2016/06/19.
      * 第一版測試版寫法
      */
 
     //****************************************************************************************寫入寫法 Start***\\\
-    public void address_writeData(String deta,boolean append,String path){
+    public void manual_writeData(String name,String address,boolean append,String path){
 
         File seletor_File= new File(path);
 
@@ -181,10 +166,13 @@ public class Device_IO {
             //寫入文字檔
             FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-            fileOutputStream.write(deta.getBytes());
+            fileOutputStream.write(name.getBytes());
+
+            fileOutputStream.write("  ,  ".getBytes());
+
+            fileOutputStream.write(address.getBytes());
 
             fileOutputStream.write("\n".getBytes());
-
 
             fileOutputStream.close();
 

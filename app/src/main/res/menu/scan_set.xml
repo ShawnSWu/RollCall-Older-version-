@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/conutdown"
-        android:title="10"
+        android:title="TIME"
         app:showAsAction="ifRoom" />
 
 
