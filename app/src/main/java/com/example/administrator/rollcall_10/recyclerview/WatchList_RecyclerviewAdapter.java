@@ -1,6 +1,7 @@
 package com.example.administrator.rollcall_10.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,18 @@ import com.example.administrator.rollcall_10.R;
 public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchList_RecyclerviewAdapter.ViewHolder> {
 
     String [] name;
+    String [] address;
 
 
-    public WatchList_RecyclerviewAdapter(String[] name) {
-        this.name=name;
+    public WatchList_RecyclerviewAdapter(String[] address) {
+        this.address=address;
     }
+
+    public WatchList_RecyclerviewAdapter(String[] name,String[] address) {
+        this.name=name;
+        this.address=address;
+    }
+
 
     @Override
     public WatchList_RecyclerviewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,14 +35,17 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_watchlist_item_layout, parent, false);
         ViewHolder viewholder = new ViewHolder(view);
 
+
         return viewholder;
     }
 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtItem.setText(name[position]);
+        holder.txtItem.setText(address[position]);
+//        holder.txtItem_name.setText(address[position]);
         holder.image.setImageResource(R.mipmap.info64);
+        Log.e("Shawn","---"+position);
     }
 
 
@@ -42,7 +53,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
 
     @Override
     public int getItemCount() {
-        return name.length;
+        return address.length;
     }
 
 

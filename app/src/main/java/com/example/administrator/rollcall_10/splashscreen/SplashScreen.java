@@ -36,14 +36,15 @@ public class SplashScreen extends Activity {
         //**內鍵創建文字檔 strat--->
         peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Built_TextFile);
 
-
-        try {
-            FileWriter fw = new FileWriter(peoplefile, false);
-            Log.e("1","內建文字檔建立成功");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("1","內建文字檔建立失敗");
-        }
+if(peoplefile.length() ==0) {
+    try {
+        FileWriter fw = new FileWriter(peoplefile, false);
+        Log.e("1", "內建文字檔建立成功");
+    } catch (IOException e) {
+        e.printStackTrace();
+        Log.e("1", "內建文字檔建立失敗");
+    }
+}
 
         //**內鍵創建文字檔 End--->
 

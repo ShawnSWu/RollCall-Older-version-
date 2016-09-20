@@ -149,7 +149,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     String x = "";
 
                     Bundle bundle = new Bundle();
-                    bundle.putStringArray("device_address",   device_io.readData(selected, x));
+                    bundle.putStringArray("device_Imperfect",   device_io.Imperfect_readData(selected, x));
 
                     bundle.putString("List_Name",selected.getName());
                             it.putExtras(bundle);
@@ -204,6 +204,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                 rollCall_dialog.show();
 
+                //**dilaog文字置中
                 TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
                 messageText.setGravity(Gravity.CENTER_HORIZONTAL);
             }
@@ -212,7 +213,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-            //**若是flase就會長短按都觸發
+
          return true;
                }
         });

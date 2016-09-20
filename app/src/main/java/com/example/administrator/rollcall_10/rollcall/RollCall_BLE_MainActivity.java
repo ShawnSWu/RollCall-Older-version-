@@ -276,7 +276,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
             String s = "";
 
-            int abc = 0;
+            int shawn1 = 0;
 
             FileReader fr = null;
 
@@ -296,8 +296,8 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
                     e.printStackTrace();
                 }
 
-                list[abc] = s;
-                abc++;
+                list[shawn1] = s;
+                shawn1++;
 
             } while (s != null);
 

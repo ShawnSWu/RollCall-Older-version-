@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 
 import com.example.administrator.rollcall_10.R;
@@ -48,13 +49,11 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
         String list[];
 
 
+        final String[] test_address = bundle.getStringArray("device_Imperfect");
 
+//      final String[] address = bundle.getStringArray("device_address");
 
-        final String[] address = bundle.getStringArray("device_address");
-
-
-
-        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(address);
+        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(test_address);
         recyclerView.setAdapter(recyclerviewAdapter_watchList);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 

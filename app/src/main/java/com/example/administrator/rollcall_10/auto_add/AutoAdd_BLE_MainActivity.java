@@ -68,7 +68,9 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
     private CountDownTimer mCountDown;
 
-  public  ArrayList<String> savepeople_address =new ArrayList<>();
+    public  ArrayList<String> savepeople_address =new ArrayList<>();
+    public  ArrayList<String> savepeople_name =new ArrayList<>();
+
 
 
     //**Actionbar跟標題
@@ -120,7 +122,9 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-        device_io.AutowriteData(savepeople_address,true,Seletor_File);
+        //**2016/09/20 寫入同一行的寫法()
+        device_io.Imperfect_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+
 
         stopScan();
 
@@ -342,7 +346,10 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             // Do something
         }
     }
-//
+
+
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Context context = view.getContext();
@@ -371,7 +378,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
     public void addDevice(BluetoothDevice device, int rssi) {
-
+        String name = device.getName();
         String address = device.getAddress();
         if (!mBTDevicesHashMap.containsKey(address)) {
 
@@ -383,6 +390,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             mBTDevicesArrayList.add(btleDevice);
 
             savepeople_address.add(address);
+
+            savepeople_name.add(name);
 
 //            Bundle bundle = getIntent().getExtras();
 //            String Seletor_File=  bundle.getString("Selected_File_Path");

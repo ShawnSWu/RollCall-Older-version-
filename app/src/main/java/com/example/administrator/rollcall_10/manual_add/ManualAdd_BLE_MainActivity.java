@@ -395,7 +395,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
 
-              device_io.writeData(address,true,Seletor_File);
+              device_io.address_writeData(address,true,Seletor_File);
         }
 
     };

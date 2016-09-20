@@ -1,5 +1,7 @@
 package com.example.administrator.rollcall_10.device_io;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,42 +16,177 @@ import java.util.ArrayList;
  */
 public class Device_IO {
 
-
-
-
-
-
-
     //要寫入的文字檔
 //    File file  =new File(I_File_Path.main_path + I_File_Path.Built_TextFile);//文字檔
 
 
+///******************************************************************************************************************* shawn 2016/09/20
+    /**
+     * Created by Shawn Wu on 2016/09/20.
+     * 架構有點爛 要在想一下
+     */
 
-
-
-    //****************************************************************************************寫入寫法 Start***\\\
-    public void writeData(String deta,boolean append,String path){
+    public void Imperfect_writeData(ArrayList<String> address, ArrayList<String> name ,boolean append ,String path){
 
         File seletor_File= new File(path);
 
 
 
         try {
-           //創建資料夾
+            //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
+            peoplefile.mkdirs();
+
+
+            for(int i=0; i<address.size();i++) {
+                //寫入文字檔
+                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+
+                fileOutputStream.write(name.get(i).getBytes());
+
+                fileOutputStream.write("  ,  ".getBytes());
+
+                fileOutputStream.write(address.get(i).getBytes());
+
+                fileOutputStream.write("\n".getBytes());
+
+                fileOutputStream.close();
+
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+///****
+
+    public String[] Imperfect_readData(File file, String x) {
+        {
+            FileInputStream fis = null;
+
+            try {
+                fis = new FileInputStream(file);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String test="";
+            int readline = 0;
+
+            int lines = 0;
+
+            try {
+                while (( br.readLine()) != null) {
+                    readline++;
+
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            try {
+                fis.getChannel().position(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            String[] array = new String[readline];
+
+
+            String line;
+            int i = 0;
+            //**判斷是否2個為一組
+            int countline=0;
+
+            try {
+                while ((line = br.readLine()) != null) {
+                    array[i] = line;
+                    i++;
+
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return array;
+        }
+    }
+
+
+
+///******************************************************************************************************************* shawn 2016/09/20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Created by Shawn Wu on 2016/06/19.
+     * 第一版測試版寫法
+     */
+
+    //****************************************************************************************寫入寫法 Start***\\\
+    public void address_writeData(String deta,boolean append,String path){
+
+        File seletor_File= new File(path);
+
+
+
+        try {
+            //創建資料夾
             File peoplefile = new File(I_File_Path.main_path);
             peoplefile.mkdirs();
 
 
 
-                //寫入文字檔
-                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+            //寫入文字檔
+            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-                fileOutputStream.write(deta.getBytes());
+            fileOutputStream.write(deta.getBytes());
 
-                fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write("\n".getBytes());
 
 
-                fileOutputStream.close();
+            fileOutputStream.close();
 
 
 
@@ -69,7 +206,7 @@ public class Device_IO {
 
 
     //******************************************************************************************************讀出寫法 Start***\\\
-    public String[] readData(File file, String x) {
+    public String[] address_readData(File file, String x) {
         {
             FileInputStream fis = null;
 
@@ -121,9 +258,93 @@ public class Device_IO {
 
 
 
+    public void name_writeData(String deta,boolean append,String path){
+
+        File seletor_File= new File(path);
 
 
-    public String[] name_readData(File file, String x) {
+
+        try {
+            //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
+            peoplefile.mkdirs();
+
+
+
+            //寫入文字檔
+            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+
+            fileOutputStream.write(deta.getBytes());
+
+            fileOutputStream.write("\n".getBytes());
+
+
+            fileOutputStream.close();
+
+
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Created by Shawn Wu on 2016/08/21.
+     * name and address同時寫入測試寫法
+     */
+
+    public String[] name_and_address_readData(File file, String x) {
         {
             FileInputStream fis = null;
 
@@ -133,15 +354,21 @@ public class Device_IO {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             String test="";
             int anzahl = 0;
 
+            int lines = 0;
 
             try {
                 while (( br.readLine()) != null) {
                     anzahl++;
+
+                    if(anzahl%2==0){
+                        lines++;
+                    }
                 }
 
 
@@ -154,15 +381,23 @@ public class Device_IO {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String[] array = new String[anzahl];
+            String[] array = new String[lines];
 
 
             String line;
             int i = 0;
+            //**判斷是否2個為一組
+            int a=0;
+
             try {
                 while ((line = br.readLine()) != null) {
-                    array[i] = line;
-                    i++;
+               a++;
+
+                    if(a%2==0) {
+                        array[i] = line;
+                        i++;
+
+                    }
 
                 }
             } catch (IOException e) {
@@ -174,7 +409,7 @@ public class Device_IO {
 
 
 
-    public void name_writeData(ArrayList<String> address, ArrayList<String> name ,boolean append ,String path){
+    public void name_and_address_writeData(ArrayList<String> address, ArrayList<String> name ,boolean append ,String path){
 
         File seletor_File= new File(path);
 
@@ -190,9 +425,11 @@ public class Device_IO {
                 //寫入文字檔
                 FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-                fileOutputStream.write(address.get(i).getBytes());
-
                 fileOutputStream.write(name.get(i).getBytes());
+
+                fileOutputStream.write("\n".getBytes());
+
+                fileOutputStream.write(address.get(i).getBytes());
 
                 fileOutputStream.write("\n".getBytes());
 
@@ -225,6 +462,10 @@ public class Device_IO {
 
 
 
+    /**
+     * Created by Shawn Wu on 2016/08/21.
+     * *正式版名稱方法,未完成
+     */
 
 
     public void AutowriteData(ArrayList<String> sad, boolean append, String path){
@@ -263,5 +504,9 @@ for(int i=0; i<sad.size();i++) {
 
 
     }
+
+
+
+
 
 }
