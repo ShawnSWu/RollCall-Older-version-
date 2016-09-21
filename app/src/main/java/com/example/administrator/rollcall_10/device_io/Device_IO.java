@@ -21,55 +21,13 @@ public class Device_IO {
 
 
 ///******************************************************************************************************************* shawn 2016/09/20
+
     /**
-     * 自動編號寫法
      * Created by Shawn Wu on 2016/09/20.
+     * 暫時版,EditText讀出寫法
      * 架構有點爛 要在想一下
      */
-
-    public void Imperfect_writeData(ArrayList<String> address, ArrayList<String> name ,boolean append ,String path){
-
-        File seletor_File= new File(path);
-
-
-
-        try {
-            //創建資料夾
-            File peoplefile = new File(I_File_Path.main_path);
-            peoplefile.mkdirs();
-
-
-            for(int i=0; i<address.size();i++) {
-                //寫入文字檔
-                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
-
-                fileOutputStream.write(name.get(i).getBytes());
-
-                fileOutputStream.write("  ,  ".getBytes());
-
-                fileOutputStream.write(address.get(i).getBytes());
-
-                fileOutputStream.write("\n".getBytes());
-
-                fileOutputStream.close();
-
-            }
-
-
-
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-///****
-
-    public String[] Imperfect_readData(File file, String x) {
+    public String[] Temporary_List_ReadData(File file, String x) {
         {
             FileInputStream fis = null;
 
@@ -143,182 +101,6 @@ public class Device_IO {
 
 
 
-    /**
-     * 手動編號寫法
-     * Created by Shawn Wu on 2016/06/19.
-     * 第一版測試版寫法
-     */
-
-    //****************************************************************************************寫入寫法 Start***\\\
-    public void manual_writeData(String name,String address,boolean append,String path){
-
-        File seletor_File= new File(path);
-
-
-
-        try {
-            //創建資料夾
-            File peoplefile = new File(I_File_Path.main_path);
-            peoplefile.mkdirs();
-
-
-
-            //寫入文字檔
-            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
-
-            fileOutputStream.write(name.getBytes());
-
-            fileOutputStream.write("  ,  ".getBytes());
-
-            fileOutputStream.write(address.getBytes());
-
-            fileOutputStream.write("\n".getBytes());
-
-            fileOutputStream.close();
-
-
-
-
-
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-    //****************************************************************************************寫入寫法 End*****\\\
-
-
-
-    //******************************************************************************************************讀出寫法 Start***\\\
-    public String[] address_readData(File file, String x) {
-        {
-            FileInputStream fis = null;
-
-            try {
-                fis = new FileInputStream(file);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            String test="";
-            int anzahl = 0;
-
-
-            try {
-                while (( br.readLine()) != null) {
-                    anzahl++;
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                fis.getChannel().position(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String[] array = new String[anzahl];
-
-
-            String line;
-            int i = 0;
-            try {
-                while ((line = br.readLine()) != null) {
-                    array[i] = line;
-                    i++;
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return array;
-        }
-    }
-    //******************************************************************************************************讀出寫法 End******\\\
-
-
-
-    public void name_writeData(String deta,boolean append,String path){
-
-        File seletor_File= new File(path);
-
-
-
-        try {
-            //創建資料夾
-            File peoplefile = new File(I_File_Path.main_path);
-            peoplefile.mkdirs();
-
-
-
-            //寫入文字檔
-            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
-
-            fileOutputStream.write(deta.getBytes());
-
-            fileOutputStream.write("\n".getBytes());
-
-
-            fileOutputStream.close();
-
-
-
-
-
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -329,6 +111,7 @@ public class Device_IO {
 
     /**
      * Created by Shawn Wu on 2016/08/21.
+     * 測試版寫法
      * name and address同時寫入測試寫法
      */
 
@@ -450,13 +233,20 @@ public class Device_IO {
 
 
 
+
+
+
     /**
-     * Created by Shawn Wu on 2016/08/21.
-     * *正式版名稱方法,未完成
+     *  Created by Shawn Wu on 2016/06/19.
+     *  正式版 手動編號寫法(Manual)  (未完成)
+     *
+     *  第一版 只寫入address(已完成)
+     *  正式版要寫入name與address
+     *  正式版名稱把Temporary拿掉就好
      */
 
-
-    public void AutowriteData(ArrayList<String> sad, boolean append, String path){
+    //*******************************************************************************************\\\
+    public void Temporary_Manual_WriteData(String name,String address,boolean append,String path){
 
         File seletor_File= new File(path);
 
@@ -468,18 +258,81 @@ public class Device_IO {
             peoplefile.mkdirs();
 
 
-for(int i=0; i<sad.size();i++) {
-    //寫入文字檔
-    FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
-    fileOutputStream.write(sad.get(i).getBytes());
-
-    fileOutputStream.write("\n".getBytes());
+            //寫入文字檔
+            FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
 
-    fileOutputStream.close();
+            fileOutputStream.write(address.getBytes());
 
-}
+            fileOutputStream.write("\n".getBytes());
+
+            fileOutputStream.close();
+
+
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+
+    //*********************************************************************************************\\\
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Created by Shawn Wu on 2016/08/21.
+     * 正式版 自動編號寫法(Auto)  (未完成)
+     * *正式版名稱要取"Auto_WriteData"
+     * *第一版 只寫入address(已完成)
+     * 正式版要寫入name與address
+     * 正式版名稱把Temporary拿掉就好
+     */
+
+
+    //**暫時版本,先只寫入address
+    public void Temporary_Auto_WriteData(ArrayList<String> sad, boolean append, String path){
+
+        File seletor_File= new File(path);
+
+
+
+        try {
+            //創建資料夾
+            File peoplefile = new File(I_File_Path.main_path);
+            peoplefile.mkdirs();
+
+
+            for(int i=0; i<sad.size();i++) {
+                //寫入文字檔
+                FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
+
+                fileOutputStream.write(sad.get(i).getBytes());
+
+                fileOutputStream.write("\n".getBytes());
+
+
+                fileOutputStream.close();
+
+            }
 
 
 

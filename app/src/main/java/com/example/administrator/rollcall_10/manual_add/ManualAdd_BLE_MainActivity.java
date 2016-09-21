@@ -55,8 +55,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
 
 
-    public int DeviceAmount = 0;
-
     Device_IO device_io =new Device_IO();
 
     ManualAdd_BTLE_Device btleDevice;
@@ -70,7 +68,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
 
     public  ArrayList<String> savepeople_address =new ArrayList<>();
-    public  ArrayList<String> savepeople_name =new ArrayList<>();
 
 
 
@@ -362,7 +359,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
                     tv.setText(edit_device_name);
 
 
-                    device_io.manual_writeData(edit_device_name,address,true,Seletor_File);
+                    device_io.Temporary_Manual_WriteData(edit_device_name,address,true,Seletor_File);
 
                     ManualAdd_BTLE_Device btleDevice = new ManualAdd_BTLE_Device(device);
                     btleDevice.setName(edit_device_name);
@@ -392,29 +389,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
 
         adapter.notifyDataSetChanged();
     }
-
-    public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-                    DeviceAmount++;
-
-                     String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
-
-
-                     Bundle bundle = getIntent().getExtras();
-                     String Seletor_File=  bundle.getString("Selected_File_Path");
-
-
-
-//              device_io.address_writeData(address,true,Seletor_File);
-        }
-
-    };
-
-
-
-
 
 
 

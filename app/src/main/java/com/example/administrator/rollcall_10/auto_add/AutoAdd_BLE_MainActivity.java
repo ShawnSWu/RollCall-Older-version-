@@ -105,12 +105,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
-
-
-
-
-
-
         Button buttons =(Button)findViewById(R.id.add);
         assert buttons != null;
         buttons.setOnClickListener(new View.OnClickListener() {
@@ -122,9 +116,11 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-        device_io.Imperfect_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+//        device_io.Imperfect_writeData(savepeople_address,savepeople_name,true,Seletor_File);
 
-//        device_io.AutowriteData(savepeople_address,true,Seletor_File);
+
+        //**暫時版寫入
+        device_io.Temporary_Auto_WriteData(savepeople_address,true,Seletor_File);
 
 //        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
 
@@ -174,7 +170,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
         //**掃描時間 先給1分鐘
         mBTStateUpdateReceiver = new AutoAdd_BroadcastReceiver_BTState(getApplicationContext());
-        autoAdd_BLE_Scanner_BTLE = new AutoAdd_BLE_Scanner_BTLE(this,10000, -75);
+        autoAdd_BLE_Scanner_BTLE = new AutoAdd_BLE_Scanner_BTLE(this,120000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -397,13 +393,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
             savepeople_name.add(name);
 
-//            Bundle bundle = getIntent().getExtras();
-//            String Seletor_File=  bundle.getString("Selected_File_Path");
-//
-//
-//
-//            device_io.writeData(address,true,Seletor_File);
-//
 
 
 

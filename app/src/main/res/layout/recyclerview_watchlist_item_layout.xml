@@ -25,15 +25,15 @@
         android:layout_alignBottom="@+id/item_image"
         android:layout_toEndOf="@+id/item_image" />
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:text="Large Text"-->
-        <!--android:id="@+id/txtItem_name"-->
-        <!--android:textSize="15dp"-->
-        <!--android:textColor="#adabab"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_toEndOf="@+id/item_image" />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="NAME"
+        android:id="@+id/txtItem_name"
+        android:textSize="15dp"
+        android:textColor="#adabab"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/item_image" />
 
 </RelativeLayout>

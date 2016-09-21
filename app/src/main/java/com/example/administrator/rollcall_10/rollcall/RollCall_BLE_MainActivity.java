@@ -262,7 +262,11 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     public void addDevice(BluetoothDevice device, int rssi) {
 
         String address = device.getAddress();
-        String[] list = new String[15];
+
+
+        //**傳進來的清單,要放的ArrayList
+        ArrayList<String> ReadyScanList =new ArrayList<>();
+
 
 
         //**從首頁 點名Bundle過來的資料
@@ -271,12 +275,14 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
 
+
+
+
         if (!mBTDevicesHashMap.containsKey(address)) {
 
+            //**要掃描的清單內的內容存放的String
+            String ListWith_Address = null;
 
-            String s = "";
-
-            int shawn1 = 0;
 
             FileReader fr = null;
 
@@ -291,20 +297,24 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
             do {
                 try {
-                    s = br.readLine();
+                    ListWith_Address = br.readLine();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                list[shawn1] = s;
-                shawn1++;
-
-            } while (s != null);
+                //**把要掃描的清單內的資料取出來
+                ReadyScanList.add(ListWith_Address);
 
 
+            } while (ListWith_Address != null);
 
 
-            if (Arrays.asList(list).contains(address)) {
+
+
+            //**從被掃描的清單內查這個address是否在清單內
+            if (ReadyScanList.contains(address)) {
+
+
 
 
                 if (device.getName().startsWith("KSU")) {//////////////////////////////開頭限制
@@ -320,9 +330,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
                 }
 
             }
-
-
-
 
 
 
@@ -378,14 +385,16 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     public void countdown()
 
     {
-        mCountDown = new CountDownTimer(10000, 1000) {
+        mCountDown = new CountDownTimer(300000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long millis = millisUntilFinished;
 
 
 
-                String countdown_time = "" + (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                String countdown_time = "剩下時間："+
+                        (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
+                        (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
                 countdown.setTitle(countdown_time);
                 scan.setIcon(R.drawable.stopscanbtn);

@@ -149,7 +149,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     String x = "";
 
                     Bundle bundle = new Bundle();
-                    bundle.putStringArray("device_Imperfect",   device_io.Imperfect_readData(selected, x));
+                    bundle.putStringArray("device_Imperfect",   device_io.Temporary_List_ReadData(selected, x));
 
                     bundle.putString("List_Name",selected.getName());
                             it.putExtras(bundle);
