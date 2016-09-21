@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class SplashScreen extends Activity {
 
-    public static final int SplashScreen_Time=4000;
+    public static final int SplashScreen_Time=3000;
     ImageView LoGo_text;
     File peoplefile;
     @Override
@@ -50,7 +50,7 @@ if(peoplefile.length() ==0) {
 
 
         LoGo_text=(ImageView)findViewById(R.id.Logo_text);
-        LoGo_text.setAnimation(AnimationUtils.loadAnimation(this, R.anim.translate));
+
 
 
 

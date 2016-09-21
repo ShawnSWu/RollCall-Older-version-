@@ -8,11 +8,21 @@
         android:layout_width="250dp"
         android:layout_height="150dp"
         android:id="@+id/Logo_text"
-        android:src="@mipmap/rollcalllogo"
-
+        android:src="@mipmap/rollcall_logo"
         android:layout_gravity="center_horizontal"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="58dp"
+        android:layout_alignParentEnd="true" />
+
+
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:src="@mipmap/rollcall_logo_detail"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" />
-
-
+        android:id="@+id/imageView4" />
 </RelativeLayout>
