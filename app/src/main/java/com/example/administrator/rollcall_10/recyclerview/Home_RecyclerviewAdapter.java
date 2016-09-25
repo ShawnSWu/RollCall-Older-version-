@@ -418,7 +418,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.txt128);
+            holder.imageView.setImageResource(R.mipmap.txt_list64);
 
 
 

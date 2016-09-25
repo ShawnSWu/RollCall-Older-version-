@@ -1,5 +1,6 @@
 package com.example.administrator.rollcall_10.recyclerview;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
 
     String [] name;
     String [] address;
+    Context context;
 
 
     public WatchList_RecyclerviewAdapter(String[] address) {
@@ -27,6 +29,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
         this.name=name;
         this.address=address;
     }
+
 
 
     @Override

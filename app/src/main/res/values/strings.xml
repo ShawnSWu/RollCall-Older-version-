@@ -18,8 +18,7 @@
 
 
     <!--setting(右上角三個點)內容  Start-->
-    <string name="action_setting_DATAsortby">依日期排序</string>
-    <string name="action_setting_NAMEsorby">依名字排序</string>
+    <string name="action_setting_delete">刪除</string>
     <!--setting(右上角三個點)內容  End-->
 
 
@@ -52,6 +51,8 @@
     <string name="RollCall__NewFile_Dialog__Messages">◆名稱不能包含 ＼ 與 / ,或是開頭結尾有空白</string>
     <string name="RollCall__NewFile_Dialog__Error_Messages">檔案名稱格式錯誤</string>
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
+
+    <string name="RollCall__NewFile_Dialog__Title_Rename">重新命名</string>
 
     <string name="RollCall__NewFile_Dialog__Title_WanttoAdd">想要加入人數的清單</string>
     <string name="RollCall__NewFile_Dialog__Title_RollCall">想要點名的清單</string>

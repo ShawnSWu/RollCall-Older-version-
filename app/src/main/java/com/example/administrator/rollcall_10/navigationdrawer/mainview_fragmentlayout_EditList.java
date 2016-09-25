@@ -11,6 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,8 +33,10 @@ import android.widget.Toast;
 
 import com.example.administrator.rollcall_10.device_io.I_File_Path;
 import com.example.administrator.rollcall_10.R;
+import com.example.administrator.rollcall_10.recyclerview.List_Long_click_RecyclerviewAdapter;
 import com.example.administrator.rollcall_10.recyclerview.Recyclerview_WatchList;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
+import com.example.administrator.rollcall_10.recyclerview.WatchList_RecyclerviewAdapter;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import org.apache.commons.io.FilenameUtils;
@@ -51,7 +56,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
     Device_IO device_io =new Device_IO();
-
 
 
 
@@ -87,8 +91,8 @@ public class mainview_fragmentlayout_EditList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         View frist_view=inflater.inflate(R.layout.mainview_fragmentlayout_editlist,null);
+
         return frist_view;
     }
 
@@ -165,59 +169,77 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
+//        //**長按事件
+//        FileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        @Override
+//        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            selected = new File(String.valueOf(files.get(position)));
+//
+//
+//            if(selected.length() !=0){
+//
+//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
+//                rollCall_dialog.setTitle(getActivity().getResources().getString(R.string.RollCall_List_Delete_Title_therearestilldata));
+//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message_therearestilldata));
+//                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
+//                rollCall_dialog.setCancelable(false);
+//                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
+//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
+//
+//
+//                rollCall_dialog.show();
+//
+//                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
+//                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
+//
+//            }else {
+//
+//
+//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
+//                rollCall_dialog.setTitle(R.string.RollCall_List_Delete_Title);
+//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message) + "  " + selected.getName() + "  " + getActivity().getResources().getString(R.string.RollCall_List_Delete_Message2));
+//
+//                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
+//                rollCall_dialog.setCancelable(false);
+//                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
+//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
+
+//
+//                rollCall_dialog.show();
+//
+//                //**dilaog文字置中
+//                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
+//                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
+//            }
+//
+//
+//
+//
+//
+//
+//         return true;
+//               }
+//        });
+
+
+
+
+
+
+
         //**長按事件
         FileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                selected = new File(String.valueOf(files.get(position)));
 
-            selected = new File(String.valueOf(files.get(position)));
-
-
-            if(selected.length() !=0){
-
-                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-                rollCall_dialog.setTitle(getActivity().getResources().getString(R.string.RollCall_List_Delete_Title_therearestilldata));
-                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message_therearestilldata));
-                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
-                rollCall_dialog.setCancelable(false);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
+                List_long_onclick();
 
 
-                rollCall_dialog.show();
-
-                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
-                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            }else {
-
-
-                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-                rollCall_dialog.setTitle(R.string.RollCall_List_Delete_Title);
-                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message) + "  " + selected.getName() + "  " + getActivity().getResources().getString(R.string.RollCall_List_Delete_Message2));
-
-                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
-                rollCall_dialog.setCancelable(false);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
-                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
-
-
-                rollCall_dialog.show();
-
-                //**dilaog文字置中
-                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
-                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
+                return true;
             }
-
-
-
-
-
-
-         return true;
-               }
         });
-
 
         file_peopleList_adapter = new File_PeopleList_Adapter();
 
@@ -226,69 +248,58 @@ public class mainview_fragmentlayout_EditList extends Fragment {
     }
 
 
-    DialogInterface.OnClickListener Delete_List = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
 
 
 
-//            if(I_File_Path.Local_List_Text_File.equals(selected.getName())){
-//
-//
-//
-//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-//                rollCall_dialog.setTitle(R.string.RollCall_List_Cant_Delete_Title);
-//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Cant_Delete_Message) );
-//
-//                rollCall_dialog.setIcon(R.mipmap.cantdelete128);
-//                rollCall_dialog.setCancelable(false);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close),close);
-//
-//
-//
-//                rollCall_dialog.show();
-//                TextView messageText = (TextView)rollCall_dialog.findViewById( android.R.id.message );
-//                messageText.setGravity( Gravity.CENTER_HORIZONTAL );
-//
-//
-//            }
-
-
-//
-//
-//            else {
+    private void List_long_onclick(){
 
 
 
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        final View layout = inflater.inflate(R.layout.dialog_list_longclick_layout, null);
+
+        TextView title_txt=(TextView)layout.findViewById(R.id.Dialog_Title);
+
+        title_txt.setText(selected.getName());
 
 
-                 selected.delete();
+        RecyclerView recyclerView=(RecyclerView)layout.findViewById(R.id.recyclerView_list_long_click);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        String item_txt[]={"重新命名","刪除"};
 
 
-                //***重新載入一次 suck code
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
-                        .commitAllowingStateLoss();
-//                //***重新載入一次 suck code
-//            }
-
-
-        }
-
-    };
-
-
-    DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
+        int item_image[]={R.mipmap.pen_rename,R.mipmap.recyclerbin64};
 
 
 
+        final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(layout.getContext());
+        rollCall_dialog.setView(layout);
+        rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+        rollCall_dialog.setCancelable(false);
+        rollCall_dialog.setCancelable(true);
 
-        }
+        ///**關閉dialog
+        Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rollCall_dialog.dismiss();
+            }
+        });
 
-    };
+        List_Long_click_RecyclerviewAdapter recyclerviewAdapter_long_click =new List_Long_click_RecyclerviewAdapter(item_txt,item_image,selected,getActivity(),rollCall_dialog);
+
+        recyclerView.setAdapter(recyclerviewAdapter_long_click);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        rollCall_dialog.show();
+
+
+    }
+
+
 
 
 
@@ -541,7 +552,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
             holder.textView.setText(fileName);
-            holder.imageView.setImageResource(R.mipmap.txt128);
+            holder.imageView.setImageResource(R.mipmap.txt_list64);
 
 
 
