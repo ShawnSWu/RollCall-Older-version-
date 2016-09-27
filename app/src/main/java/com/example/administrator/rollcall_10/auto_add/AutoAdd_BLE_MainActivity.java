@@ -120,9 +120,11 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
         //**暫時版寫入
-        device_io.Temporary_Auto_WriteData(savepeople_address,true,Seletor_File);
+//        device_io.Temporary_Auto_WriteData(savepeople_address,true,Seletor_File);
 
-//        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+
+        //**將名字與地址寫入２０１６／０９／２７
+        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
 
 
 

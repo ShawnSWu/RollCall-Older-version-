@@ -357,6 +357,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity implements Ada
                     //**修改ＮＡＭＥ
                     TextView tv=(TextView)findViewById(R.id.tv_name);
                     tv.setText(edit_device_name);
+                    
 
 
                     device_io.Temporary_Manual_WriteData(edit_device_name,address,true,Seletor_File);

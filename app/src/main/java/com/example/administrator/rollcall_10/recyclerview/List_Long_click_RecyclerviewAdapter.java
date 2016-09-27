@@ -82,6 +82,8 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public TextView Longclick_Item;
@@ -167,7 +169,7 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
                     }
                     else if(Rename_EditText.length() ==0){
 
-                        Toast.makeText(v.getContext(),"尚未輸入檔案名稱", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(),v.getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages2), Toast.LENGTH_SHORT).show();
                     }
 
 

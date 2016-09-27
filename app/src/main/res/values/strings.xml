@@ -49,7 +49,11 @@
 
     <string name="RollCall__NewFile_Dialog__Button_okay">確定</string>
     <string name="RollCall__NewFile_Dialog__Messages">◆名稱不能包含 ＼ 與 / ,或是開頭結尾有空白</string>
+
     <string name="RollCall__NewFile_Dialog__Error_Messages">檔案名稱格式錯誤</string>
+
+    <string name="RollCall__NewFile_Dialog__Error_Messages2">尚未輸入檔案名稱</string>
+
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
 
     <string name="RollCall__NewFile_Dialog__Title_Rename">重新命名</string>

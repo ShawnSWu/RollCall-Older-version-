@@ -64,26 +64,49 @@ public class Device_IO {
                 e.printStackTrace();
             }
 
+            //**
+            String[] Pre_array = new String[readline];
 
-            String[] array = new String[readline];
+            int read_line_count=readline/2;
+
+
+
+            String [] Real_read_txt_array=new String[read_line_count];
 
 
             String line;
             int i = 0;
-            //**判斷是否2個為一組
-            int countline=0;
 
+            //**將兩個為一組的計數
+            int Count_line_Two_Group=0;
+
+            //***************將每一行讀到的string,一一放到array陣列裡面
             try {
                 while ((line = br.readLine()) != null) {
-                    array[i] = line;
-                    i++;
 
+                    Pre_array[i] = line;
+                    i++;
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return array;
+            //****************將每一行讀到的string,一一放到array陣列裡面
+
+
+
+
+
+            //**將上面用處理好的array,取出 放到read_line陣列
+            for(int Real_read_txt_count=0;Real_read_txt_count<Real_read_txt_array.length;Real_read_txt_count++){
+
+                Real_read_txt_array[Real_read_txt_count]=Pre_array[Count_line_Two_Group]+" , "+Pre_array[Count_line_Two_Group+1];
+                Count_line_Two_Group+=2;
+            }
+            //**將上面用處理好的array,取出 放到read_line陣列
+
+
+            return Real_read_txt_array;
         }
     }
 
@@ -262,6 +285,9 @@ public class Device_IO {
             //寫入文字檔
             FileOutputStream fileOutputStream = new FileOutputStream(seletor_File, append);
 
+            fileOutputStream.write(name.getBytes());
+
+            fileOutputStream.write("\n".getBytes());
 
             fileOutputStream.write(address.getBytes());
 
