@@ -26,13 +26,14 @@ import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Administrator on 2016/8/11.
  */
 public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<List_Long_click_RecyclerviewAdapter.ViewHolder> {
 
-    File selected;
+    File selected,test_file;
 
     private Context mContext;
     private ArrayList<File> files;
@@ -139,6 +140,9 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
 
+
+
+
             //**重新命名確定鍵
             Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
             btn_ok.setOnClickListener(new View.OnClickListener() {
@@ -146,18 +150,18 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
                 public void onClick(View v) {
                     /**
                                          * 重新命名code
+                                        *缺同名失敗提示
                                         */
-
 
                     String Rename_EditText=rename_edittext.getText().toString();
 
 
-                    //**修改的名字
-                    Log.e("shawn",Rename_EditText);
-                    //**路境名稱
-                    Log.e("shawn",selected.getPath());
+                    File Rename_before =new File(selected.getPath());
+
+                    String Rename_EditText_txt = Rename_EditText + ".txt";
 
 
+                    File Rename_after= new File(selected.getParent()+I_File_Path.Slash+Rename_EditText_txt);
 
 
 
@@ -176,6 +180,15 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
 
+
+
+                    //**修改檔案名稱
+                    Rename_before.renameTo(Rename_after);
+
+
+
+                    //**改玩關閉dialog
+                    rollCall_dialog.dismiss();
 
 
 
@@ -201,8 +214,6 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
             rollCall_dialog.show();
-
-
 
         }
 
@@ -272,7 +283,10 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
                         .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
                         .commitAllowingStateLoss();
 //                //***重新載入一次 suck code
-//            }
+
+
+
+
 
 
             }

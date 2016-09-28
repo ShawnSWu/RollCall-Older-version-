@@ -59,7 +59,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-    File selected;
+    File selected,test_file;
 
     private ListView FileList;
 
@@ -368,6 +368,21 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                 String Filename_string =FileName_edit.getText().toString();
 
+                String aa = Filename_string+".txt";
+
+
+//                test_file=new File()
+
+
+
+
+
+
+
+
+
+
+
                 if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
 
                     Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages), Toast.LENGTH_SHORT).show();
@@ -378,6 +393,9 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                     Toast.makeText(getActivity(),"尚未輸入檔案名稱", Toast.LENGTH_SHORT).show();
                 }
+
+
+
 
 
                 else {

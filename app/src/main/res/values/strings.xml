@@ -54,6 +54,8 @@
 
     <string name="RollCall__NewFile_Dialog__Error_Messages2">尚未輸入檔案名稱</string>
 
+    <string name="RollCall__NewFile_Dialog__Error_Messages3">檔案已存在</string>
+
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
 
     <string name="RollCall__NewFile_Dialog__Title_Rename">重新命名</string>
