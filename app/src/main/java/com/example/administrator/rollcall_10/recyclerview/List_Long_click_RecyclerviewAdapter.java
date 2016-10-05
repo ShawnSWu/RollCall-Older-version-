@@ -33,14 +33,13 @@ import java.util.Collections;
  */
 public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<List_Long_click_RecyclerviewAdapter.ViewHolder> {
 
-    File selected,test_file;
+    File selected;
 
     private Context mContext;
-    private ArrayList<File> files;
+
     RollCall_Dialog rollCall_dialog;
 
-    String [] name;
-    String [] address;
+
 
     String[] longclick_item;
     int[] image;
@@ -129,7 +128,7 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
             final EditText rename_edittext = (EditText)layout.findViewById(R.id.rename_edit);
-            rename_edittext.setHint(selected.getName());
+            rename_edittext.setHint(selected.getName().substring(0,selected.getName().length()-4));
 
 
             final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(layout.getContext());

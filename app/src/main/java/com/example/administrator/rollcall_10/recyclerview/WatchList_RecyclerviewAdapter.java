@@ -18,7 +18,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
 
     String [] name;
     String [] address;
-    Context context;
+
 
 
     public WatchList_RecyclerviewAdapter(String[] address) {

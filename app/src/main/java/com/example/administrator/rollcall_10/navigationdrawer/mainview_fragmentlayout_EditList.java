@@ -260,7 +260,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
         TextView title_txt=(TextView)layout.findViewById(R.id.Dialog_Title);
 
-        title_txt.setText(selected.getName());
+        title_txt.setText(selected.getName().substring(0,selected.getName().length()-4));
 
 
         RecyclerView recyclerView=(RecyclerView)layout.findViewById(R.id.recyclerView_list_long_click);
@@ -371,7 +371,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                 String aa = Filename_string+".txt";
 
 
-//                test_file=new File()
 
 
 
@@ -569,7 +568,9 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
-            holder.textView.setText(fileName);
+
+            //**將.txt隱藏起來
+            holder.textView.setText(fileName.substring(0,fileName.length()-4));
             holder.imageView.setImageResource(R.mipmap.txt_list64);
 
 

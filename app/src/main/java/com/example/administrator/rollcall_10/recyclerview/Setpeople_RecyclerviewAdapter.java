@@ -471,7 +471,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
-            holder.textView.setText(fileName);
+            holder.textView.setText(fileName.substring(0,fileName.length()-4));
             holder.imageView.setImageResource(R.mipmap.txt_list64);
 
 

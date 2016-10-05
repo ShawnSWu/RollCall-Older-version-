@@ -307,23 +307,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
                     .setAction("Action", null).show();
 
 
-//            if(device_io.file.length()==0){
-//                Snackbar.make(v, "當前清單是空的" ,
-//                        Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//            else {
-//                Intent it = new Intent(Intent.ACTION_VIEW);
-//                it.setClass(v.getContext(), Recyclerview_WatchList.class);
-//
-//                String x = "";
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArray("devicename",   device_io.readData(device_io.file, x));
-//                it.putExtras(bundle);
-//
-//                v.getContext(). startActivity(it);
-//            }
+
 
         }
 
@@ -417,7 +401,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
             String filePath = files.get(position).getPath();
             String fileName = FilenameUtils.getName(filePath);
-            holder.textView.setText(fileName);
+            holder.textView.setText(fileName.substring(0,fileName.length()-4));
             holder.imageView.setImageResource(R.mipmap.txt_list64);
 
 
