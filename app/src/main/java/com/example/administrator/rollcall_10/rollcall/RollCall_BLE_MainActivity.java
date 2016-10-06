@@ -78,7 +78,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new RollCall_Scanner_BTLE(this,10000, -75);
+        mBTLeScanner = new RollCall_Scanner_BTLE(this,300000, -75);
 
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
@@ -110,7 +110,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
         //清單名稱當標題
         ActionBar actionBar =getSupportActionBar();
-        actionBar.setTitle(Seletor_File_Name);
+        actionBar.setTitle(Seletor_File_Name.substring(0,Seletor_File_Name.length()-4));
     }
 
 
