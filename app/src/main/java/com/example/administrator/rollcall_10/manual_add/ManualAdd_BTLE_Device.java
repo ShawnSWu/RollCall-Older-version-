@@ -25,6 +25,7 @@ public class ManualAdd_BTLE_Device {
 
 
 
+
     public void setRSSI(int rssi) {
         this.rssi = rssi;
     }
@@ -35,11 +36,14 @@ public class ManualAdd_BTLE_Device {
 
 
 
-    public String getname_shanw() {
+    public String get_Manual_Name() {
         return devicename;
     }
 
     public void setName(String edit_device_name) {
-          devicename=edit_device_name;
+          this.devicename=edit_device_name;
     }
+
+
+
 }

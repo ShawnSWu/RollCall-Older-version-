@@ -309,6 +309,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         final String device_name =device.getName();
 
 
+
+
         LayoutInflater inflater = (LayoutInflater)this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
@@ -316,6 +318,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
         txt_device_address.setText(address);
+
+
+
 
 
         ///**關閉dialog
@@ -349,26 +354,19 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
                 //**修改ＮＡＭＥ
-                TextView tv=(TextView)findViewById(R.id.tv_name);
-                tv.setText(edit_device_name);
-
-
-
-
-
-
-
+//                TextView tv=(TextView)findViewById(R.id.tv_name);
+//                tv.setText(edit_device_name);
 
 
 
                 device_io.Temporary_Manual_WriteData(edit_device_name,address,true,Seletor_File);
 
-                ManualAdd_BTLE_Device btleDevice = new ManualAdd_BTLE_Device(device);
                 btleDevice.setName(edit_device_name);
 
 
-                Log.e("1",":::"+btleDevice.getname_shanw());
 
+
+                adapter.notifyDataSetChanged();
 
 
                 rollCall_dialog.dismiss();
@@ -397,14 +395,11 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
            btleDevice = new ManualAdd_BTLE_Device(device);
             btleDevice.setRSSI(rssi);
 
+
+
             mBTDevicesHashMap.put(address, btleDevice);
 
             mBTDevicesArrayList.add(btleDevice);
-
-
-
-
-
 
             savepeople_address.add(address);
             savepeople_name.add(device_name);
