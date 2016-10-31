@@ -77,8 +77,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     public  ArrayList<String> savepeople_address =new ArrayList<>();
 
     public  ArrayList<String> savepeople_name =new ArrayList<>();
-
-    BluetoothDevice devicess;
+    
 
 
 
@@ -331,6 +330,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                 rollCall_dialog.dismiss();
             }
         });
+
 
 
 
