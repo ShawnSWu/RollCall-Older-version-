@@ -11,12 +11,10 @@ public interface I_CardView {
     String AutoAdd_Title="自動加入";
     String ManualAdd_detail = "您可以手動選擇自己要的" ;
     String AutoAdd_detail = "系統自動幫您編號" ;
-
-
-
-
-
     
+
+
+
     ///***Home CardView Title
     String RollCall ="點名";
     String Watch_list ="查看清單";
