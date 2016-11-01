@@ -14,6 +14,9 @@ public interface I_CardView {
 
 
 
+
+
+    
     ///***Home CardView Title
     String RollCall ="點名";
     String Watch_list ="查看清單";
