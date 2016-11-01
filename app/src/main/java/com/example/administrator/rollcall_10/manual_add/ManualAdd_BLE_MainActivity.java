@@ -51,11 +51,9 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
     private ManualAdd_ListAdapter_BTLE_Devices adapter;
 
+
+    
     ListView listView;
-
-
-    private ArrayList<String> string_shawn;
-
 
 
     private ManualAdd_BroadcastReceiver_BTState mBTStateUpdateReceiver;
@@ -71,13 +69,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     MenuItem scan,countdown;
 
 
+
     private CountDownTimer mCountDown;
 
 
     public  ArrayList<String> savepeople_address =new ArrayList<>();
 
     public  ArrayList<String> savepeople_name =new ArrayList<>();
-    
+
 
 
 
