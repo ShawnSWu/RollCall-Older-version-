@@ -71,7 +71,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
         {
             super(v);
             txtItem = (TextView) v.findViewById(R.id.txtItem);
-//            txtItem_name=(TextView)v.findViewById(R.id.txtItem_name);
+//          txtItem_name=(TextView)v.findViewById(R.id.txtItem_name);
             image =(ImageView)v.findViewById(R.id.item_image);
 
         }

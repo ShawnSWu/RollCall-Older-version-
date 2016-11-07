@@ -9,8 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.administrator.rollcall_10.R;
+import com.example.administrator.rollcall_10.main.MainActivity;
+import com.example.administrator.rollcall_10.optionmenu_editist__view.optionmenu_view_edit;
 import com.example.administrator.rollcall_10.recyclerview.WatchList_RecyclerviewAdapter;
 
 /**
@@ -18,19 +21,22 @@ import com.example.administrator.rollcall_10.recyclerview.WatchList_Recyclerview
  */
 public class Recyclerview_WatchList extends AppCompatActivity  {
 
+
+    String Seletor_List_File;
+    String[] ListData_Array;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerview_watchlist);
 
-        //****Scan返回鍵監聽事件 Start****\\
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //****Scan返回鍵監聽事件 End****\\
+            //****Scan返回鍵監聽事件 Start****\\
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            //****Scan返回鍵監聽事件 End****\\
 
 
 
         Bundle bundle = getIntent().getExtras();
-        String Seletor_List_File=  bundle.getString("List_Name");
+        Seletor_List_File=  bundle.getString("List_Name");
 
 
 
@@ -46,14 +52,17 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        String list[];
 
+        //**清單內的資料,用陣列顯示
+        ListData_Array = bundle.getStringArray("device_Imperfect");
 
-        final String[] test_address = bundle.getStringArray("device_Imperfect");
+        for(int i=0;i<ListData_Array.length;i++) {
+            Log.e("1", "::---" + ListData_Array[i]);
+        }
 
 //      final String[] address = bundle.getStringArray("device_address");
 
-        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(test_address);
+        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(ListData_Array);
         recyclerView.setAdapter(recyclerviewAdapter_watchList);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -80,10 +89,38 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
     //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_setting_add:
+               //**新增
 
 
+                return true;
 
 
+            case R.id.action_setting_edit:
+                //**修改
+
+                Intent option_edit= new Intent(Recyclerview_WatchList.this, optionmenu_view_edit.class); //MainActivity為主要檔案名稱
+                Bundle dataMap = new Bundle();
+                dataMap.putStringArray("ListData_Array", ListData_Array);
+                dataMap.putString("Seletor_List_File",Seletor_List_File);
+
+                option_edit.putExtras(dataMap);
+
+                startActivity(option_edit);
+
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+
+        }
+
+    }
 
 
 

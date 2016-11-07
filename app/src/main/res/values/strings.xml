@@ -20,7 +20,7 @@
     <!--setting(右上角三個點)內容  Start-->
     <string name="action_setting_add">新增</string>
     <string name="action_setting_delete">刪除</string>
-    <string name="action_setting_edit">修改</string>
+    <string name="action_setting_edit">編輯</string>
     <!--setting(右上角三個點)內容  End-->
 
 
@@ -80,15 +80,11 @@
     <string name="RollCall_Delete_Warning_Message">清單內還有資料！！確定要覆寫嗎?\n(進入後此清單資料會先被清空喔!!)</string>
 
 
-
-
-
     <string name="RollCall_List_Delete_Title_therearestilldata">還有資料的清單！！！</string>
     <string name="RollCall_List_Delete_Message_therearestilldata">此清單還有資料 確定刪除嗎？\n(刪除後就無法復原)</string>
 
 
     <string name="RollCall_SetPeople_CardView_Messages">系統自動幫您編號\n您只需要過濾自己不需要的</string>
-
 
 
     <string name="RollCall_List_Dialog_Title_WantToScan">想要點名的清單</string>
@@ -99,12 +95,8 @@
     <string name="RollCall_List_Cant_Delete_Message">本地清單無法刪除</string>
 
 
-
     <string name="RollCall_List_CardView_ManualAdd">手動加入</string>
     <string name="RollCall_List_CardView_AutoAdd">自動加入</string>
-
-
-
 
 
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
