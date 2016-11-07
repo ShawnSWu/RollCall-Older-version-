@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class RollCall_BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
@@ -46,6 +47,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     private RollCall_ListAdapter_BTLE_Devices adapter;
     private ListView listView;
 
+    RollCall_BTLE_Device btleDevice;
 
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
@@ -56,13 +58,74 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     MenuItem scan,countdown;
     private CountDownTimer mCountDown;
 
+
+    //**傳進來的清單,要放的ArrayList
+    ArrayList<String> ReadyScanList =new ArrayList<>();
+
+
+
+    void Shawn_Test_Log_List(){
+        String ListWith_Address = null;
+
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File = bundle.getString("Selected_File_Path");
+
+        FileReader fr = null;
+
+        try {
+            fr = new FileReader(Seletor_File);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        BufferedReader br = new BufferedReader(fr);
+
+
+        do {
+            try {
+                ListWith_Address = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            //**防止空值
+            if(ListWith_Address!= null) {
+                //**把要掃描的清單內的資料取出來
+                ReadyScanList.add(ListWith_Address);
+            }
+
+        } while (ListWith_Address != null);
+
+
+        for(int i=0;i<ReadyScanList.size()/2;i++) {
+
+            Log.e("shawn","清單內容----:"+ReadyScanList.toString());
+            Log.e("shawn","清單長度:"+ReadyScanList.size());
+
+            Log.e("shawn", "第"+i+"個的字為:" + ReadyScanList.get(i));
+
+        }
+
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.ble_activity_main);
 
+
+        Shawn_Test_Log_List();
+
+
+
         Acttionbar_TitleData();
+
+
 
 
 
@@ -265,7 +328,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
         //**傳進來的清單,要放的ArrayList
-        ArrayList<String> ReadyScanList =new ArrayList<>();
+//        ArrayList<String> ReadyScanList =new ArrayList<>();
 
 
 
@@ -280,33 +343,37 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
         if (!mBTDevicesHashMap.containsKey(address)) {
 
-            //**要掃描的清單內的內容存放的String
-            String ListWith_Address = null;
 
 
-            FileReader fr = null;
 
-            try {
-                fr = new FileReader(Seletor_File);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+//            //**要掃描的清單內的內容存放的String
+//            String ListWith_Address = null;
+//
+//
+//            FileReader fr = null;
+//
+//            try {
+//                fr = new FileReader(Seletor_File);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//            BufferedReader br = new BufferedReader(fr);
+//
+//
+//            do {
+//                try {
+//                    ListWith_Address = br.readLine();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                //**把要掃描的清單內的資料取出來
+//                ReadyScanList.add(ListWith_Address);
+//
+//
+//            } while (ListWith_Address != null);
 
-            BufferedReader br = new BufferedReader(fr);
-
-
-            do {
-                try {
-                    ListWith_Address = br.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //**把要掃描的清單內的資料取出來
-                ReadyScanList.add(ListWith_Address);
-
-
-            } while (ListWith_Address != null);
 
 
 
@@ -316,17 +383,30 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
 
-
                 if (device.getName().startsWith("KSU")) {//////////////////////////////開頭限制
 
 
-                    RollCall_BTLE_Device btleDevice = new RollCall_BTLE_Device(device);
-                    btleDevice.setRSSI(rssi);
-
-                    mBTDevicesHashMap.put(address, btleDevice);
+                    btleDevice = new RollCall_BTLE_Device(device);
 
 
-                    mBTDevicesArrayList.add(btleDevice);
+                    for(int i=0;i<ReadyScanList.size();i++) {
+                        if (Objects.equals(btleDevice.getAddress(), ReadyScanList.get(i))) {
+
+
+                            btleDevice.setName(ReadyScanList.get(i-1));
+
+                            Log.e("1","-*-*----"+ReadyScanList.get(i-1));
+
+                            adapter.notifyDataSetChanged();
+
+                          mBTDevicesHashMap.put(address, btleDevice);
+
+
+                          mBTDevicesArrayList.add(btleDevice);
+
+
+                        }
+                    }
                 }
 
             }
@@ -399,7 +479,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
                 countdown.setTitle(countdown_time);
                 scan.setIcon(R.drawable.stopscanbtn);
 
-                if(countdown_time== "1"){
+                if(countdown_time.equals("1")){
                     mCountDown.onFinish();
                 }
 

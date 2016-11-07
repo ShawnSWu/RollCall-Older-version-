@@ -19,7 +19,7 @@ public interface I_CardView {
     String RollCall ="點名";
     String Watch_device_status ="查看裝置狀態";
     String Set_BLE_Device ="設置藍芽裝置";
-    String Memorandum ="代辦事項";
+    String Memorandum ="待辦事項";
     String Not_Open ="未開放";
 
 

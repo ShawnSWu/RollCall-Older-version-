@@ -169,6 +169,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                         String edit_device_name =edit_device.getText().toString();
                         Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
 
+
                         //**修改ＮＡＭＥ
                         TextView tv=(TextView)findViewById(R.id.tv_name);
                         tv.setText(edit_device_name);

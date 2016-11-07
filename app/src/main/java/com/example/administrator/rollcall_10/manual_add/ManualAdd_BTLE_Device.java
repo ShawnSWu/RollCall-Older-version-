@@ -40,6 +40,7 @@ public class ManualAdd_BTLE_Device {
         return devicename;
     }
 
+
     public void setName(String edit_device_name) {
           this.devicename=edit_device_name;
     }

@@ -150,6 +150,8 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
             itemDetail =
                     (TextView)itemView.findViewById(R.id.item_detail);
 
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();

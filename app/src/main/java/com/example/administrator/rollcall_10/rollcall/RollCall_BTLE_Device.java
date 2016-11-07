@@ -9,6 +9,7 @@ public class RollCall_BTLE_Device {
 
     private BluetoothDevice bluetoothDevice;
     private int rssi;
+    String devicename;
 
     public RollCall_BTLE_Device(BluetoothDevice bluetoothDevice) {
         this.bluetoothDevice = bluetoothDevice;
@@ -28,5 +29,13 @@ public class RollCall_BTLE_Device {
 
     public int getRSSI() {
         return rssi;
+    }
+
+    public void setName(String edit_device_name) {
+        this.devicename=edit_device_name;
+    }
+
+    public String get_Manual_Name() {
+        return devicename;
     }
 }

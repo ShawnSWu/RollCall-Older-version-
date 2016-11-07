@@ -18,7 +18,9 @@
 
 
     <!--setting(右上角三個點)內容  Start-->
+    <string name="action_setting_add">新增</string>
     <string name="action_setting_delete">刪除</string>
+    <string name="action_setting_edit">修改</string>
     <!--setting(右上角三個點)內容  End-->
 
 

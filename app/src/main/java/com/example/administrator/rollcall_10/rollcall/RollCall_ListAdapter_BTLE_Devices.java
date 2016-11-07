@@ -50,8 +50,10 @@ public class RollCall_ListAdapter_BTLE_Devices extends ArrayAdapter<RollCall_BTL
 
         tv = (TextView) convertView.findViewById(R.id.tv_name);
         if (name != null && name.length() > 0) {
-            tv.setText(device.getName());
+//            tv.setText(device.getName());
+            tv.setText(device.get_Manual_Name());
         }
+
         else {
             tv.setText("No Name");
         }
