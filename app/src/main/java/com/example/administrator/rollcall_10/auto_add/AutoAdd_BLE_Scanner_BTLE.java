@@ -49,6 +49,8 @@ public class AutoAdd_BLE_Scanner_BTLE {
         else {
             scanLeDevice(true);
         }
+
+        //55
     }
 
     public void stop() {
@@ -73,6 +75,7 @@ public class AutoAdd_BLE_Scanner_BTLE {
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
                     autoAdd_ble_mainActivity.stopScan();
+
                 }
             }, scanPeriod);
 

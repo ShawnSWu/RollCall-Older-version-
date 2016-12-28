@@ -61,7 +61,7 @@ public class Successful_NotificationDisplayService extends Service {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setSmallIcon(R.mipmap.tick512)
+                .setSmallIcon(R.mipmap.tick512_2)
                 //.setLargeIcon(BitmapFactory.decodeResource(R.drawable.xyz))
                 .setColor(getResources().getColor(R.color.color_fff))
                 .setVibrate(new long[]{0, 200, 200, 200})

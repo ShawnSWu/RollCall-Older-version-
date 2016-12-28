@@ -156,6 +156,9 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     bundle.putStringArray("device_Imperfect",   device_io.Temporary_List_ReadData(selected, x));
 
                     bundle.putString("List_Name",selected.getName());
+
+                    bundle.putString("List_Path",selected.getPath());
+
                             it.putExtras(bundle);
 
 
@@ -428,75 +431,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
         });
 
         rollCall_dialog.show();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        new AlertDialog.Builder(getActivity())
-////                .setTitle(R.string.RollCall__NewFile_Dialog__Title_NewFile)
-//                .setView(v)
-//                .setPositiveButton(R.string.RollCall__NewFile_Dialog__Button_okay, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        EditText FileName_edit = (EditText) (v.findViewById(R.id.create_file_name_edit));
-//
-//
-//
-//                        String Filename_string =FileName_edit.getText().toString();
-//
-//                        if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
-//
-//                            Toast.makeText(getActivity(), getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages), Toast.LENGTH_SHORT).show();
-//
-//
-//                        }
-//                        else {
-//                            //**自行創建文字檔 strat--->
-//                            File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
-//
-//                            try {
-//                                FileWriter fw = new FileWriter(peoplefile, false);
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                Log.e("1", "shawn");
-//                            }
-//                            //**自行創建文字檔 End--->
-//
-//                        }
-//
-//                        //***重新載入一次 suck code
-//                        FragmentManager fragmentManager = getFragmentManager();
-//                        fragmentManager.beginTransaction()
-//                                .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
-//                                .commitAllowingStateLoss();
-//                        //***重新載入一次 suck code
-//                    }
-//                })
-//                .show();
-
-
 
     }
 

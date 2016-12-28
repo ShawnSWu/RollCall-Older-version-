@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 public class Device_IO {
 
+    ArrayList<String> editlistread=new ArrayList<>();
     //要寫入的文字檔
 //    File file  =new File(I_File_Path.main_path + I_File_Path.Built_TextFile);//文字檔
 
@@ -40,10 +42,9 @@ public class Device_IO {
 
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
-            String test="";
+
             int readline = 0;
 
-            int lines = 0;
 
             try {
                 while (( br.readLine()) != null) {
@@ -118,16 +119,44 @@ public class Device_IO {
 
 
 
+    public ArrayList<String> Edit_List_ReadData(File file) {
+        {
+           editlistread=new ArrayList<>();
+            FileInputStream fis = null;
+
+            try {
+                fis = new FileInputStream(file);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
 
 
+            try {
+                while (( br.ready())) {
+               editlistread.add(br.readLine());
+                }
 
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
+            Log.e("1", "清單長度:" +editlistread.size());
 
 
+            for(int i=0;i<editlistread.size();i++) {
+                Log.e("1", "清單第"+i+"個" +editlistread.get(i));
 
+            }
 
+            return editlistread;
+        }
+    }
 
 
 

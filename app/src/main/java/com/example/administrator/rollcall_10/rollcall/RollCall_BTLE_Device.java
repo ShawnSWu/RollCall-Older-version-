@@ -38,4 +38,5 @@ public class RollCall_BTLE_Device {
     public String get_Manual_Name() {
         return devicename;
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.rollcall_10.manual_add;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -77,8 +79,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     public  ArrayList<String> savepeople_address =new ArrayList<>();
 
     public  ArrayList<String> savepeople_name =new ArrayList<>();
-    
-
 
 
     @Override
@@ -86,11 +86,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setProgressBarIndeterminateVisibility(true);
         setContentView(R.layout.manualadd_ble_activity_main);
-
-
-
-
-
 
 
         //**Actionbar跟標題資料

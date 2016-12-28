@@ -5,7 +5,7 @@
 
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimary">@color/Gray</item>
+        <item name="colorPrimary">@color/RollCall_Gray</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
@@ -16,7 +16,7 @@
 
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimary">@color/Gray</item>
+        <item name="colorPrimary">@color/RollCall_Gray</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 

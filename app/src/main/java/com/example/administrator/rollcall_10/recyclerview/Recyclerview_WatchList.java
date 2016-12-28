@@ -20,10 +20,29 @@ import com.example.administrator.rollcall_10.recyclerview.WatchList_Recyclerview
  * Created by Administrator on 2016/8/11.
  */
 public class Recyclerview_WatchList extends AppCompatActivity  {
-
-
-    String Seletor_List_File;
+    String Seletor_List_File,Seletor_List_Path;
     String[] ListData_Array;
+
+    void edit(){
+        Intent option_edit= new Intent(Recyclerview_WatchList.this, optionmenu_view_edit.class); //MainActivity為主要檔案名稱
+        Bundle dataMap = new Bundle();
+        dataMap.putStringArray("ListData_Array", ListData_Array);
+        dataMap.putString("Seletor_List_File",Seletor_List_File);
+        dataMap.putString("Seletor_List_Path",Seletor_List_Path);
+
+
+
+
+        option_edit.putExtras(dataMap);
+
+        startActivity(option_edit);
+    }
+
+    void add(){
+
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +56,12 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
         Bundle bundle = getIntent().getExtras();
         Seletor_List_File=  bundle.getString("List_Name");
-
+        Seletor_List_Path=bundle.getString("List_Path");
 
 
         //換標題
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(Seletor_List_File);
+        actionBar.setTitle(Seletor_List_File.substring(0,Seletor_List_File.length()-4));
 
 
 
@@ -91,34 +110,18 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_setting_add:
-               //**新增
 
-
-                return true;
-
-
+        int id = item.getItemId();
+        switch (id) {
             case R.id.action_setting_edit:
-                //**修改
-
-                Intent option_edit= new Intent(Recyclerview_WatchList.this, optionmenu_view_edit.class); //MainActivity為主要檔案名稱
-                Bundle dataMap = new Bundle();
-                dataMap.putStringArray("ListData_Array", ListData_Array);
-                dataMap.putString("Seletor_List_File",Seletor_List_File);
-
-                option_edit.putExtras(dataMap);
-
-                startActivity(option_edit);
+                edit();
 
                 return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
 
 
         }
+
+        return false;
 
     }
 
