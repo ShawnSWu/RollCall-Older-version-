@@ -34,7 +34,7 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public  View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             LayoutInflater inflater =

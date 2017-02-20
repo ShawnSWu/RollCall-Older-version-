@@ -56,10 +56,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     ListView listView;
 
 
-    private ArrayList<String> string_shawn;
-
-
-
     private ManualAdd_BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
 
@@ -135,6 +131,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                 txt_device_address.setText(savepeople_address.get(position));
 
 
+
                 ///**關閉dialog
                 Button btn_close =(Button)layout.findViewById(R.id.btn_close);
                 btn_close.setOnClickListener(new View.OnClickListener() {
@@ -169,12 +166,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                         TextView tv=(TextView)findViewById(R.id.tv_name);
                         tv.setText(edit_device_name);
 
-
-
-
-
-
                         device_io.Temporary_Manual_WriteData(edit_device_name,savepeople_address.get(position),true,Seletor_File);
+
 
 
 
@@ -245,15 +238,24 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
 
-//        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        manualAdd_ble_scanner_btle.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-//        unregisterReceiver(mBTStateUpdateReceiver);
-        stopScan();
+//      unregisterReceiver(mBTStateUpdateReceiver);
+        manualAdd_ble_scanner_btle.stop();
+        
     }
 
     @Override
@@ -335,6 +337,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         edit_device.setHint(device_name);
 
 
+        onPause();
+
         //**編輯的dialog的確認鍵
         Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
@@ -349,12 +353,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
-                //**修改ＮＡＭＥ
-//                TextView tv=(TextView)findViewById(R.id.tv_name);
-//                tv.setText(edit_device_name);
-
-
-
                 device_io.Temporary_Manual_WriteData(edit_device_name,address,true,Seletor_File);
 
                 btleDevice.setName(edit_device_name);
@@ -366,6 +364,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
                 rollCall_dialog.dismiss();
+                onRestart();
 
             }
         });
@@ -379,7 +378,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
-    public void addDevice(final BluetoothDevice device, final int rssi) {
+    public synchronized void addDevice(final BluetoothDevice device, final int rssi) {
         //**name
 
         final String address = device.getAddress();

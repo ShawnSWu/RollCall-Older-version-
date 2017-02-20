@@ -5,8 +5,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,20 +30,58 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
-    Device_IO device_io =new Device_IO();
-
-    private Context context;
-
-//    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/RollCall_1.0_file/People_List";//新增檔案
-
-
-    File peoplefile;
-
-
+    private final String PERMISSION_WRITE_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
+    private final String PERMISSION_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION";
 
     //Toolbar
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+
+
+
+
+    //MarshMallow(API-23)之後要在 Runtime 詢問權限
+    private boolean needCheckPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] perms = {PERMISSION_WRITE_STORAGE,PERMISSION_COARSE_LOCATION};
+            int permsRequestCode = 200;
+            requestPermissions(perms, permsRequestCode);
+            return true;
+        }
+        return false;
+    }
+
+    //開啟權限
+    private boolean hasPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            return(ActivityCompat.checkSelfPermission(this, PERMISSION_WRITE_STORAGE) == PackageManager.PERMISSION_GRANTED) &&(ActivityCompat.checkSelfPermission(this, PERMISSION_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        }
+        return true;
+    }
+
+
+//UI元件載入
+    void UI(){
+    //**Toolbar"三"線的變化
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+    mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+    mDrawerToggle.syncState();
+    mDrawerLayout.setDrawerListener(mDrawerToggle);
+    //**Toolbar"三"線的變化
+
+
+    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    navigationView.setNavigationItemSelectedListener(this);
+
+
+    FragmentManager fragmentManager = getFragmentManager();
+    fragmentManager.beginTransaction()
+            .add(R.id.main_fragment, new mainview_fragmentlayout_Home())
+            .commitAllowingStateLoss();
+}
 
 
     @Override
@@ -49,26 +89,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(!hasPermission()){
 
+            if(needCheckPermission()){
+            UI();
 
+            }
+        }
+        UI();
 
-        //**Toolbar"三"線的變化
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerToggle.syncState();
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        //**Toolbar"三"線的變化
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.main_fragment, new mainview_fragmentlayout_Home())
-                .commitAllowingStateLoss();
     }
 
 
