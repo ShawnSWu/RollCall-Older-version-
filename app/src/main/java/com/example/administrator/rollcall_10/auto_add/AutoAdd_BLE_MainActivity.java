@@ -202,7 +202,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
                   adapter.remove(i);
-                savepeople_address.remove(address);
+                  savepeople_address.remove(address);
                   mBTDevicesHashMap.remove(address);
                   adapter.notifyDataSetChanged();
             }

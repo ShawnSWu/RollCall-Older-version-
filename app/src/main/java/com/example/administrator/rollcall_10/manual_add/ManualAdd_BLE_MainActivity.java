@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -255,7 +256,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 //      unregisterReceiver(mBTStateUpdateReceiver);
         manualAdd_ble_scanner_btle.stop();
-        
+
     }
 
     @Override
@@ -307,7 +308,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
-
+        //先載入dialog畫面
         LayoutInflater inflater = (LayoutInflater)this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.dialog_edit_manualadd, null);
@@ -316,7 +317,12 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
         txt_device_address.setText(address);
 
+        final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
+        edit_device.setHint(device_name);
 
+
+        //測到有裝置　先停止掃描　等待輸入
+        onPause();
 
 
 
@@ -325,7 +331,32 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int i=0;
+                        Iterator iterator=mBTDevicesArrayList.iterator();
+
+
+                        while(iterator.hasNext()){
+
+                            ManualAdd_BTLE_Device a=(ManualAdd_BTLE_Device)iterator.next();
+                            Log.e("1---1","in while"+a.getAddress());
+                            if(a.getAddress()==address){
+                                String addressw = mBTDevicesArrayList.get(i).getAddress();
+
+                                Log.e("1---1","+++4");
+                                adapter.remove(i);
+                                savepeople_address.remove(addressw);
+                                mBTDevicesHashMap.remove(addressw);
+                                adapter.notifyDataSetChanged();
+
+                            }
+                          i++;
+
+                        }
+                onRestart();
                 rollCall_dialog.dismiss();
+
+
             }
         });
 
@@ -333,11 +364,8 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
-        final EditText edit_device =(EditText)layout.findViewById(R.id.edit_device);
-        edit_device.setHint(device_name);
 
 
-        onPause();
 
         //**編輯的dialog的確認鍵
         Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);

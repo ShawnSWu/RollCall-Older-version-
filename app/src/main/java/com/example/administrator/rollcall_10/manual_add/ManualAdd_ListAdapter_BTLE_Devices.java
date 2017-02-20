@@ -87,9 +87,10 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
 
 
 
+
     //**0826
-//    public void remove(int i) {
-//        devices.remove(devices.get(i));
-//}
+    public void remove(int i) {
+        devices.remove(devices.get(i));
+}
 
 }
