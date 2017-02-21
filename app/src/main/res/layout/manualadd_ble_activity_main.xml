@@ -9,7 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     style="@style/ScanTheme"
-    tools:context=".main.MainActivity">
+    tools:context=".main.MainActivity"
+    android:weightSum="1">
 
 
 
@@ -44,7 +45,15 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="441dp"
         android:id="@+id/listView_manualadd"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.44" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="加入到清單"
+        android:id="@+id/manual_add"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </LinearLayout>
