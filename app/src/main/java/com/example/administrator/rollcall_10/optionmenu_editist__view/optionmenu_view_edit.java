@@ -107,6 +107,7 @@ public class optionmenu_view_edit extends AppCompatActivity {
 
                 title_txt.setText(ListData_Array[position]);
 
+                Log.e("20170221,要修改的字串在這",ListData_Array[position]);
 
                 RecyclerView recyclerView=(RecyclerView)layout.findViewById(R.id.recyclerView_list_long_click);
                 recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));

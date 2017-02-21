@@ -130,8 +130,6 @@ public class OptionEdit_List_Long_click_RecyclerviewAdapter extends RecyclerView
         final View layout = inflater.inflate(R.layout.dialog_edit_item_layout, null);
 
 
-        Log.e("1","2016/11/12");
-
 
         final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(layout.getContext());
         rollCall_dialog.setView(layout);
@@ -140,7 +138,7 @@ public class OptionEdit_List_Long_click_RecyclerviewAdapter extends RecyclerView
         rollCall_dialog.setCancelable(true);
 
         EditText edit_name =(EditText)layout.findViewById(R.id.original_name_edit);
-        edit_name.setHint("123");
+        edit_name.setHint("original name");
 
         Log.e("1","aqq-*:"+device_io.Edit_List_ReadData(selected).get(0));
 
@@ -159,16 +157,17 @@ public class OptionEdit_List_Long_click_RecyclerviewAdapter extends RecyclerView
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(v.getContext(), "Coming Soon！！", Toast.LENGTH_SHORT).show();
 
-                Log.e("1","aqq:"+device_io.Edit_List_ReadData(selected));
-
-
-                //***重新載入一次 suck code
-                FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
-                        .commitAllowingStateLoss();
-                //***重新載入一次 suck code
+//                Log.e("1","aqq:"+device_io.Edit_List_ReadData(selected));
+//
+//
+//                //***重新載入一次 suck code
+//                FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
+//                        .commitAllowingStateLoss();
+//                //***重新載入一次 suck code
 
                 rollCall_dialog.dismiss();
 

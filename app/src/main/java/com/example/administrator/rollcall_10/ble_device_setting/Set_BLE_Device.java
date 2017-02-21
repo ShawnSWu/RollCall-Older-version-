@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class Set_BLE_Device extends AppCompatActivity {
 
 
 
+        Log.e("UART","fucking guy");
 
         //**秒數NumberPiker
         numberPicker_Seconds=(NumberPicker)findViewById(R.id.numberPicker_Seconds);
@@ -72,7 +74,7 @@ public class Set_BLE_Device extends AppCompatActivity {
         public void onClick(View view) {
 
 
-
+            Log.e("UART","fucking guy");
 
 
             int Countdown_time = numberPicker_Hour.getValue()*1000*60*60   +  numberPicker_minute.getValue()*1000*60 + numberPicker_Seconds.getValue()*1000;

@@ -88,6 +88,53 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         actionBar.setTitle(Seletor_File_Name);
     }
 
+    void leavel_dailog(){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+        rd.setTitle("離開此頁面?").
+                setMessage("離開後記錄將不會保存,是否離開?").
+                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stopScan();
+                        finish();
+                    }
+                }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onRestart();
+                    }
+                });
+
+        rd.show();
+
+
+    }
+
+    void List_hasno_data_warning(){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+        rd.setTitle("沒有加入任何資料").
+                setMessage("什麼都不做,離開此頁面?").
+                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onRestart();
+                    }
+                });
+
+        rd.show();
+    }
+
     @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +181,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         if(savepeople_address.size() ==0) {
 
 
-            Toast.makeText(view.getContext(), "未加入任何資料", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(view.getContext(), "您沒有加入任何資料", Toast.LENGTH_SHORT).show();
+
 
         }else {
 
@@ -248,7 +295,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         public void onClick(DialogInterface dialog, int which) {
 
 
-            Toast.makeText(listView.getContext(), "comming soon！！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(listView.getContext(), "Coming Soon！！", Toast.LENGTH_SHORT).show();
 
 //            String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
 //
@@ -268,13 +315,27 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
+    //判斷最終清單內有無資料
+    boolean ListHasNoData(){
 
+        if(savepeople_address.size() == 0){
+            return true;
+        }
+        return false;
+    }
 
 
     //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
     @Override
     public Intent getSupportParentActivityIntent() {
-        finish();
+
+        if(ListHasNoData()){
+            List_hasno_data_warning();
+        }
+        else {
+            leavel_dailog();
+        }
+
         return null;
     }
     //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
@@ -326,8 +387,12 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        stopScan();
+        if(ListHasNoData()){
+            List_hasno_data_warning();
+        }
+        else {
+            leavel_dailog();
+        }
 
     }
 
@@ -547,7 +612,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             case R.id.action_scan:
                 if (!autoAdd_BLE_Scanner_BTLE.isScanning()) {
                     startScan();
-                    countdown();
+                  mCountDown.start();
                 }
                 else {
                     stopScan();

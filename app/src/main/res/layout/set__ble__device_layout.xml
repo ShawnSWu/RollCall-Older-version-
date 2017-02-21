@@ -37,16 +37,17 @@
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/numberPicker_minute"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/numberPicker_Hour"
         android:layout_above="@+id/button"
         android:layout_toLeftOf="@+id/button"
         android:layout_toStartOf="@+id/button" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker_minute"
+        android:layout_alignBaseline="@+id/numberPicker_Seconds"
+        android:layout_alignBottom="@+id/numberPicker_Seconds"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

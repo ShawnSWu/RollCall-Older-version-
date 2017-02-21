@@ -3,6 +3,7 @@ package com.example.administrator.rollcall_10.manual_add;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.demo.Utils;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
+import com.example.administrator.rollcall_10.notifications.Successful_NotificationDisplayService;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.File;
@@ -46,20 +48,20 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
     private ManualAdd_ListAdapter_BTLE_Devices adapter;
 
-    ListView listView;
+    private ListView listView;
 
 
     private ManualAdd_BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private ManualAdd_BLE_Scanner_BTLE manualAdd_ble_scanner_btle;
 
 
-    Device_IO device_io =new Device_IO();
+    private Device_IO device_io =new Device_IO();
 
-    ManualAdd_BTLE_Device btleDevice;
+    private ManualAdd_BTLE_Device btleDevice;
 
 
-    Menu mymenu;
-    MenuItem scan,countdown;
+    private Menu mymenu;
+    private MenuItem scan,countdown;
 
 
     private CountDownTimer mCountDown;
@@ -73,19 +75,47 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
-
-
-
-
-
+    //**清單最後名單*******
     private HashMap<String,String> final_Savepeople_HashMao =new HashMap<>();
 
     private  ArrayList<String> Get_HashMap_Key =new ArrayList<>();
 
-    RollCall_Dialog rollCall_dialog;
-    String address;
-    EditText edit_device;
-    String Seletor_File;
+    private RollCall_Dialog rollCall_dialog;
+    private String address;
+    private EditText edit_device;
+    private String Seletor_File;
+
+    private String Seletor_File_Name;
+
+
+
+
+    private void leavel_dailog(){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+        rd.setTitle("離開此頁面?").
+                setMessage("離開後記錄將不會保存,是否離開?").
+                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stopScan();
+                        finish();
+                    }
+                }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onRestart();
+                    }
+                });
+
+        rd.show();
+
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +131,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         Button btn_manualadd =(Button)findViewById(R.id.manual_add);
         if (btn_manualadd != null) {
-            btn_manualadd.setOnClickListener(new dialog_button());
+            btn_manualadd.setOnClickListener(new dialog_button(this));
         }
 
 
         //用以檢查,是否用在設備上
         // you can selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Utils.toast(getApplicationContext(), "BLE not supported / 藍芽不支援");
+            Utils.toast(getApplicationContext(), "BLE not supported / 您的藍芽不支援");
             finish();
         }
 
@@ -217,10 +247,13 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
 
+
+
     //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
     @Override
     public Intent getSupportParentActivityIntent() {
-        finish();
+
+        leavel_dailog();
         return null;
     }
     //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
@@ -229,14 +262,14 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
     //**Actionbar跟標題
-    public void Acttionbar_TitleData(){
+    private void Acttionbar_TitleData(){
 
         //****Scan返回鍵監聽事件
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //**掃描的清單名稱
         Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+        Seletor_File_Name = bundle.getString("Selected_File_Name");
 
         //清單名稱當標題
         ActionBar actionBar =getSupportActionBar();
@@ -294,11 +327,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
-
-        //
-        stopScan();
+        leavel_dailog();
     }
 
     @Override
@@ -338,7 +367,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         TextView txt_device_address =(TextView)layout.findViewById(R.id.device_address);
         txt_device_address.setText(address);
 
-      edit_device =(EditText)layout.findViewById(R.id.edit_device);
+        edit_device =(EditText)layout.findViewById(R.id.edit_device);
         edit_device.setHint(device_name);
 
 
@@ -349,7 +378,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         ///**關閉dialog
         Button btn_close =(Button)layout.findViewById(R.id.btn_close);
-        btn_close.setOnClickListener(new dialog_button());
+        btn_close.setOnClickListener(new dialog_button(this));
 
       //**舊的code
 //        btn_close.setOnClickListener(new View.OnClickListener() {
@@ -393,13 +422,12 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         //**確定的button in dialog
         Button btn_ok =(Button)layout.findViewById(R.id.btn_ok);
-        btn_ok.setOnClickListener(new dialog_button());
+        btn_ok.setOnClickListener(new dialog_button(this));
 
 
         rollCall_dialog.setView(layout);
         rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
         rollCall_dialog.setCancelable(false);
-        rollCall_dialog.setCancelable(true);
         rollCall_dialog.show();
 
     }
@@ -592,7 +620,10 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
     class dialog_button implements View.OnClickListener{
-
+        Context context;
+        dialog_button(Context context){
+            this.context=context;
+        }
         @Override
         public void onClick(View v) {
 
@@ -638,11 +669,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                     Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
 
 
-//                    device_io.Temporary_Manual_WriteData(edit_device_name,address,true,Seletor_File);
-
-//                    final_savepeople_List.add(edit_device_name);
-//                    final_savepeople_List.add(address);
-
                     final_Savepeople_HashMao.put(edit_device_name,address);
 
                     Log.e("shawn",edit_device_name+"and"+address);
@@ -663,37 +689,111 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                 //加入清單按鍵
                 case R.id.manual_add:
 
-
-                    Iterator<String> it= final_Savepeople_HashMao.keySet().iterator();
-
-                    while(it.hasNext()){
-
-                        String a=it.next();
-                        Get_HashMap_Key.add(a);
-
+                    if(ListHasNoData()) {
+                        List_hasno_data_warning();
+                    }else{
+                        AddDataToList();
                     }
-
-
-
-
-
-                       for(int j = 0; j< final_Savepeople_HashMao.size(); j++){
-                           //將final_Savepeople_HashMap這個HashMap的Key取出 再用key將值取出 (key is metadata key本身就是裝置的name)
-
-                        String Key= Get_HashMap_Key.get(j);
-                        device_io.Temporary_Manual_WriteData(Key, final_Savepeople_HashMao.get(Key),true,Seletor_File);
-
-                    }
-                    rollCall_dialog.dismiss();
-
                     break;
-
 
 
 
             }
 
         }
+
+        //判斷最終清單內有無資料
+        boolean ListHasNoData(){
+
+            if(final_Savepeople_HashMao.size() == 0){
+                return true;
+            }
+            return false;
+        }
+
+
+        void AddDataToList(){
+            onPause();
+            RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(context);
+            rd.setTitle("將加入清單！！").
+                    setMessage("確定將"+final_Savepeople_HashMao.size()+"筆資料加入清單內?").
+                    setPositiveButton("確定加入", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            SureToJoin();
+                            finish();
+
+
+
+                            Intent startNotificationServiceIntent = new Intent(ManualAdd_BLE_MainActivity.this, Successful_NotificationDisplayService.class);
+
+                            Bundle bundle1=new Bundle();
+                            bundle1.putString("List_name",Seletor_File_Name);
+                            bundle1.putInt("List_size",final_Savepeople_HashMao.size());
+
+                            startNotificationServiceIntent.putExtras(bundle1);
+
+                            startService(startNotificationServiceIntent);
+
+
+                        }
+                    }).
+                    setNegativeButton("繼續編輯", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            onRestart();
+                        }
+                    });
+
+            rd.show();
+        }
+
+        void List_hasno_data_warning(){
+            onPause();
+            RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(context);
+            rd.setTitle("沒有加入任何資料").
+                    setMessage("什麼都不做,離開此頁面?").
+                    setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).
+                    setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            onRestart();
+                        }
+                    });
+
+            rd.show();
+        }
+    }
+
+
+    void SureToJoin(){
+        Iterator<String> it= final_Savepeople_HashMao.keySet().iterator();
+
+        while(it.hasNext()){
+
+            String a=it.next();
+            Get_HashMap_Key.add(a);
+
+        }
+
+        for(int j = 0; j< final_Savepeople_HashMao.size(); j++){
+            //將final_Savepeople_HashMap這個HashMap的Key取出 再用key將值取出 (key is metadata key本身就是裝置的name)
+
+            String Key= Get_HashMap_Key.get(j);
+            device_io.Temporary_Manual_WriteData(Key, final_Savepeople_HashMao.get(Key),true,Seletor_File);
+
+        }
+        rollCall_dialog.dismiss();
+        stopScan();
+        finish();
     }
 }
 
