@@ -64,6 +64,10 @@
             android:enabled="true"
             android:exported="true"></service>
 
+
+        <activity
+            android:name=".rollcall.RollCall_Result"
+            android:screenOrientation="portrait" />
         <!-- Parent activity meta-data to support 4.0 and lower -->
 
         <activity

@@ -2,6 +2,8 @@ package com.example.administrator.rollcall_10.rollcall;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -15,14 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 ;
 import com.example.administrator.rollcall_10.demo.BroadcastReceiver_BTState;
 import com.example.administrator.rollcall_10.demo.ListAdapter_BTLE_Devices;
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.demo.Utils;
+import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -31,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +55,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
     RollCall_BTLE_Device btleDevice;
 
+    static String countdown_time;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
     private RollCall_Scanner_BTLE mBTLeScanner;
@@ -59,9 +66,24 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     private CountDownTimer mCountDown;
 
 
+
     //**傳進來的清單,要放的ArrayList
     ArrayList<String> ReadyScanList =new ArrayList<>();
 
+
+    //**有KEY有值得HashMap 拿來判斷
+   private static HashMap<String,String> MainHashMapList=new HashMap<>();
+
+    ArrayList<String> RollCall_successful_key =new ArrayList<>();
+
+
+    //**拿來保存要給RSL的暫時ArrayList
+    ArrayList<String> ScanList_Key =new ArrayList<>();
+    ArrayList<String> ScanList_Name =new ArrayList<>();
+    //**拿來保存要給RSL的暫時ArrayList
+
+
+    private static ArrayList<String> save_MainHashMapList_arraylist=new ArrayList<>();
 
 
     void Shawn_Test_Log_List(){
@@ -94,21 +116,172 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
             if(ListWith_Address!= null) {
                 //**把要掃描的清單內的資料取出來
                 ReadyScanList.add(ListWith_Address);
+
+                Log.e("-++++++++++///","::::::::::::::"+ListWith_Address);
+
             }
 
         } while (ListWith_Address != null);
 
 
-        for(int i=0;i<ReadyScanList.size()/2;i++) {
 
-            Log.e("shawn","清單內容----:"+ReadyScanList.toString());
-            Log.e("shawn","清單長度:"+ReadyScanList.size());
 
-            Log.e("shawn", "第"+i+"個的字為:" + ReadyScanList.get(i));
+        for(int i=0;i<ReadyScanList.size();i+=2) {
+
+            Log.e("ScanList_Name的for",ReadyScanList.get(i));
+            ScanList_Name.add(ReadyScanList.get(i));
+        }
+
+
+        for(int i=1;i<ReadyScanList.size();i+=2) {
+
+            Log.e("ScanList_Key的for",ReadyScanList.get(i));
+            ScanList_Key.add(ReadyScanList.get(i));
+        }
+
+
+
+        for(int i=0;i<ScanList_Key.size();i++) {
+
+            MainHashMapList.put(ScanList_Key.get(i),ScanList_Name.get(i));
 
         }
 
+
+
+
+//        for(int i=0;i<ReadyScanList.size()/2;i++) {
+//
+//            Log.e("shawn2017-02-22","清單內容----:"+ReadyScanList.toString());
+//            Log.e("shawn2017-02-22","清單長度:"+ReadyScanList.size());
+//
+//            Log.e("shawn2017-02-22", "第"+i+"個的字為:" + ReadyScanList.get(i));
+//
+//        }
+
+
+        Log.e("shawn2017-02-22","RSL內容----:"+MainHashMapList);
+
     }
+
+
+    private void leavel_dailog(final Context context){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+
+
+        if(countdown_time!="DONE") {
+            rd.setTitle("離開此頁面?").
+                    setMessage("點名尚未結束,是否離開?").
+                    setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            stopScan();
+                            finish();
+                        }
+                    }).
+                    setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            onRestart();
+                            Toast.makeText(context, "繼續點名", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+            rd.show();
+        }else{
+
+            rd.setTitle("離開此頁面?").
+                    setMessage("確定離開?").
+                    setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            stopScan();
+                            finish();
+                        }
+                    }).
+                    setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            onRestart();
+                        }
+                    });
+
+            rd.show();
+        }
+
+
+    }
+
+
+    //**Actionbar跟標題
+    public void Acttionbar_TitleData(){
+
+        //****Scan返回鍵監聽事件
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //**掃描的清單名稱
+        Bundle bundle = getIntent().getExtras();
+        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+
+        //清單名稱當標題
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle(Seletor_File_Name.substring(0,Seletor_File_Name.length()-4));
+
+
+
+    }
+
+
+
+
+
+    void ShowRollCallResults(){
+//        Iterator<String> it=  MainHashMapList.keySet().iterator();
+//
+//
+//
+//
+//        while (it.hasNext()){
+//            String a=it.next();
+//            Log.e("RSL.keySet()",a);
+//            save_MainHashMapList_arraylist.add(a);
+//        }
+//
+//
+//        for(int i=0;i<RollCall_successful_key.size();i++) {
+//            Log.e("RollCall_successful_key", RollCall_successful_key.get(i));
+//        }
+
+
+
+//        if (!RSL.keySet().containsAll(RollCall_successful_key)){
+//
+//            Log.e("11","黑马程序员 毕向东");
+//
+//        }
+
+        Intent it=new Intent();
+        Bundle bundle=new Bundle();
+        bundle.putStringArrayList("RollCall_successful_key",RollCall_successful_key);
+        bundle.putSerializable("MainHashMapList",MainHashMapList);
+        it.putExtras(bundle);
+
+        it.setClass(this,RollCall_Result.class);
+
+        startActivity(it);
+
+
+
+
+
+
+
+    }
+
+
 
 
 
@@ -126,7 +299,14 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         Acttionbar_TitleData();
 
 
-
+        Button finsh_rollcall=(Button)findViewById(R.id.finsh_rollcall);
+        assert finsh_rollcall != null;
+        finsh_rollcall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowRollCallResults();
+            }
+        });
 
 
 
@@ -161,29 +341,13 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
 
-    //**Actionbar跟標題
-    public void Acttionbar_TitleData(){
-
-        //****Scan返回鍵監聽事件
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //**掃描的清單名稱
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
-
-        //清單名稱當標題
-        ActionBar actionBar =getSupportActionBar();
-        actionBar.setTitle(Seletor_File_Name.substring(0,Seletor_File_Name.length()-4));
-    }
-
-
 
 
 
     //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
     @Override
     public Intent getSupportParentActivityIntent() {
-        finish();
+        leavel_dailog(this);
         return null;
     }
     //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
@@ -216,6 +380,13 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 //        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        mBTLeScanner.start();
+    }
 
 
 
@@ -260,8 +431,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        stopScan();
+        leavel_dailog(this);
     }
 
     @Override
@@ -389,18 +559,30 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
                     btleDevice = new RollCall_BTLE_Device(device);
 
 
-                    for(int i=0;i<ReadyScanList.size();i++) {
-                        if (Objects.equals(btleDevice.getAddress(), ReadyScanList.get(i))) {
+                    //**如果hashmap的key有的話 在顯示
+                    for(int i=0;i<ScanList_Key.size();i++) {
+                        if (Objects.equals(btleDevice.getAddress(), ScanList_Key.get(i))) {
 
 
-                            btleDevice.setName(ReadyScanList.get(i-1));
+                            btleDevice.setName(ScanList_Name.get(i));
 
-                            Log.e("1","-*-*----"+ReadyScanList.get(i-1));
+                            Log.e("1","-*-*----"+ScanList_Key.get(i));
+                            Log.e("1","-*-*----"+ScanList_Name.get(i));
+
+
+
+                            RollCall_successful_key.add(ScanList_Key.get(i));
+
+
+
+
+
+
+
 
                             adapter.notifyDataSetChanged();
 
                           mBTDevicesHashMap.put(address, btleDevice);
-
 
                           mBTDevicesArrayList.add(btleDevice);
 
@@ -472,7 +654,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
 
-                String countdown_time = "剩下時間："+
+              countdown_time = "剩下時間："+
                         (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
                         (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
@@ -483,13 +665,12 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
                     mCountDown.onFinish();
                 }
 
-
-
             }
 
             public void onFinish() {
-
+                countdown_time="DONE";
                 countdown.setTitle("done");
+
                 scan.setIcon(R.drawable.startscanbtn);
                 Log.e("1","倒數結束");
 
@@ -521,7 +702,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
             case R.id.action_scan:
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
-                    countdown();
+                    mCountDown.start();
 
                 }
                 else {

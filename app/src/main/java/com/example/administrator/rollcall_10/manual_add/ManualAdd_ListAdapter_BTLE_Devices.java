@@ -51,8 +51,9 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
 
         int rssi = device.getRSSI();
 
-        TextView tv_name = null;
-        TextView tv_address = null;
+        TextView tv_name;
+        TextView tv_address;
+        TextView tv_rssi ;
 
         tv_name = (TextView) convertView.findViewById(R.id.tv_name);
         tv_name.setText(device.getName());
@@ -71,8 +72,8 @@ public class ManualAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<ManualAdd_B
 
 
 
-//        tv = (TextView) convertView.findViewById(R.id.tv_rssi);
-//        tv.setText("RSSI: " + Integer.toString(rssi));
+        tv_rssi = (TextView) convertView.findViewById(R.id.tv_rssi);
+        tv_rssi.setText("RSSI: " + Integer.toString(rssi));
 
         tv_address = (TextView) convertView.findViewById(R.id.tv_macaddr);
         if (address != null && address.length() > 0) {

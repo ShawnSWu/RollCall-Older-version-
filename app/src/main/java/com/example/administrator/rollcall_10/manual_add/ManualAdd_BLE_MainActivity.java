@@ -76,7 +76,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
     //**清單最後名單*******
-    private HashMap<String,String> final_Savepeople_HashMao =new HashMap<>();
+    private HashMap<String,String> final_Savepeople_HashMap =new HashMap<>();
 
     private  ArrayList<String> Get_HashMap_Key =new ArrayList<>();
 
@@ -589,7 +589,6 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
             case R.id.action_scan:
                 if (!manualAdd_ble_scanner_btle.isScanning()) {
                     startScan();
-//                    countdown();
                     mCountDown.start();
                 }
                 else {
@@ -669,7 +668,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
                     Toast.makeText(v.getContext(),edit_device_name , Toast.LENGTH_LONG).show();
 
 
-                    final_Savepeople_HashMao.put(edit_device_name,address);
+                    final_Savepeople_HashMap.put(edit_device_name,address);
 
                     Log.e("shawn",edit_device_name+"and"+address);
 
@@ -705,7 +704,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
         //判斷最終清單內有無資料
         boolean ListHasNoData(){
 
-            if(final_Savepeople_HashMao.size() == 0){
+            if(final_Savepeople_HashMap.size() == 0){
                 return true;
             }
             return false;
@@ -716,7 +715,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
             onPause();
             RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(context);
             rd.setTitle("將加入清單！！").
-                    setMessage("確定將"+final_Savepeople_HashMao.size()+"筆資料加入清單內?").
+                    setMessage("確定將"+ final_Savepeople_HashMap.size()+"筆資料加入清單內?").
                     setPositiveButton("確定加入", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -730,7 +729,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
                             Bundle bundle1=new Bundle();
                             bundle1.putString("List_name",Seletor_File_Name);
-                            bundle1.putInt("List_size",final_Savepeople_HashMao.size());
+                            bundle1.putInt("List_size", final_Savepeople_HashMap.size());
 
                             startNotificationServiceIntent.putExtras(bundle1);
 
@@ -775,7 +774,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
 
     void SureToJoin(){
-        Iterator<String> it= final_Savepeople_HashMao.keySet().iterator();
+        Iterator<String> it= final_Savepeople_HashMap.keySet().iterator();
 
         while(it.hasNext()){
 
@@ -784,11 +783,11 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         }
 
-        for(int j = 0; j< final_Savepeople_HashMao.size(); j++){
+        for(int j = 0; j< final_Savepeople_HashMap.size(); j++){
             //將final_Savepeople_HashMap這個HashMap的Key取出 再用key將值取出 (key is metadata key本身就是裝置的name)
 
             String Key= Get_HashMap_Key.get(j);
-            device_io.Temporary_Manual_WriteData(Key, final_Savepeople_HashMao.get(Key),true,Seletor_File);
+            device_io.Temporary_Manual_WriteData(Key, final_Savepeople_HashMap.get(Key),true,Seletor_File);
 
         }
         rollCall_dialog.dismiss();
