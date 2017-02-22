@@ -351,6 +351,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
+    
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

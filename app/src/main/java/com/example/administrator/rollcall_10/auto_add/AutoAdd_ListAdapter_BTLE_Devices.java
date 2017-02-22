@@ -25,8 +25,8 @@ public class AutoAdd_ListAdapter_BTLE_Devices extends ArrayAdapter<Auto_BTLE_Dev
         super(context.getApplicationContext(), resource, objects);
 
         this.context = context;
-      this.layoutResourceID = resource;
-       this.devices = objects;
+        this.layoutResourceID = resource;
+        this.devices = objects;
 
     }
 
