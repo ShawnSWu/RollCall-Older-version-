@@ -1,76 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/l1"
+        android:layout_centerHorizontal="true">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="應到人數"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/should_inpeople_tv" />
-
-        <TextView
-            android:text="~~~~~~~~"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/should_inpeople" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
+        <LinearLayout
         android:orientation="horizontal"
         android:layout_gravity="bottom"
 
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/outpeople_layout">
 
 
 
         <TextView
-            android:text="未到人數"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/outpeople_tv" />
+        android:text="未到人數："
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/outpeople_tv"
+            android:textSize="30sp" />
 
         <TextView
-            android:text="~~~~~~~~"
-            android:layout_width="wrap_content"
+        android:text="~~~~~~~~"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/outpeople"
+            android:textSize="29sp" />
+
+
+
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/outpeople_list_layout"
+            android:layout_below="@+id/layout_outpeople_text">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:id="@+id/layout_outpeople_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/outpeople" />
+            android:layout_below="@+id/outpeople_layout"
+            android:padding="10dp"
+            android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="未到清單"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/outpeople_layout"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/outpeople_list_layout"
+            android:layout_alignParentStart="true"
+            android:id="@+id/outpeople_text" />
+        </LinearLayout>
 
 
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:id="@+id/l1"
 
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-        <TextView
-            android:text="實到人數"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/real_inpeople_tv" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:text="~~~~~~~~"
+            <TextView
+                android:text="應到人數："
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/should_inpeople_tv"
+                android:textSize="25sp" />
+
+            <TextView
+                android:text="~~~~~~~~"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/should_inpeople"
+                android:textSize="26sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/real_inpeople" />
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:text="實到人數："
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/real_inpeople_tv"
+                android:textSize="25sp" />
+
+            <TextView
+                android:text="~~~~~~~~"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/real_inpeople"
+                android:textSize="26sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/R1"-->
+        <!--android:layout_above="@+id/l1">-->
 
-</LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_gravity="bottom"-->
+
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+
+
+
+            <!--<TextView-->
+                <!--android:text="未到人數"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/outpeople_tv" />-->
+
+            <!--<TextView-->
+                <!--android:text="~~~~~~~~"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/outpeople" />-->
+
+
+
+
+        <!--</LinearLayout>-->
+
+    <!--</RelativeLayout>-->
+</RelativeLayout>
+

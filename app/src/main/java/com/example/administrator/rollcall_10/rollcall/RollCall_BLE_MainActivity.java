@@ -66,13 +66,14 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     private CountDownTimer mCountDown;
 
 
+    private String Seletor_File_Name;
 
     //**傳進來的清單,要放的ArrayList
     ArrayList<String> ReadyScanList =new ArrayList<>();
 
 
     //**有KEY有值得HashMap 拿來判斷
-   private static HashMap<String,String> MainHashMapList=new HashMap<>();
+   private HashMap<String,String> MainHashMapList=new HashMap<>();
 
     ArrayList<String> RollCall_successful_key =new ArrayList<>();
 
@@ -82,8 +83,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     ArrayList<String> ScanList_Name =new ArrayList<>();
     //**拿來保存要給RSL的暫時ArrayList
 
-
-    private static ArrayList<String> save_MainHashMapList_arraylist=new ArrayList<>();
 
 
     void Shawn_Test_Log_List(){
@@ -224,7 +223,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
         //**掃描的清單名稱
         Bundle bundle = getIntent().getExtras();
-        String Seletor_File_Name = bundle.getString("Selected_File_Name");
+       Seletor_File_Name = bundle.getString("Selected_File_Name");
 
         //清單名稱當標題
         ActionBar actionBar =getSupportActionBar();
@@ -239,45 +238,17 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
     void ShowRollCallResults(){
-//        Iterator<String> it=  MainHashMapList.keySet().iterator();
-//
-//
-//
-//
-//        while (it.hasNext()){
-//            String a=it.next();
-//            Log.e("RSL.keySet()",a);
-//            save_MainHashMapList_arraylist.add(a);
-//        }
-//
-//
-//        for(int i=0;i<RollCall_successful_key.size();i++) {
-//            Log.e("RollCall_successful_key", RollCall_successful_key.get(i));
-//        }
-
-
-
-//        if (!RSL.keySet().containsAll(RollCall_successful_key)){
-//
-//            Log.e("11","黑马程序员 毕向东");
-//
-//        }
 
         Intent it=new Intent();
         Bundle bundle=new Bundle();
         bundle.putStringArrayList("RollCall_successful_key",RollCall_successful_key);
         bundle.putSerializable("MainHashMapList",MainHashMapList);
+        bundle.putString("Selected_File_Name",Seletor_File_Name);
         it.putExtras(bundle);
 
         it.setClass(this,RollCall_Result.class);
 
         startActivity(it);
-
-
-
-
-
-
 
     }
 
@@ -303,8 +274,38 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         assert finsh_rollcall != null;
         finsh_rollcall.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ShowRollCallResults();
+            public void onClick(final View v) {
+
+                RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(v.getContext());
+
+                if(mBTLeScanner.isScanning()) {
+                    onPause();
+                    rd.setTitle("點名尚未結束?").
+                            setMessage("是否結束點名,前往看結果?").
+                            setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    stopScan();
+                                    ShowRollCallResults();
+                                    finish();
+                                }
+                            }).
+                            setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    onRestart();
+                                    Toast.makeText(v.getContext(), "繼續點名", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                    rd.show();
+                }else{
+
+                    ShowRollCallResults();
+                }
+
+
             }
         });
 
@@ -395,6 +396,8 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
     @Override
     protected void onPause() {
         super.onPause();
+
+
 
 //        unregisterReceiver(mBTStateUpdateReceiver);
         Log.e("1","shawn-pause停止掃描");
@@ -512,40 +515,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
 
 
         if (!mBTDevicesHashMap.containsKey(address)) {
-
-
-
-
-//            //**要掃描的清單內的內容存放的String
-//            String ListWith_Address = null;
-//
-//
-//            FileReader fr = null;
-//
-//            try {
-//                fr = new FileReader(Seletor_File);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//            BufferedReader br = new BufferedReader(fr);
-//
-//
-//            do {
-//                try {
-//                    ListWith_Address = br.readLine();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                //**把要掃描的清單內的資料取出來
-//                ReadyScanList.add(ListWith_Address);
-//
-//
-//            } while (ListWith_Address != null);
-
-
-
 
 
             //**從被掃描的清單內查這個address是否在清單內

@@ -2,11 +2,15 @@ package com.example.administrator.rollcall_10.splashscreen;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.administrator.rollcall_10.device_io.I_File_Path;
 import com.example.administrator.rollcall_10.main.MainActivity;
@@ -24,6 +28,11 @@ public class SplashScreen extends Activity {
     public static final int SplashScreen_Time=3000;
     ImageView LoGo_text;
     File peoplefile;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +45,23 @@ public class SplashScreen extends Activity {
         //**內鍵創建文字檔 strat--->
         peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Built_TextFile);
 
-if(peoplefile.length() ==0) {
+if(!peoplefile.exists()) {  //!peoplefile.exists()
     try {
         FileWriter fw = new FileWriter(peoplefile, false);
+        Toast.makeText(this, "RollCall資料夾建立成功", Toast.LENGTH_LONG).show();
         Log.e("1", "內建文字檔建立成功");
     } catch (IOException e) {
         e.printStackTrace();
         Log.e("1", "內建文字檔建立失敗");
     }
+
+
 }
 
         //**內鍵創建文字檔 End--->
+
+
+
 
 
         LoGo_text=(ImageView)findViewById(R.id.Logo_text);
