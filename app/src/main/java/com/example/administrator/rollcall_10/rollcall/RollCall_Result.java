@@ -114,7 +114,7 @@ public class RollCall_Result extends AppCompatActivity {
 
         Log.e("RollCall_Result","MainHashMapList的內容:"+MainHashMapList);
 
-        ArrayList<String> QQ=new ArrayList<>();
+        ArrayList<String> hashmap_to_arraylist=new ArrayList<>();
 
 
         Iterator<String> it=MainHashMapList.keySet().iterator();
@@ -127,7 +127,7 @@ public class RollCall_Result extends AppCompatActivity {
 
 
 //            QQ.add(a);
-            QQ.add(MainHashMapList.get(a));
+            hashmap_to_arraylist.add(MainHashMapList.get(a));
         }
 
 
@@ -142,18 +142,11 @@ public class RollCall_Result extends AppCompatActivity {
 
 
 
-        OutPeopleList_RecyclerviewAdapter qutPeopleList_RecyclerviewAdapter =new OutPeopleList_RecyclerviewAdapter(QQ);
+        OutPeopleList_RecyclerviewAdapter qutPeopleList_RecyclerviewAdapter =new OutPeopleList_RecyclerviewAdapter(hashmap_to_arraylist);
 
         recyclerView.setAdapter(qutPeopleList_RecyclerviewAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
-
-//        ListView outpeople_List= (ListView)findViewById(R.id.outpeople_list_layout);
-//
-//        SimpleAdapter listAdapter = new SimpleAdapter(this,QQ,android.R.layout.simple_list_item_1,aa);
-//
-//        outpeople_List.setAdapter(listAdapter);
     }
 
 

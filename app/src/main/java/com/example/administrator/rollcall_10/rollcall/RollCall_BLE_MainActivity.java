@@ -389,6 +389,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity implements  Ada
         mBTLeScanner.start();
     }
 
+    
 
 
 

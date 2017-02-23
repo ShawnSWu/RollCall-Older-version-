@@ -43,6 +43,7 @@ public class RollCall_Scanner_BTLE {
         if (!Utils.checkBluetooth(mBluetoothAdapter)) {
             Utils.requestUserBluetooth(ma);
             ma.stopScan();
+            ma.finish();
         }
         else {
             scanLeDevice(true);

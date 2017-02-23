@@ -242,6 +242,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
 
         startScan();
 
+
     }
 
 
@@ -290,7 +291,7 @@ public class ManualAdd_BLE_MainActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
 
-        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+//        registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
     }
 

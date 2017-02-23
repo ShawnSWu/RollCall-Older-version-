@@ -44,6 +44,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
         if (!Utils.checkBluetooth(mBluetoothAdapter)) {
             Utils.requestUserBluetooth(manualAdd_ble_mainActivity);
             manualAdd_ble_mainActivity.stopScan();
+            manualAdd_ble_mainActivity.finish();
 
         }
         else {
