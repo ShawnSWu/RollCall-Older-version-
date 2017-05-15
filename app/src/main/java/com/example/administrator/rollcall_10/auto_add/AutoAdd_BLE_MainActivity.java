@@ -160,13 +160,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-//        device_io.Imperfect_writeData(savepeople_address,savepeople_name,true,Seletor_File);
-
-
-        //**暫時版寫入
-//        device_io.Temporary_Auto_WriteData(savepeople_address,true,Seletor_File);
-
-
         //**將名字與地址寫入２０１６／０９／２７
 //        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
 
@@ -212,6 +205,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
+            Log.e("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF","9");
         }
 
 
@@ -287,6 +281,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
                 startScan();
 
+        onRestart();
+
     }
 
 
@@ -350,7 +346,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        Log.e("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF","8");
         registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
@@ -395,6 +391,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
