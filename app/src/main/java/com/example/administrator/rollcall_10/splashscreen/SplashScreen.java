@@ -36,15 +36,15 @@ public class SplashScreen extends Activity {
         //**內鍵創建文字檔 strat--->
         peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Built_TextFile);
 
-if(peoplefile.length() ==0) {
-    try {
-        FileWriter fw = new FileWriter(peoplefile, false);
-        Log.e("1", "內建文字檔建立成功");
-    } catch (IOException e) {
-        e.printStackTrace();
-        Log.e("1", "內建文字檔建立失敗");
-    }
-}
+        if(!peoplefile.exists()) {
+            try {
+                peoplefile.createNewFile();
+                Log.e("1", "內建文字檔建立成功");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("1", "內建文字檔建立失敗");
+            }
+        }
 
         //**內鍵創建文字檔 End--->
 
@@ -73,8 +73,7 @@ if(peoplefile.length() ==0) {
                 Intent i = new Intent(SplashScreen.this, MainActivity.class); //MainActivity為主要檔案名稱
                 startActivity(i);
 
-                // close this activity
-                finish();
+
             }
         }, SplashScreen_Time);
 

@@ -10,36 +10,33 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import com.example.administrator.rollcall_10.R;
-import com.example.administrator.rollcall_10.main.MainActivity;
+import com.example.administrator.rollcall_10.device_io.Device_IO;
 import com.example.administrator.rollcall_10.optionmenu_editist__view.optionmenu_view_edit;
-import com.example.administrator.rollcall_10.recyclerview.WatchList_RecyclerviewAdapter;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/8/11.
  */
 public class Recyclerview_WatchList extends AppCompatActivity  {
     String Seletor_List_File,Seletor_List_Path;
-    String[] ListData_Array;
 
-    void edit(){
+    WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList;
+    HashMap<String,String> txt_hashmap;
+    RecyclerView recyclerView;
+    private void Edit_Activity(){
         Intent option_edit= new Intent(Recyclerview_WatchList.this, optionmenu_view_edit.class); //MainActivity為主要檔案名稱
         Bundle dataMap = new Bundle();
-        dataMap.putStringArray("ListData_Array", ListData_Array);
         dataMap.putString("Seletor_List_File",Seletor_List_File);
         dataMap.putString("Seletor_List_Path",Seletor_List_Path);
-
-
-
-
         option_edit.putExtras(dataMap);
 
         startActivity(option_edit);
-    }
-
-    void add(){
-
     }
 
 
@@ -48,6 +45,7 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerview_watchlist);
 
+        Log.e("adasd4as6d4a6sd5","onCreate");
             //****Scan返回鍵監聽事件 Start****\\
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             //****Scan返回鍵監聽事件 End****\\
@@ -67,26 +65,23 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
 
 
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recyclerView_watchlist);
+        recyclerView=(RecyclerView)findViewById(R.id.recyclerView_watchlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
 
         //**清單內的資料,用陣列顯示
-        ListData_Array = bundle.getStringArray("device_Imperfect");
 
-        for(int i=0;i<ListData_Array.length;i++) {
-            Log.e("1", "::---" + ListData_Array[i]);
-        }
+        txt_hashmap=(HashMap<String, String>) bundle.getSerializable("Txt_path");
 
-//      final String[] address = bundle.getStringArray("device_address");
-
-        WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(ListData_Array);
+        recyclerviewAdapter_watchList =new WatchList_RecyclerviewAdapter(txt_hashmap);
         recyclerView.setAdapter(recyclerviewAdapter_watchList);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
     }
+
+
 
 
 
@@ -114,7 +109,7 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_setting_edit:
-                edit();
+                Edit_Activity();
 
                 return true;
 
@@ -125,6 +120,33 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateData();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateData();
+    }
+
+    private void updateData()
+    {
+        Device_IO device_io=new Device_IO();
+        HashMap<String,String> ListData_Array;
+
+        ListData_Array=device_io.HashMap_ReadDataFromTxt(Seletor_List_Path);
+
+        if(ListData_Array.size()!=0) {
+            recyclerviewAdapter_watchList = new WatchList_RecyclerviewAdapter(ListData_Array);
+            recyclerView.setAdapter(recyclerviewAdapter_watchList);
+        }else{
+
+        }
 
 
+    }
 }

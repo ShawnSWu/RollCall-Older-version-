@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/original_name_edit"
             android:padding="25dp"
-            android:hint="清單名稱"
+            android:hint="修改名稱"
             android:background="@null"
             android:drawableBottom="@drawable/dialog_add_file"
             android:maxLength="12"

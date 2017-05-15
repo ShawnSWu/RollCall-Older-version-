@@ -24,6 +24,7 @@ import java.util.UUID;
 /**
  * Created by Kelvin on 5/8/16.
  */
+
 public class Service_BTLE_GATT extends Service {
     /**
      * Service for managing connection and data communication with a GATT server hosted on a

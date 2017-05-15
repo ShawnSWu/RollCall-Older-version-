@@ -26,6 +26,12 @@ public class mainview_fragmentlayout_Home extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
+    private static mainview_fragmentlayout_Home mainview_fragmentlayout_home=new mainview_fragmentlayout_Home();
+
+    private mainview_fragmentlayout_Home(){}
+
+
+
 
     private void Initialsettings(){
 
@@ -53,6 +59,17 @@ public class mainview_fragmentlayout_Home extends Fragment {
 
     }
 
+
+
+
+    public static mainview_fragmentlayout_Home getMainview_fragmentlayout_Home_Intance(){
+
+        if(mainview_fragmentlayout_home==null) {
+            mainview_fragmentlayout_home=new mainview_fragmentlayout_Home();
+        }
+
+        return mainview_fragmentlayout_home;
+    }
 
 
 

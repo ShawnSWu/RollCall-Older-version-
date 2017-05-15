@@ -44,7 +44,15 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="442dp"
         android:id="@+id/listView_rollcall"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="點名結束 看結果!!"
+        android:id="@+id/finsh_rollcall"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </LinearLayout>

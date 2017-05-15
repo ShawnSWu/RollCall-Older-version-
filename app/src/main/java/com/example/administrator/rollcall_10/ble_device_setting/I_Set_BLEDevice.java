@@ -22,4 +22,6 @@ public interface I_Set_BLEDevice {
     //**NumberPicker最大值
     int numberPicker_max=59;
 
+
+    String device_startwith="RollCall";
 }

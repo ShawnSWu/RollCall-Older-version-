@@ -2,16 +2,12 @@ package com.example.administrator.rollcall_10.auto_add;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener {
+public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
     public static final int REQUEST_ENABLE_BT = 1;
     public static final int BTLE_SERVICES = 2;
 
@@ -59,17 +55,17 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
     Device_IO device_io =new Device_IO();
 
-
-
-
     Menu mymenu;
     MenuItem scan,countdown;
 
 
     private CountDownTimer mCountDown;
 
-    public  ArrayList<String> savepeople_address =new ArrayList<>();
-    public  ArrayList<String> savepeople_name =new ArrayList<>();
+//    public  ArrayList<String> savepeople_address =new ArrayList<>();
+//    public  ArrayList<String> savepeople_name =new ArrayList<>();
+
+
+    private HashMap<String,String> ReadySaveToTxt_hashmap=new HashMap<>();
 
 
 
@@ -86,6 +82,54 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         //清單名稱當標題
         ActionBar actionBar =getSupportActionBar();
         actionBar.setTitle(Seletor_File_Name);
+    }
+
+    void leavel_dailog(){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+        rd.setTitle("離開此頁面?").
+                setMessage("離開後記錄將不會保存,是否離開?").
+                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        stopScan();
+                        finish();
+                    }
+                }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onRestart();
+                    }
+                });
+
+        rd.show();
+
+
+    }
+
+    void List_hasno_data_warning(){
+        onPause();
+        RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
+        rd.setTitle("沒有加入任何資料").
+                setMessage("什麼都不做,離開此頁面?").
+                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        onRestart();
+                    }
+                });
+
+        rd.show();
     }
 
     @Nullable
@@ -124,18 +168,19 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
         //**將名字與地址寫入２０１６／０９／２７
-        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+//        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
+
 
 
 
         stopScan();
 
 
-        if(savepeople_address.size() ==0) {
+        if(ReadySaveToTxt_hashmap.size() ==0) {
 
 
-            Toast.makeText(view.getContext(), "未加入任何資料", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(view.getContext(), "您沒有加入任何資料", Toast.LENGTH_SHORT).show();
+
 
         }else {
 
@@ -143,13 +188,14 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
             Bundle bundle1=new Bundle();
-            bundle1.putInt("List_size",savepeople_address.size());
+            bundle1.putInt("List_size",ReadySaveToTxt_hashmap.size());
             bundle1.putString("List_name",bundle.getString("Selected_File_Name"));
 
             startNotificationServiceIntent.putExtras(bundle1);
 
             startService(startNotificationServiceIntent);
 
+            device_io.Auto_WriteDataToTxt(ReadySaveToTxt_hashmap,true,Seletor_File);
 
 
             finish();
@@ -202,7 +248,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
                   adapter.remove(i);
-                savepeople_address.remove(address);
+//                  savepeople_address.remove(address);
+                ReadySaveToTxt_hashmap.remove(address);
                   mBTDevicesHashMap.remove(address);
                   adapter.notifyDataSetChanged();
             }
@@ -248,7 +295,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
         public void onClick(DialogInterface dialog, int which) {
 
 
-            Toast.makeText(listView.getContext(), "comming soon！！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(listView.getContext(), "Coming Soon！！", Toast.LENGTH_SHORT).show();
 
 //            String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
 //
@@ -268,13 +315,27 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
+    //判斷最終清單內有無資料
+    boolean ListHasNoData(){
 
+        if(ReadySaveToTxt_hashmap.size() == 0){
+            return true;
+        }
+        return false;
+    }
 
 
     //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
     @Override
     public Intent getSupportParentActivityIntent() {
-        finish();
+
+        if(ListHasNoData()){
+            List_hasno_data_warning();
+        }
+        else {
+            leavel_dailog();
+        }
+
         return null;
     }
     //****Scan返回鍵(左上角鍵頭)監聽事件 End***\\\
@@ -326,8 +387,12 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        stopScan();
+        if(ListHasNoData()){
+            List_hasno_data_warning();
+        }
+        else {
+            leavel_dailog();
+        }
 
     }
 
@@ -351,62 +416,42 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
 
 
 
-    
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Context context = view.getContext();
-
-
-
-        //        Utils.toast(context, "List Item clicked");
-        // do something with the text views and start the next activity.
-
-//        stopScan();
-        //********************* 裝置名稱
-//        String name = mBTDevicesArrayList.get(position).getName();
-
-//        String address = mBTDevicesArrayList.get(position).getAddress();
-
-
-    }
-
-
-
-
-
-
-
 
 
 
     public void addDevice(BluetoothDevice device, int rssi) {
-        String name = device.getName();
-        String address = device.getAddress();
-        if (!mBTDevicesHashMap.containsKey(address)) {
+        String device_name = device.getName();
+        String device_address = device.getAddress();
 
 
-            Auto_BTLE_Device btleDevice = new Auto_BTLE_Device(device);
-            btleDevice.setRSSI(rssi);
-
-            mBTDevicesHashMap.put(address, btleDevice);
-            mBTDevicesArrayList.add(btleDevice);
-
-            savepeople_address.add(address);
-
-            savepeople_name.add(name);
+        if (!mBTDevicesHashMap.containsKey(device_address)) {
 
 
+            if(device_name !=null) {
+
+                //if (device.getName().startsWith(I_Set_BLEDevice.device_startwith)) {//////////////////////////////開頭限制
+
+                    Auto_BTLE_Device btleDevice = new Auto_BTLE_Device(device);
+                    btleDevice.setRSSI(rssi);
 
 
+                    mBTDevicesHashMap.put(device_address, btleDevice);
+                    mBTDevicesArrayList.add(btleDevice);
+
+
+                    ReadySaveToTxt_hashmap.put(device_address,device_name);
+//                    savepeople_address.add(device_address);
+//                    savepeople_name.add(device_name);
+
+
+
+            }
 
         }
 
 
-
         else {
-            mBTDevicesHashMap.get(address).setRSSI(rssi);
+            mBTDevicesHashMap.get(device_address).setRSSI(rssi);
 
         }
 
@@ -549,7 +594,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity implements  Adap
             case R.id.action_scan:
                 if (!autoAdd_BLE_Scanner_BTLE.isScanning()) {
                     startScan();
-                    countdown();
+                  mCountDown.start();
                 }
                 else {
                     stopScan();

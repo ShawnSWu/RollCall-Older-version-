@@ -41,12 +41,12 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
     File selected;
 
     private ListView FileList;
-
+    private File PeopleList;
 
     private Context mContext;
     private ArrayList<File> files;
 
-    private File PeopleList;
+
 
 
 
@@ -58,7 +58,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
 
     private String[] titles = {I_CardView.RollCall,
-            I_CardView.Watch_device_status,
+//            I_CardView.Watch_device_status,
             I_CardView.Set_BLE_Device,
             I_CardView.Memorandum,
             I_CardView.Not_Open,
@@ -70,7 +70,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
     private String[] details = {
             I_CardView.RollCall_detail,
-            I_CardView.Watch_device_status_detail,
+//            I_CardView.Watch_device_status_detail,
             I_CardView.Set_BLE_Device_detail,
             I_CardView.Memorandum_detail,
             I_CardView.Not_Open_detail,
@@ -83,7 +83,7 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
     private int[] images = {
 
             R.mipmap.rollcallicon256,
-            R.mipmap.device_status128,
+//            R.mipmap.device_status128,
             R.mipmap.bluetoothdevice128,
             R.mipmap.memorandum256,
             R.mipmap.worker256,
@@ -165,11 +165,17 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
 
                         case 1:
-                            WatchList(v);
+                            Set_BLEDevice(v);
+
                             break;
 
                         case 2:
-                            Set_BLEDevice(v);
+//                            WatchList(v);
+
+                            Snackbar.make(v, "尚未開放" ,
+                                    Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+
                             break;
                         case 3:
                             Snackbar.make(v, "尚未開放" ,
@@ -178,6 +184,13 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
                             break;
 
                         case 4:
+                            Snackbar.make(v, "尚未開放" ,
+                                    Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+
+                            break;
+
+                        case 5:
                             Snackbar.make(v, "尚未開放" ,
                                     Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
@@ -220,7 +233,10 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             final View layout = inflater.inflate(R.layout.dialog_listview_rollcall_seleted, null);
+
+
             final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
             Button btn_close =(Button)layout.findViewById(R.id.btn_close);
 

@@ -1,10 +1,8 @@
 package com.example.administrator.rollcall_10.navigationdrawer;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,7 +32,6 @@ import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.recyclerview.List_Long_click_RecyclerviewAdapter;
 import com.example.administrator.rollcall_10.recyclerview.Recyclerview_WatchList;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
-import com.example.administrator.rollcall_10.recyclerview.WatchList_RecyclerviewAdapter;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import org.apache.commons.io.FilenameUtils;
@@ -54,10 +49,7 @@ import java.util.Collections;
 public class mainview_fragmentlayout_EditList extends Fragment {
 
 
-
     Device_IO device_io =new Device_IO();
-
-
 
     File selected,test_file;
 
@@ -65,12 +57,21 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
     private File_PeopleList_Adapter file_peopleList_adapter;
 
-
-
-
     private Context mContext;
     private ArrayList<File> files;
     private File PeopleList;
+
+    private static mainview_fragmentlayout_EditList mainview_fragmentlayout_editList;
+
+    public static mainview_fragmentlayout_EditList mainview_fragmentlayout_editList_getIntace(){
+
+
+        if(mainview_fragmentlayout_editList==null){
+            mainview_fragmentlayout_editList=new mainview_fragmentlayout_EditList();
+        }
+
+        return mainview_fragmentlayout_editList;
+    }
 
 
 
@@ -104,7 +105,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        mContext = getActivity().getApplicationContext();
+           mContext = getActivity().getApplicationContext();
 
 
 
@@ -114,7 +115,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-        files = filter(PeopleList.listFiles());
+           files = filter(PeopleList.listFiles());
 
 
 
@@ -130,16 +131,13 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
 
-
                     ///****important code  新建文字檔
                     selected = new File(String.valueOf(files.get(position)));
 
                 if(selected.length()==0){
-
                     Snackbar.make(v, "清單是空的" ,
                             Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-
                 }
                 else {
 
@@ -153,8 +151,9 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                     String x = "";
 
                     Bundle bundle = new Bundle();
-                    bundle.putStringArray("device_Imperfect",   device_io.Temporary_List_ReadData(selected, x));
+//                    bundle.putStringArray("device_Imperfect",device_io.Temporary_List_ReadData(selected, x));
 
+                    bundle.putSerializable("Txt_path",device_io.HashMap_ReadDataFromTxt(String.valueOf(files.get(position))));
                     bundle.putString("List_Name",selected.getName());
 
                     bundle.putString("List_Path",selected.getPath());

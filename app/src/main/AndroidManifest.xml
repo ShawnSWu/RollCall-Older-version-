@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -21,9 +22,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".main.MainActivity"
-            android:screenOrientation="portrait"></activity>
-
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".splashscreen.SplashScreen"
             android:screenOrientation="portrait">
@@ -33,8 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".demo.BLE_MainActivity"
             android:screenOrientation="portrait" />
@@ -44,7 +41,6 @@
         <activity
             android:name=".manual_add.ManualAdd_BLE_MainActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".rollcall.RollCall_BLE_MainActivity"
             android:screenOrientation="portrait" />
@@ -62,8 +58,11 @@
         <service
             android:name=".demo.Service_BTLE_GATT"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
+        <activity
+            android:name=".rollcall.RollCall_Result"
+            android:screenOrientation="portrait" />
         <!-- Parent activity meta-data to support 4.0 and lower -->
 
         <activity
@@ -75,7 +74,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".optionmenu_editist__view.optionmenu_view_edit"></activity>
+        <activity android:name=".optionmenu_editist__view.optionmenu_view_edit" />
+        <activity android:name=".ble_device_setting.setBLEDevice_connect"></activity>
     </application>
 
 </manifest>

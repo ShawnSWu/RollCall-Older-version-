@@ -58,9 +58,9 @@ public class  ManualAdd_BLE_Scanner_BTLE {
     // If you want to scan for only specific types of peripherals,
     // you can instead call startLeScan(UUID[], BluetoothAdapter.LeScanCallback),
     // providing an array of UUID objects that specify the GATT services your app supports.
-    private void scanLeDevice(final boolean enable) {
+    private  synchronized void  scanLeDevice(final boolean enable) {
         if (enable && !mScanning) {
-            Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "請開始加入人數");
+//                Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "請開始加入人數");
 
             // Stops scanning after a pre-defined scan period.
             //**還不知道功能 暫留
@@ -81,7 +81,7 @@ public class  ManualAdd_BLE_Scanner_BTLE {
 //            mBluetoothAdapter.startLeScan(uuids, mLeScanCallback);
         }
         else {
-            Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "停止加入人數");
+//            Utils.toast(manualAdd_ble_mainActivity.getApplicationContext(), "停止加入人數");
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
