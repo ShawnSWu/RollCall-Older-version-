@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
                     UI();
                 }else
                 {
-                    Toast.makeText(this,"請開啟權限後再執行",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,getResources().getString(R.string.PleaseTurnOnPermissions),Toast.LENGTH_LONG).show();
                     finish();
                 }
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
                     UI();
                 }else
                 {
-                    Toast.makeText(this,"請開啟權限後再執行",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,getResources().getString(R.string.PleaseTurnOnPermissions),Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UI();
@@ -131,7 +132,8 @@ public class MainActivity extends AppCompatActivity
 
 
     //**Toolbar箭頭的點擊事件
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
         //home
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -167,13 +169,13 @@ public class MainActivity extends AppCompatActivity
 
 
 //
-//    //**Toolbar其他元件點擊事件
+//
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.setting, menu);
 //        return true;
 //    }
-//    //**Toolbar其他元件點擊事件
+//
 
 
 
@@ -188,9 +190,13 @@ public class MainActivity extends AppCompatActivity
         int id = menuItem.getItemId();
         Fragment mainview = null;
 
+
+
+
         switch (id){
             case R.id.Home:
                 mainview=mainview_fragmentlayout_Home.getMainview_fragmentlayout_Home_Intance();
+
                 Log.e("Home",""+mainview.hashCode());
 
                 break;
@@ -205,12 +211,9 @@ public class MainActivity extends AppCompatActivity
                 Log.e("Edit_List",""+mainview.hashCode());
                 break;
 
-            case R.id.Question:
-                mainview=new mainview_fragmentlayout_Question();
-                break;
 
             case R.id.Contact_Us:
-                mainview=new mainview_fragmentlayout_ContactUs();
+                mainview=mainview_fragmentlayout_ContactUs.mainview_fragmentlayout_ContactUs_getIntace();
                 break;
         }
 
@@ -219,6 +222,8 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.main_fragment, mainview)
                 .commitAllowingStateLoss();
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);

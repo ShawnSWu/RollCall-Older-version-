@@ -11,27 +11,39 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.auto_add.AutoAdd_BLE_MainActivity;
 import com.example.administrator.rollcall_10.main.MainActivity;
+import com.example.administrator.rollcall_10.recyclerview.Recyclerview_WatchList;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/9/2.
  */
 public class Successful_NotificationDisplayService extends Service {
-    NotificationManager nManager;
+
+    int List_size;
+    String List_name,List_path;
+    String Extra_meassage1,Extra_meassage2;
+
+    File file;
+
+    HashMap<String,String> listmap=new HashMap<>();
 
     final int NOTIFICATION_ID = 16;
-    public Successful_NotificationDisplayService() {
+
+
+    public Successful_NotificationDisplayService(){
     }
 
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
-
 
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -41,22 +53,49 @@ public class Successful_NotificationDisplayService extends Service {
 
 
         Bundle bundle = intent.getExtras();
-        int List_size=  bundle.getInt("List_size");
-        String List_name=  bundle.getString("List_name");
+        List_size=  bundle.getInt("List_size");
+        List_name=  bundle.getString("List_name");
+        List_path=  bundle.getString("List_Path");
+
+
+        Extra_meassage1=bundle.getString("Extra_meassage1");
+        Extra_meassage2=bundle.getString("Extra_meassage2");
+
+        listmap= (HashMap<String, String>) bundle.getSerializable("Txt_path");
+
+        Log.e("QWEQWE!!!",""+List_name+"   path : "+List_path);
 
 
 
-        displayNotification("成功加入"+List_size+"筆資料", "已成功人數將加入到"+List_name+"中");
-        stopSelf();
+        if(Extra_meassage1 != null) {
+            displayNotification(Extra_meassage1 + List_size + getResources().getString(R.string.Notification_Meassage2),
+                    Extra_meassage2 + List_name.substring(0, List_name.length() - 4) + getResources().getString(R.string.Notification_Meassage4));
+            stopSelf();
 
+        }else {
+            displayNotification(getResources().getString(R.string.Notification_Meassage1) + List_size + getResources().getString(R.string.Notification_Meassage2),
+                    getResources().getString(R.string.Notification_Meassage3) + List_name.substring(0, List_name.length() - 4) + getResources().getString(R.string.Notification_Meassage4));
+            stopSelf();
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
     private void displayNotification(String title, String text){
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Intent notificationIntent = new Intent(this, Recyclerview_WatchList.class);
+
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        Bundle Notification=new Bundle();
+        Notification.putString("List_Name",List_name);
+        Notification.putString("List_Path",List_path);
+        Notification.putSerializable("Txt_path",listmap);
+
+
+        notificationIntent.putExtras(Notification);
+
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)

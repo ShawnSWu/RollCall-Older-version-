@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style parent="Theme.AppCompat.Light.DarkActionBar" name="AppTheme">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <!-- Customize your theme here. -->
 
@@ -12,7 +12,16 @@
     </style>
 
 
-    <style parent="Theme.AppCompat.Light.NoActionBar" name="ScanTheme">
+    <style name="connect_loding" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="DialogTitleText">連線並傳送中…</item>
+        <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
+        <item name="DialogSpotCount">6</item>
+    </style>
+
+
+
+    <style name="ScanTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <!-- Customize your theme here. -->
 
@@ -22,6 +31,21 @@
 
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Dialog"
+        parent="android:Theme.Material.Light.Dialog">
+
+        <item name="android:colorAccent">@color/RollCall_Gray</item>
+        <item name="android:colorPrimary">@color/RollCall_Gray</item>
+        <item name="android:colorPrimaryDark">@color/RollCall_Gray</item>
+
+    </style>
 </resources>

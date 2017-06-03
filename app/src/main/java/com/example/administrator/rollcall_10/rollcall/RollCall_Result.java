@@ -1,6 +1,5 @@
 package com.example.administrator.rollcall_10.rollcall;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,17 +7,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
+import com.shinelw.library.ColorArcProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by user on 2017/2/22.
@@ -28,7 +24,7 @@ public class RollCall_Result extends AppCompatActivity {
 
     private HashMap<String,String> MainHashMapList=new HashMap<>();
 
-
+    String should_inpeople,real_inpeople, outpeople;
 
     private ArrayList<String> RollCall_successful_key=new ArrayList<>();
 
@@ -55,30 +51,25 @@ public class RollCall_Result extends AppCompatActivity {
         ActionBar actionBar =getSupportActionBar();
         actionBar.setTitle(Selected_File_Name.substring(0,Selected_File_Name.length()-4));
 
-        String should_inpeople=String.valueOf(MainHashMapList.size());
+        should_inpeople=String.valueOf(MainHashMapList.size());
 
 
-        String real_inpeople=String.valueOf(RollCall_successful_key.size());
+        real_inpeople=String.valueOf(RollCall_successful_key.size());
 
-        String outpeople=String.valueOf(MainHashMapList.size()-RollCall_successful_key.size());
+        outpeople=String.valueOf(MainHashMapList.size()-RollCall_successful_key.size());
 
 
-        //**應到人數
-        TextView inpeople_tv=(TextView)findViewById(R.id.should_inpeople);
+        //**總共人數
+        TextView inpeople_tv=(TextView)findViewById(R.id.total_people);
         if (inpeople_tv != null) {
-            inpeople_tv.setText(should_inpeople+" ； ");
-        }
-
-        //**實到人數
-        TextView real_inpeople_tv=(TextView)findViewById(R.id.real_inpeople);
-        if (real_inpeople_tv != null) {
-            real_inpeople_tv.setText(real_inpeople);
+            inpeople_tv.setText(should_inpeople);
         }
 
         //**未到人數
-        TextView outpeople_tv=(TextView)findViewById(R.id.outpeople);
-        if (outpeople_tv != null) {
-            outpeople_tv.setText(outpeople);
+        TextView real_inpeople_tv=(TextView)findViewById(R.id.Not_Arrival_People);
+        if (real_inpeople_tv != null)
+        {
+            real_inpeople_tv.setText(outpeople);
         }
 
     }
@@ -88,15 +79,15 @@ public class RollCall_Result extends AppCompatActivity {
         RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
 
 
-        rd.setTitle("離開此頁面?").
-                setMessage("確定離開?").
-                setPositiveButton("確定", new DialogInterface.OnClickListener() {
+        rd.setTitle(getResources().getString(R.string.LeaveThiePage)).
+                setMessage(getResources().getString(R.string.LeaveThiePage_btnYes)).
+                setPositiveButton(getResources().getString(R.string.RollCall_List_Delete_Button_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 }).
-                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                setNegativeButton(getResources().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -104,8 +95,6 @@ public class RollCall_Result extends AppCompatActivity {
                 });
 
         rd.show();
-
-
 
     }
     @Override
@@ -116,33 +105,29 @@ public class RollCall_Result extends AppCompatActivity {
         Acttionbar_TitleData_And_init();
 
 
-        for(int i=0;i<RollCall_successful_key.size();i++){
+        for(int i=0;i<RollCall_successful_key.size();i++)
+        {
             MainHashMapList.remove(RollCall_successful_key.get(i));
         }
 
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.outpeople_list_layout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Result_RecyclerView result_recyclerView=(Result_RecyclerView)findViewById(R.id.outpeople_list_layout);
+        result_recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        result_recyclerView.setEmptyView(findViewById(R.id.All_People_Arrivals));
 
         OutPeopleList_RecyclerviewAdapter qutPeopleList_RecyclerviewAdapter =new OutPeopleList_RecyclerviewAdapter(MainHashMapList);
 
-        recyclerView.setAdapter(qutPeopleList_RecyclerviewAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        result_recyclerView.setAdapter(qutPeopleList_RecyclerviewAdapter);
+        result_recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+
+        ColorArcProgressBar progressBar_outpeople = (ColorArcProgressBar)findViewById(R.id.outpeople_progressBar);
+        progressBar_outpeople.setMaxValues(Integer.valueOf(should_inpeople));
+        progressBar_outpeople.setCurrentValues(Integer.valueOf(real_inpeople));
+
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //****Scan返回鍵(左上角鍵頭)監聽事件 Start***\\\
     @Override

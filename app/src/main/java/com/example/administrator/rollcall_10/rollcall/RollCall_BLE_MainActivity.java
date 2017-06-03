@@ -11,18 +11,15 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
-import com.example.administrator.rollcall_10.ble_device_setting.I_Set_BLEDevice;
 import com.example.administrator.rollcall_10.demo.BroadcastReceiver_BTState;
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.demo.Utils;
@@ -34,9 +31,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class RollCall_BLE_MainActivity extends AppCompatActivity {
@@ -67,9 +61,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
     private ArrayList<String> ScanList_Name =new ArrayList<>();
     private ArrayList<String> ScanList_Key =new ArrayList<>();
 
-
-
-
     private void LoadingTxtData(){
 
         Bundle bundle = getIntent().getExtras();
@@ -86,22 +77,13 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-
-
         try {
             while(bufferedReader.ready()){
 
                 String data_split=bufferedReader.readLine();
-
                 String[] array_data_split=data_split.split(",");
-
                 ScanList_Name.add(array_data_split[0]);
-
                 ScanList_Key.add(array_data_split[1]);
-
-
                 MainHashMapList.put(array_data_split[1],array_data_split[0]);
 
 
@@ -348,7 +330,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
         super.onPause();
 
 //        unregisterReceiver(mBTStateUpdateReceiver);
-        Log.e("1","shawn-pause停止掃描");
         stopScan();
     }
 
@@ -405,22 +386,6 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ///***由Bundle過來的路徑去掃描要的檔案
     public void addDevice(BluetoothDevice device, int rssi) {
 
@@ -433,7 +398,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
 
 
 
-                    if (device.getName().startsWith(I_Set_BLEDevice.device_startwith)) {//////////////////////////////開頭限制
+                    if (device.getName().startsWith(getResources().getString(R.string.app_name))) {//////////////////////////////開頭限制
 
 
                         btleDevice = new RollCall_BTLE_Device(device);
@@ -442,11 +407,8 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
                         //**如果hashmap的key有的話 在顯示
                         for (int i = 0; i < ScanList_Key.size(); i++)
                         {
-
-                            Log.e("!?!?!!?0508",""+ScanList_Name.get(i));
                             if (btleDevice.getAddress().equals(ScanList_Key.get(i)))
                             {
-
                                 btleDevice.setName(ScanList_Name.get(i));
 
                                 adapter.notifyDataSetChanged();
@@ -455,10 +417,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
 
                                 RollCall_successful_key.add(address);
 
-
                                 mBTDevicesArrayList.add(btleDevice);
-
-
                             }
                         }
                     }
@@ -514,7 +473,7 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
 
 
 
-                countdown_time = "剩下時間："+
+                countdown_time =getResources().getString(R.string.Remaining_time) +
                         (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
                         (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
@@ -528,11 +487,12 @@ public class RollCall_BLE_MainActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                countdown_time="DONE";
+
+                countdown_time = "DONE";
                 countdown.setTitle("done");
 
                 scan.setIcon(R.drawable.startscanbtn);
-                Log.e("1","倒數結束");
+
 
             }
         }.start();

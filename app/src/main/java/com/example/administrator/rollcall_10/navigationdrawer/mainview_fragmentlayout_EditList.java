@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,7 +37,10 @@ import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,22 +53,20 @@ import java.util.Collections;
 public class mainview_fragmentlayout_EditList extends Fragment {
 
 
-    Device_IO device_io =new Device_IO();
-
-    File selected,test_file;
-
+    private Device_IO device_io =new Device_IO();
+    private File selected;
     private ListView FileList;
-
     private File_PeopleList_Adapter file_peopleList_adapter;
-
     private Context mContext;
     private ArrayList<File> files;
-    private File PeopleList;
-
+    public static File PeopleList;
     private static mainview_fragmentlayout_EditList mainview_fragmentlayout_editList;
 
-    public static mainview_fragmentlayout_EditList mainview_fragmentlayout_editList_getIntace(){
 
+
+
+
+    public static mainview_fragmentlayout_EditList mainview_fragmentlayout_editList_getIntace(){
 
         if(mainview_fragmentlayout_editList==null){
             mainview_fragmentlayout_editList=new mainview_fragmentlayout_EditList();
@@ -73,6 +75,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
         return mainview_fragmentlayout_editList;
     }
 
+   public static  ArrayList<String> fileList=new ArrayList<>();
 
 
     @Override
@@ -112,46 +115,31 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             PeopleList =new File(I_File_Path.path_People_list);
             PeopleList.mkdirs();
 
-
-
-
            files = filter(PeopleList.listFiles());
 
 
 
+            FileList = (ListView)getActivity().findViewById(R.id.list);
 
+            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-
-
-        ///***每個Item的事件
-        FileList = (ListView)getActivity().findViewById(R.id.list);
-
-        FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-
-                    ///****important code  新建文字檔
-                    selected = new File(String.valueOf(files.get(position)));
+                selected = new File(String.valueOf(files.get(position)));
 
                 if(selected.length()==0){
-                    Snackbar.make(v, "清單是空的" ,
+                    Snackbar.make(v,  getResources().getString(R.string.RollCall_Dialog_Title_ListEmpty),
                             Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
                 else {
 
-
-
-
                     Intent it = new Intent(Intent.ACTION_VIEW);
                     it.setClass(v.getContext(), Recyclerview_WatchList.class);
 
                     it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    String x = "";
 
                     Bundle bundle = new Bundle();
-//                    bundle.putStringArray("device_Imperfect",device_io.Temporary_List_ReadData(selected, x));
 
                     bundle.putSerializable("Txt_path",device_io.HashMap_ReadDataFromTxt(String.valueOf(files.get(position))));
                     bundle.putString("List_Name",selected.getName());
@@ -160,7 +148,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                             it.putExtras(bundle);
 
-
                     v.getContext(). startActivity(it);
 
                 }
@@ -168,66 +155,6 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
             }
         });
-
-
-
-//        //**長按事件
-//        FileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//        @Override
-//        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            selected = new File(String.valueOf(files.get(position)));
-//
-//
-//            if(selected.length() !=0){
-//
-//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-//                rollCall_dialog.setTitle(getActivity().getResources().getString(R.string.RollCall_List_Delete_Title_therearestilldata));
-//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message_therearestilldata));
-//                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
-//                rollCall_dialog.setCancelable(false);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
-//
-//
-//                rollCall_dialog.show();
-//
-//                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
-//                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
-//
-//            }else {
-//
-//
-//                RollCall_Dialog rollCall_dialog = new RollCall_Dialog(getActivity());
-//                rollCall_dialog.setTitle(R.string.RollCall_List_Delete_Title);
-//                rollCall_dialog.setMessage(getActivity().getResources().getString(R.string.RollCall_List_Delete_Message) + "  " + selected.getName() + "  " + getActivity().getResources().getString(R.string.RollCall_List_Delete_Message2));
-//
-//                rollCall_dialog.setIcon(R.mipmap.garbagecan128);
-//                rollCall_dialog.setCancelable(false);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_yes), Delete_List);
-//                rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getActivity().getResources().getString(R.string.RollCall_List_Delete_Button_close), close);
-
-//
-//                rollCall_dialog.show();
-//
-//                //**dilaog文字置中
-//                TextView messageText = (TextView) rollCall_dialog.findViewById(android.R.id.message);
-//                messageText.setGravity(Gravity.CENTER_HORIZONTAL);
-//            }
-//
-//
-//
-//
-//
-//
-//         return true;
-//               }
-//        });
-
-
-
-
-
 
 
         //**長按事件
@@ -243,7 +170,10 @@ public class mainview_fragmentlayout_EditList extends Fragment {
             }
         });
 
+
         file_peopleList_adapter = new File_PeopleList_Adapter();
+
+        FileList.setEmptyView(getActivity().findViewById(R.id.nofileicon));
 
         FileList.setAdapter(file_peopleList_adapter);
 
@@ -337,6 +267,8 @@ public class mainview_fragmentlayout_EditList extends Fragment {
     //****新增檔案的Dialog
     public void Create_File_Dialog(){
 
+        LoadingData();
+
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View layout = inflater.inflate(R.layout.dialog_create_file_layout, null);
 
@@ -366,23 +298,9 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
                 EditText FileName_edit = (EditText) (layout.findViewById(R.id.create_file_name_edit));
 
-
-
                 String Filename_string =FileName_edit.getText().toString();
 
-                String aa = Filename_string+".txt";
-
-
-
-
-
-
-
-
-
-
-
-
+                String NewList = Filename_string+".txt";
 
                 if(Filename_string.contains(I_File_Path.Slash) || Filename_string.startsWith(" ") ||Filename_string.endsWith(" ") || Filename_string.contains(I_File_Path.Slash2)) {
 
@@ -392,33 +310,34 @@ public class mainview_fragmentlayout_EditList extends Fragment {
                 }
                 else if(FileName_edit.length() ==0){
 
-                    Toast.makeText(getActivity(),"尚未輸入檔案名稱", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),  String.valueOf(R.string.NotYetEnteredFileName), Toast.LENGTH_SHORT).show();
+                }
+
+                else if(fileList.contains(NewList))
+                {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.DuplicateName), Toast.LENGTH_SHORT).show();
                 }
 
 
-
-
-
                 else {
-                    //**自行創建文字檔 strat--->
+                    //**自行創建文字檔
                     File peoplefile = new File(I_File_Path.path_People_list + I_File_Path.Slash + Filename_string + I_File_Path.TextFile);
 
                     try {
-                        FileWriter fw = new FileWriter(peoplefile, false);
+                        peoplefile.createNewFile();
                     } catch (IOException e) {
                         e.printStackTrace();
 
                     }
-                    //**自行創建文字檔 End--->
+
 
                 }
 
-                //***重新載入一次 suck code
+
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
                         .commitAllowingStateLoss();
-                //***重新載入一次 suck code
 
                 rollCall_dialog.dismiss();
 
@@ -436,7 +355,7 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
 
 
-    public ArrayList<File> filter(File[] fileList) {
+    public static ArrayList<File> filter(File[] fileList) {
         ArrayList<File> files = new ArrayList<File>();
         if(fileList == null){
             return files;
@@ -521,7 +440,14 @@ public class mainview_fragmentlayout_EditList extends Fragment {
 
     }
 
+    public static void LoadingData(){
 
+        for(int a=0;a<filter(PeopleList.listFiles()).size();a++)
+        {
+            fileList.add(filter(PeopleList.listFiles()).get(a).getName());
+        }
+
+    }
 
 
 }

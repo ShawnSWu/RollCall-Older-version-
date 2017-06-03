@@ -26,6 +26,8 @@
         android:id="@+id/navigation_view"
         app:menu="@menu/menu_drawerlist"
         android:fitsSystemWindows="true"
+        app:itemTextColor="@color/RollCall_Gray"
+        app:itemBackground="@drawable/listview_choose"
         android:layout_gravity="start"/>
 
 </android.support.v4.widget.DrawerLayout>

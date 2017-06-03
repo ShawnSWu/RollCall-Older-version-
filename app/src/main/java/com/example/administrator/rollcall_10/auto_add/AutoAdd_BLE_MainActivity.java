@@ -87,9 +87,9 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
     void leavel_dailog(){
         onPause();
         RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
-        rd.setTitle("離開此頁面?").
-                setMessage("離開後記錄將不會保存,是否離開?").
-                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+        rd.setTitle( getResources().getString(R.string.LeaveThiePage)).
+                setMessage( getResources().getString(R.string.LeaveThiePage_meassage)).
+                setPositiveButton(getResources().getString(R.string.LeaveThiePage_btnYes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -97,7 +97,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
                         finish();
                     }
                 }).
-                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                setNegativeButton(getResources().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -113,15 +113,15 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
     void List_hasno_data_warning(){
         onPause();
         RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(this);
-        rd.setTitle("沒有加入任何資料").
-                setMessage("什麼都不做,離開此頁面?").
-                setPositiveButton("確定離開", new DialogInterface.OnClickListener() {
+        rd.setTitle(getResources().getString(R.string.NoAddAnyData)).
+                setMessage(getResources().getString(R.string.DoNothing)).
+                setPositiveButton(getResources().getString(R.string.LeaveThiePage_btnYes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 }).
-                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                setNegativeButton(getResources().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -142,13 +142,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         //**Actionbar跟標題資料
         Acttionbar_TitleData();
 
-
-
-
-
-
-
-
         Button buttons =(Button)findViewById(R.id.add);
         assert buttons != null;
         buttons.setOnClickListener(new View.OnClickListener() {
@@ -160,29 +153,26 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         String Seletor_File=  bundle.getString("Selected_File_Path");
 
 
-        //**將名字與地址寫入２０１６／０９／２７
-//        device_io.name_and_address_writeData(savepeople_address,savepeople_name,true,Seletor_File);
-
-
-
-
         stopScan();
 
 
         if(ReadySaveToTxt_hashmap.size() ==0) {
 
 
-            Toast.makeText(view.getContext(), "您沒有加入任何資料", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), String.valueOf(R.string.YouNoAddAnyData), Toast.LENGTH_SHORT).show();
 
 
         }else {
 
-            Intent startNotificationServiceIntent = new Intent(AutoAdd_BLE_MainActivity.this, Successful_NotificationDisplayService.class);
+            Intent startNotificationServiceIntent = new Intent(AutoAdd_BLE_MainActivity.this,Successful_NotificationDisplayService.class);
 
+            startNotificationServiceIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             Bundle bundle1=new Bundle();
             bundle1.putInt("List_size",ReadySaveToTxt_hashmap.size());
             bundle1.putString("List_name",bundle.getString("Selected_File_Name"));
+            bundle1.putString("List_Path",bundle.getString("Selected_File_Path"));
+            bundle1.putSerializable("Txt_path",ReadySaveToTxt_hashmap);
 
             startNotificationServiceIntent.putExtras(bundle1);
 
@@ -205,12 +195,11 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
-            Log.e("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF","9");
         }
 
 
 
-        //**掃描時間 先給1分鐘
+        //**掃描時間 先給2分鐘
         mBTStateUpdateReceiver = new AutoAdd_BroadcastReceiver_BTState(getApplicationContext());
         autoAdd_BLE_Scanner_BTLE = new AutoAdd_BLE_Scanner_BTLE(this,120000, -75);
 
@@ -260,8 +249,8 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
                 //***Dialog
                 RollCall_Dialog rollCall_dialog = new RollCall_Dialog(adapterView.getContext());
-                rollCall_dialog.setTitle(R.string.RollCall_Dialog_Title_FindDevice);
-                rollCall_dialog.setMessage("你確定在此次加入中移除此項嗎?");
+                rollCall_dialog.setTitle(getResources().getString(R.string.RollCall_Dialog_Title_FindDevice));
+                rollCall_dialog.setMessage((getResources().getString(R.string.RollCall_Dialog__Message_AddYesOrNo)));
                 rollCall_dialog.setIcon(android.R.drawable.ic_dialog_info);
                 rollCall_dialog.setCancelable(false);
                 rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, AutoAdd_BLE_MainActivity.this.getString(R.string.RollCall_Dialog__Button_No), no);
@@ -281,8 +270,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
                 startScan();
 
-        onRestart();
-
     }
 
 
@@ -293,12 +280,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
             Toast.makeText(listView.getContext(), "Coming Soon！！", Toast.LENGTH_SHORT).show();
 
-//            String address = mBTDevicesArrayList.get(DeviceAmount-1).getAddress();
-//
-//            adapter.remove(DeviceAmount-1);
-//            savepeople.remove(address);
-//
-//            adapter.notifyDataSetChanged();
 
 
         }
@@ -346,7 +327,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF","8");
+
         registerReceiver(mBTStateUpdateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
@@ -392,8 +373,6 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -438,8 +417,7 @@ public class AutoAdd_BLE_MainActivity extends AppCompatActivity {
 
 
                     ReadySaveToTxt_hashmap.put(device_address,device_name);
-//                    savepeople_address.add(device_address);
-//                    savepeople_name.add(device_name);
+
 
 
 

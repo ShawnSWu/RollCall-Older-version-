@@ -15,6 +15,8 @@ public class  ManualAdd_BLE_Scanner_BTLE {
 
     private ManualAdd_BLE_MainActivity manualAdd_ble_mainActivity;
 
+    private Extra_ManualAdd_BLE_MainActivity extra_manualAdd_ble_mainActivity;
+
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
@@ -34,6 +36,8 @@ public class  ManualAdd_BLE_Scanner_BTLE {
                 (BluetoothManager) manualAdd_ble_mainActivity.getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }
+
+
 
     public boolean isScanning() {
         return mScanning;

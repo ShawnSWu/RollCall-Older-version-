@@ -1,5 +1,6 @@
 package com.example.administrator.rollcall_10.recyclerview;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.administrator.rollcall_10.Calendar.RollCallCalendar;
 import com.example.administrator.rollcall_10.R;
+import com.example.administrator.rollcall_10.RollCallGoogleMap.RollCall_GoogleMap;
 import com.example.administrator.rollcall_10.ble_device_setting.Set_BLE_Device;
 import com.example.administrator.rollcall_10.device_io.I_File_Path;
+import com.example.administrator.rollcall_10.navigationdrawer.mainview_fragmentlayout_EditList;
+import com.example.administrator.rollcall_10.note.Note_RecyclerView_Activity;
 import com.example.administrator.rollcall_10.rollcall.RollCall_BLE_MainActivity;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
@@ -38,6 +42,7 @@ import java.util.Collections;
 public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_RecyclerviewAdapter.ViewHolder> {
     private Context context;
 
+
     File selected;
 
     private ListView FileList;
@@ -47,55 +52,52 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
     private ArrayList<File> files;
 
 
-
-
-
-    public Home_RecyclerviewAdapter(Context context) {
-
+    public Home_RecyclerviewAdapter(Context context)
+    {
      this.context=context;
     }
 
 
 
-    private String[] titles = {I_CardView.RollCall,
-//            I_CardView.Watch_device_status,
+    private String[] titles = {
+            I_CardView.RollCall,
             I_CardView.Set_BLE_Device,
             I_CardView.Memorandum,
-            I_CardView.Not_Open,
-            I_CardView.Not_Open,
-            I_CardView.Not_Open,
+            I_CardView.Calendar,
+            I_CardView.googlemap,
+
+
+
         };
 
 
 
     private String[] details = {
             I_CardView.RollCall_detail,
-//            I_CardView.Watch_device_status_detail,
             I_CardView.Set_BLE_Device_detail,
             I_CardView.Memorandum_detail,
-            I_CardView.Not_Open_detail,
-            I_CardView.Not_Open_detail,
-            I_CardView.Not_Open_detail,
+            I_CardView.Calendar_detail,
+            I_CardView.googlemap_detail,
+
+
            };
 
 
 
     private int[] images = {
-
             R.mipmap.rollcallicon256,
-//            R.mipmap.device_status128,
-            R.mipmap.bluetoothdevice128,
-            R.mipmap.memorandum256,
-            R.mipmap.worker256,
-            R.mipmap.worker256,
-            R.mipmap.worker256,
+            R.mipmap.bluetooth_connect512,
+            R.mipmap.remind512,
+            R.mipmap.cardview_calendar256,
+            R.mipmap.googlemap256,
 
        };
 
 
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.home_recyclerview_cardview, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
@@ -109,21 +111,13 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
         return viewHolder;
 
     }
-    DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {         }
-
-    };
-
-
-
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(ViewHolder viewHolder, int i)
+    {
         viewHolder.itemTitle.setText(titles[i]);
         viewHolder.itemDetail.setText(details[i]);
         viewHolder.itemImage.setImageResource(images[i]);
-        FragmentManager manager;
     }
 
     @Override
@@ -154,9 +148,6 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    int position = getAdapterPosition();
-
-
 
                     switch (getAdapterPosition()){
                         case 0:
@@ -170,186 +161,127 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
                             break;
 
                         case 2:
-//                            WatchList(v);
-
-                            Snackbar.make(v, "尚未開放" ,
-                                    Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            Note(v);
 
                             break;
                         case 3:
-                            Snackbar.make(v, "尚未開放" ,
-                                    Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            Intent Calendar=new Intent(mContext, RollCallCalendar.class);
+                            Calendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(Calendar);
+
                             break;
 
                         case 4:
-                            Snackbar.make(v, "尚未開放" ,
-                                    Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            Intent mpa=new Intent(mContext, RollCall_GoogleMap.class);
+                            mpa.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(mpa);
 
                             break;
 
-                        case 5:
-                            Snackbar.make(v, "尚未開放" ,
-                                    Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-
-                            break;
                     }
 
                 }
             });
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //**開始掃描
-        public void startscan(View v){
+        public void startscan(View v)
+        {
 
-            LayoutInflater inflater = (LayoutInflater) v.getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if(files.size() == 0)
+            {
+                Please_Add_List_First(v);
+            }
+            else
+            {
 
-            final View layout = inflater.inflate(R.layout.dialog_listview_rollcall_seleted, null);
+                    LayoutInflater inflater = (LayoutInflater) v.getContext()
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+                    final View layout = inflater.inflate(R.layout.dialog_listview_rollcall_seleted, null);
 
-            final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
-            Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+                    final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
+                    Button btn_close = (Button) layout.findViewById(R.id.btn_close);
 
-            btn_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rollCall_dialog.dismiss();
+                    btn_close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rollCall_dialog.dismiss();
 
-                }
-            });
+                        }
+                    });
 
+                    rollCall_dialog.setView(layout);
+                    rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+                    rollCall_dialog.setCancelable(false);
+                    rollCall_dialog.setCancelable(true);
+                    rollCall_dialog.show();
 
+                    FileList = (ListView) layout.findViewById(R.id.dialog_list_seletor);
+                    FileList.setAdapter(new File_RollCAll_Adapter());
+                    FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                            selected = new File(String.valueOf(files.get(position)));
 
-            rollCall_dialog.setView(layout);
-            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
-            rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setCancelable(true);
-            rollCall_dialog.show();
+                            if (selected.length() == 0) {
+                                Toast.makeText(v.getContext(), v.getResources().getString(R.string.ListIsNull), Toast.LENGTH_LONG).show();
 
+                            } else {
 
-            FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
-            FileList.setAdapter(new File_RollCAll_Adapter());
+                                Intent it = new Intent(Intent.ACTION_VIEW);
+                                it.setClass(v.getContext(), RollCall_BLE_MainActivity.class);
 
+                                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("Selected_File_Path", selected.getPath());
+                                bundle.putString("Selected_File_Name", selected.getName());
+                                it.putExtras(bundle);
 
+                                v.getContext().startActivity(it);
 
+                                rollCall_dialog.dismiss();
+                            }
 
+                        }
+                    });
 
-                    selected = new File(String.valueOf(files.get(position)));
-
-
-
-                    if(selected.length() ==0) {
-
-                        Toast.makeText(v.getContext(), "清單是空的!!", Toast.LENGTH_LONG).show();
-
-
-
-                    }else {
-
-                        Log.e("1", ":AA" + selected.getName());
-
-
-                        Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), RollCall_BLE_MainActivity.class);
-
-                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Selected_File_Path", selected.getPath());
-                        bundle.putString("Selected_File_Name", selected.getName());
-                        it.putExtras(bundle);
-
-                        v.getContext().startActivity(it);
-
-                        rollCall_dialog.dismiss();
-
-                    }
-
-
-
-
-
-
-                }
-            });
-
+            }
 
         }
 
-
-
-
-
-
-
-        //**查看清單
-        public void WatchList(View v){
-
-
-            Snackbar.make(v, "暫不開放" ,
-                    Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-
-
-
-        }
-
-
-        DialogInterface.OnClickListener close = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {         }
-
-        };
 
 
 
 
 
         //**設置藍芽裝置
-        public void Set_BLEDevice(View v){
-            Intent it = new Intent(Intent.ACTION_VIEW);
-            it.setClass(v.getContext(), Set_BLE_Device.class);
-            v.getContext(). startActivity(it);
+        public void Set_BLEDevice(View v)
+        {
+
+            if(files.size() ==0)
+            {
+                Please_Add_List_First(v);
+
+            }else{
+                Intent it = new Intent(Intent.ACTION_VIEW);
+                it.setClass(v.getContext(), Set_BLE_Device.class);
+
+                v.getContext().startActivity(it);
+            }
         }
 
 
 
-        public void Note(View v){}
+        public void Note(View v)
+        {
+                Intent it = new Intent(Intent.ACTION_VIEW);
+                it.setClass(v.getContext(), Note_RecyclerView_Activity.class);
+
+                v.getContext(). startActivity(it);
+        }
 
 
 
@@ -360,6 +292,18 @@ public class Home_RecyclerviewAdapter extends RecyclerView.Adapter<Home_Recycler
 
 
 
+    private  void Please_Add_List_First(View v)
+    {
+        FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_fragment, mainview_fragmentlayout_EditList.mainview_fragmentlayout_editList_getIntace())
+                .commitAllowingStateLoss();
+
+
+        Snackbar.make(v,v.getResources().getString(R.string.RollCall_PleaseAddListFirst),
+                Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
 
 
     public ArrayList<File> filter(File[] fileList) {

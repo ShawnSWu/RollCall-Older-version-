@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.rollcall_10.R;
 import com.example.administrator.rollcall_10.device_io.Device_IO;
 import com.example.administrator.rollcall_10.recyclerview.OptionEdit_List_Long_click_RecyclerviewAdapter;
+import com.example.administrator.rollcall_10.recyclerview.Recyclerview_WatchList;
 import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.File;
@@ -70,10 +71,10 @@ public class optionmenu_view_edit extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         //**清單名稱
-        Seletor_List_File = bundle.getString("Seletor_List_File");
+        Seletor_List_File = bundle.getString(Recyclerview_WatchList.SELETOR_LIST_FILE);
 
         //**清單路徑
-        Seletor_List_Path = bundle.getString("Seletor_List_Path");
+        Seletor_List_Path = bundle.getString(Recyclerview_WatchList.SELETOR_LIST_PATH);
 
         LoadingDataFromTxt();
 
@@ -129,7 +130,6 @@ public class optionmenu_view_edit extends AppCompatActivity {
 
             title_txt.setText(ListData_Array.get(position).split(",")[0]);
 
-            Log.e("20170221,要修改的字串在這", ListData_Array.get(position));
 
             RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.recyclerView_list_long_click);
             recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));

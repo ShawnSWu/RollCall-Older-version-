@@ -33,16 +33,12 @@ import java.util.Collections;
  */
 public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<List_Long_click_RecyclerviewAdapter.ViewHolder> {
 
-    File selected;
-
+    private File selected;
     private Context mContext;
+    private RollCall_Dialog rollCall_dialog;
+    private String[] longclick_item;
+    private int[] image;
 
-    RollCall_Dialog rollCall_dialog;
-
-
-
-    String[] longclick_item;
-    int[] image;
 
 
     public List_Long_click_RecyclerviewAdapter(String[] item, int[] image,File file,Context mContext,RollCall_Dialog rollCall_dialog) {
@@ -51,6 +47,7 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
         this.selected=file;
         this.mContext=mContext;
         this.rollCall_dialog=rollCall_dialog;
+
     }
 
 
@@ -120,8 +117,11 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
         }
 
         public  void rename(View v){
-
+            mainview_fragmentlayout_EditList.LoadingData();
             rollCall_dialog.dismiss();
+
+
+
 
             LayoutInflater inflater = LayoutInflater.from(v.getContext());
             final View layout = inflater.inflate(R.layout.dialog_list_rename_layout, null);
@@ -147,10 +147,8 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /**
-                                         * 重新命名code
-                                        *缺同名失敗提示
-                                        */
+
+                    mainview_fragmentlayout_EditList.LoadingData();
 
                     String Rename_EditText=rename_edittext.getText().toString();
 
@@ -164,39 +162,35 @@ public class List_Long_click_RecyclerviewAdapter extends RecyclerView.Adapter<Li
 
 
 
-                    if(Rename_EditText.contains(I_File_Path.Slash) || Rename_EditText.startsWith(" ") ||Rename_EditText.endsWith(" ") || Rename_EditText.contains(I_File_Path.Slash2)) {
-
+                    if(Rename_EditText.contains(I_File_Path.Slash) || Rename_EditText.startsWith(" ") ||Rename_EditText.endsWith(" ") || Rename_EditText.contains(I_File_Path.Slash2))
+                    {
                         Toast.makeText(v.getContext(), v.getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages), Toast.LENGTH_SHORT).show();
-
-
                     }
-                    else if(Rename_EditText.length() ==0){
-
+                    else if(mainview_fragmentlayout_EditList.fileList.contains(Rename_EditText_txt))
+                    {
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.DuplicateName), Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Rename_EditText.length() ==0)
+                    {
                         Toast.makeText(v.getContext(),v.getResources().getText(R.string.RollCall__NewFile_Dialog__Error_Messages2), Toast.LENGTH_SHORT).show();
                     }
+                    else
+                    {
+                        //**修改檔案名稱
+                        Rename_before.renameTo(Rename_after);
 
 
 
+                        //**改玩關閉dialog
+                        rollCall_dialog.dismiss();
 
 
+//                        FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
+//                        fragmentManager.beginTransaction()
+//                                .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
+//                                .commitAllowingStateLoss();
 
-
-                    //**修改檔案名稱
-                    Rename_before.renameTo(Rename_after);
-
-
-
-                    //**改玩關閉dialog
-                    rollCall_dialog.dismiss();
-
-
-
-                    //***重新載入一次 suck code
-                    FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment, new mainview_fragmentlayout_EditList())
-                            .commitAllowingStateLoss();
-//                //***重新載入一次 suck code
+                    }
 
                 }
             });

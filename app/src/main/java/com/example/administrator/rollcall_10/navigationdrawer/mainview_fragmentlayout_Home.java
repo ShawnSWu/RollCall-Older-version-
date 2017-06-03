@@ -57,6 +57,8 @@ public class mainview_fragmentlayout_Home extends Fragment {
         actionBar.setTitle(R.string.RollCall_Fragment_Title_Home);
 
 
+
+
     }
 
 
@@ -78,6 +80,7 @@ public class mainview_fragmentlayout_Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View frist_view = inflater.inflate(R.layout.mainview_fragmentlayout_home, null);
+        context=getActivity();
         return frist_view;
     }
 

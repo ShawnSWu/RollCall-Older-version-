@@ -64,7 +64,7 @@ public class WatchList_RecyclerviewAdapter extends RecyclerView.Adapter<WatchLis
         holder.txtItem.setText(data[position]);
 
         holder.image.setImageResource(R.mipmap.info64);
-        Log.e("Shawn","---"+position);
+
     }
 
 

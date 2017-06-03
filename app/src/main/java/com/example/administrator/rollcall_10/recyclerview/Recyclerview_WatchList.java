@@ -24,16 +24,25 @@ import java.util.HashMap;
  * Created by Administrator on 2016/8/11.
  */
 public class Recyclerview_WatchList extends AppCompatActivity  {
-    String Seletor_List_File,Seletor_List_Path;
 
-    WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList;
-    HashMap<String,String> txt_hashmap;
-    RecyclerView recyclerView;
+    private String Seletor_List_File,Seletor_List_Path;
+
+    private WatchList_RecyclerviewAdapter recyclerviewAdapter_watchList;
+
+    private HashMap<String,String> txt_hashmap;
+
+    private RecyclerView recyclerView;
+
+
+    public final static String SELETOR_LIST_FILE="Seletor_List_File";
+    public final static String SELETOR_LIST_PATH="Seletor_List_Path";
+
+
     private void Edit_Activity(){
         Intent option_edit= new Intent(Recyclerview_WatchList.this, optionmenu_view_edit.class); //MainActivity為主要檔案名稱
         Bundle dataMap = new Bundle();
-        dataMap.putString("Seletor_List_File",Seletor_List_File);
-        dataMap.putString("Seletor_List_Path",Seletor_List_Path);
+        dataMap.putString(SELETOR_LIST_FILE,Seletor_List_File);
+        dataMap.putString(SELETOR_LIST_PATH,Seletor_List_Path);
         option_edit.putExtras(dataMap);
 
         startActivity(option_edit);
@@ -45,16 +54,17 @@ public class Recyclerview_WatchList extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerview_watchlist);
 
-        Log.e("adasd4as6d4a6sd5","onCreate");
             //****Scan返回鍵監聽事件 Start****\\
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            //****Scan返回鍵監聽事件 End****\\
+
 
 
 
         Bundle bundle = getIntent().getExtras();
         Seletor_List_File=  bundle.getString("List_Name");
         Seletor_List_Path=bundle.getString("List_Path");
+
+
 
 
         //換標題

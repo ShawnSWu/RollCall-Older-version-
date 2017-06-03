@@ -26,6 +26,4 @@ public interface I_File_Path {
 
     String Slash2 ="\\";
 
-    //內建文字檔
-    String Built_TextFile = Slash +"第一個團.txt";
 }

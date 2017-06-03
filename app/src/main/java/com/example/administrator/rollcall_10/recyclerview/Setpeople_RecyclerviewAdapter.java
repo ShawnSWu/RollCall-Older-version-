@@ -156,8 +156,8 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
 
         ///***手動加入監聽事件
-        public void ManualAdd(final View v){
-
+        public void ManualAdd(final View v)
+        {
 
             LayoutInflater inflater = (LayoutInflater) v.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -167,254 +167,207 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
             Button btn_close =(Button)layout.findViewById(R.id.btn_close);
 
-            btn_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rollCall_dialog.dismiss();
-
-                }
-            });
-            rollCall_dialog.setView(layout);
-            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
-            rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setCancelable(true);
-            rollCall_dialog.show();
-
-
-
-
-            FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
-            FileList.setAdapter(new File_AddList_Adapter());
-
-
-            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-
-
-                    //**成功
-                    selected = new File(String.valueOf(files.get(position)));
-
-                    if(selected.length() !=0){
-
-                        Log.e("shawn","此清單不是空的,跳覆寫警告");
-
-//                        getActivity().getResources().getString(R.string.RollCall_List_Delete_Message)
-                        RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
-                        rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
-                        rollCall_dialog.setCancelable(false);
-                        rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
-                        rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
-                        rollCall_dialog.show();
-
-
-
-                    }else {
-                        Log.e("shawn","選擇的資料路徑："+ selected.getPath());
-
-
-                        Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
-
-                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Selected_File_Path", selected.getPath());
-                        bundle.putString("Selected_File_Name", selected.getName());
-                        it.putExtras(bundle);
-
-                        v.getContext().startActivity(it);
-                        rollCall_dialog.dismiss();
-
-                    }
-
-
-                }
-                public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+            if(!files.isEmpty()){
+                btn_close.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.e("shawn","確定覆寫! 進入加入人數畫面");
-                        Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
-
-                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Selected_File_Path", selected.getPath());
-                        bundle.putString("Selected_File_Name", selected.getName());
-                        it.putExtras(bundle);
-
-                        v.getContext().startActivity(it);
+                    public void onClick(View v)
+                    {
                         rollCall_dialog.dismiss();
                     }
+                });
+                rollCall_dialog.setView(layout);
+                rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+                rollCall_dialog.setCancelable(false);
+                rollCall_dialog.setCancelable(true);
+                rollCall_dialog.show();
 
-                };
+                FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
+                FileList.setAdapter(new File_AddList_Adapter());
 
-                public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+
+                FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.e("shawn","關閉");
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+
+
+                        //**成功
+                        selected = new File(String.valueOf(files.get(position)));
+
+                        if(selected.length() !=0){
+
+                            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
+                            rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
+                            rollCall_dialog.setCancelable(false);
+                            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
+                            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
+                            rollCall_dialog.show();
+
+                        }else {
+
+                            Intent it = new Intent(Intent.ACTION_VIEW);
+                            it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
+
+                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Selected_File_Path", selected.getPath());
+                            bundle.putString("Selected_File_Name", selected.getName());
+                            it.putExtras(bundle);
+
+                            v.getContext().startActivity(it);
+                            rollCall_dialog.dismiss();
+
+                        }
+
+
                     }
+                    public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                };
+                            Intent it = new Intent(Intent.ACTION_VIEW);
+                            it.setClass(v.getContext(), ManualAdd_BLE_MainActivity.class);
 
-            });
+                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Selected_File_Path", selected.getPath());
+                            bundle.putString("Selected_File_Name", selected.getName());
+                            it.putExtras(bundle);
+
+                            v.getContext().startActivity(it);
+                            rollCall_dialog.dismiss();
+                        }
+
+                    };
+
+                    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+
+                    };
+
+                });
+            }else{
+                Toast.makeText(Context,Context.getResources().getString(R.string.RollCall_PleaseAddListFirst),Toast.LENGTH_SHORT).show();
+            }
+
 
 
         }
 
         ///***自動加入監聽事件
-        public void AutoAdd(final View v){
+        public void AutoAdd(final View v)
+        {
+            if(!files.isEmpty()) {
 
-            LayoutInflater inflater = (LayoutInflater) v.getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.dialog_listview_addpeople_seleted, null);
+                LayoutInflater inflater = (LayoutInflater) v.getContext()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View layout = inflater.inflate(R.layout.dialog_listview_addpeople_seleted, null);
 
-            final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
+                final RollCall_Dialog rollCall_dialog = new RollCall_Dialog(v.getContext());
 
-            Button btn_close =(Button)layout.findViewById(R.id.btn_close);
+                Button btn_close = (Button) layout.findViewById(R.id.btn_close);
 
-            btn_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rollCall_dialog.dismiss();
-
-                }
-            });
-            rollCall_dialog.setView(layout);
-            rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
-            rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setCancelable(true);
-            rollCall_dialog.show();
-
-
-            FileList = (ListView)layout.findViewById(R.id.dialog_list_seletor);
-            FileList.setAdapter(new File_AddList_Adapter());
-
-
-            FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-
-                    //**成功將每個資料夾寫入
-                    selected = new File(String.valueOf(files.get(position)));
-
-                    if(selected.length() !=0){
-
-                        Log.e("shawn","此清單不是空的,跳覆寫警告");
-
-
-            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
-            rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
-            rollCall_dialog.setCancelable(false);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
-            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE,v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
-            rollCall_dialog.show();
-
-
-
-                    }
-                    else {
-                        Log.e("shawn","選擇的資料路徑："+ selected.getPath());
-
-
-                        Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
-
-                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Selected_File_Path", selected.getPath());
-                        bundle.putString("Selected_File_Name", selected.getName());
-                        it.putExtras(bundle);
-
-                        v.getContext().startActivity(it);
+                btn_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         rollCall_dialog.dismiss();
 
                     }
+                });
+                rollCall_dialog.setView(layout);
+                rollCall_dialog.setIcon(R.mipmap.dialogscanicon128);
+                rollCall_dialog.setCancelable(false);
+                rollCall_dialog.setCancelable(true);
+                rollCall_dialog.show();
 
 
+                FileList = (ListView) layout.findViewById(R.id.dialog_list_seletor);
+                FileList.setAdapter(new File_AddList_Adapter());
 
-                }
-                public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+
+                FileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Log.e("shawn","確定覆寫! 進入加入人數畫面");
-
-                        Intent it = new Intent(Intent.ACTION_VIEW);
-                        it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
-
-                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Selected_File_Path", selected.getPath());
-                        bundle.putString("Selected_File_Name", selected.getName());
-                        it.putExtras(bundle);
+                        //**成功將每個資料夾寫入
+                        selected = new File(String.valueOf(files.get(position)));
 
-                        v.getContext().startActivity(it);
-                        rollCall_dialog.dismiss();
+                        if (selected.length() != 0) {
+
+                            RollCall_Dialog rollCall_dialog = new RollCall_Dialog(parent.getContext());
+                            rollCall_dialog.setMessage(v.getContext().getResources().getString(R.string.RollCall_Delete_Warning_Message));
+                            rollCall_dialog.setCancelable(false);
+                            rollCall_dialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_No), no);
+                            rollCall_dialog.setButton(DialogInterface.BUTTON_POSITIVE, v.getContext().getString(R.string.RollCall_Dialog__Button_Yes), yes);
+                            rollCall_dialog.show();
+
+
+                        } else {
+
+                            Intent it = new Intent(Intent.ACTION_VIEW);
+                            it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
+
+                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Selected_File_Path", selected.getPath());
+                            bundle.putString("Selected_File_Name", selected.getName());
+                            it.putExtras(bundle);
+
+                            v.getContext().startActivity(it);
+                            rollCall_dialog.dismiss();
+
+                        }
+
+
                     }
 
-                };
-
-                public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.e("shawn","關閉dialog");
-                    }
-
-                };
-            });
+                    public DialogInterface.OnClickListener yes = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
 
+                            Intent it = new Intent(Intent.ACTION_VIEW);
+                            it.setClass(v.getContext(), AutoAdd_BLE_MainActivity.class);
 
+                            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Selected_File_Path", selected.getPath());
+                            bundle.putString("Selected_File_Name", selected.getName());
+                            it.putExtras(bundle);
+
+                            v.getContext().startActivity(it);
+                            rollCall_dialog.dismiss();
+                        }
+
+                    };
+
+                    public DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+
+                    };
+                });
+
+            }else{
+                Toast.makeText(Context,Context.getResources().getString(R.string.RollCall_PleaseAddListFirst),Toast.LENGTH_SHORT).show();
+            }
         }
-
-
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public ArrayList<File> filter(File[] fileList) {
+    public static ArrayList<File> filter(File[] fileList) {
         ArrayList<File> files = new ArrayList<File>();
         if(fileList == null){
             return files;
@@ -431,7 +384,7 @@ public class Setpeople_RecyclerviewAdapter extends RecyclerView.Adapter<Setpeopl
 
 
 
-    private class File_AddList_Adapter extends BaseAdapter {
+    public class File_AddList_Adapter extends BaseAdapter {
 
         @Override
         public int getCount() {

@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -73,9 +74,51 @@
             android:name=".notifications.Successful_NotificationDisplayService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".notifications.AlarmClock_Notification"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".manual_add.Extra_ManualAdd_BLE_MainActivity" />
 
         <activity android:name=".optionmenu_editist__view.optionmenu_view_edit" />
-        <activity android:name=".ble_device_setting.setBLEDevice_connect"></activity>
+        <activity android:name=".ble_device_setting.setBLEDevice_connect"
+            android:screenOrientation="portrait"/>
+
+        <receiver android:name=".ble_device_setting.RollCallTimeUp_BroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.shawn" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".note.Note_RecyclerView_Activity"
+            android:label="@string/title_activity_note__recycler_view_"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".note.Note_EditView" />
+
+        <receiver android:name=".note.Note_Alarm_Broadcast" />
+
+        <activity android:name=".Calendar.RollCallCalendar" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".RollCallGoogleMap.RollCall_GoogleMap"
+            android:label="@string/title_activity_roll_call__google_map"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

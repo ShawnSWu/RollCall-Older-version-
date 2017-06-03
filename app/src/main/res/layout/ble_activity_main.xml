@@ -51,7 +51,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="點名結束 看結果!!"
+        android:text="TIME UP！SEE THE RESULTS"
         android:id="@+id/finsh_rollcall"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

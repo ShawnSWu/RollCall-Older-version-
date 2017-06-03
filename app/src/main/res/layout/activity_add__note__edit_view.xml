@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".note.Note_EditView"
+    android:background="#faf1bd"
+    android:id="@+id/note_edit_relativelayout">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/edit_note"
+          android:background="@null"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="編輯中"
+        android:id="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="CreateTime"
+        android:id="@+id/createtime"
+        android:layout_above="@+id/edit_note"
+        android:layout_alignParentEnd="true"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="setTime"
+        android:id="@+id/SetRemindTime"
+        android:layout_below="@+id/edit_note"
+        android:layout_alignParentStart="true"
+        android:padding="4dp"
+        android:textSize="30dp" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        app:backgroundTint="@color/snow"
+        android:id="@+id/fab_addAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+
+        android:src="@mipmap/alarm512"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="49dp" />
+
+</RelativeLayout>

@@ -7,9 +7,13 @@
 
     <color name="snow">#696969</color>
 
+    <color name="cardiew_note_backcolor">#FAFAD2</color>
+    <color name="cardiew_backcolor">#AAAAAA</color>
 
     <color name="arc_blue">#ffffff</color>
     <color name="color_fff">#ffffff</color>
 
+
+    <color name="backcolor">#FFFFFF</color>
     <color name="Light_Green">#89CFF0</color>
 </resources>

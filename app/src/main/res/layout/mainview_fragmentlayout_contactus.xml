@@ -3,25 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton4"
-        android:src="@mipmap/worker256"
-        android:layout_gravity="center_horizontal"
-        android:background="#ffffff"
-        android:layout_alignBottom="@+id/textView5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="33dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="修復中!近期開放"
-        android:id="@+id/textView5"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="153dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
 </RelativeLayout>

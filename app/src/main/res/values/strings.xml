@@ -8,6 +8,35 @@
     <string name="RollCall_Fragment_Title_Setpeople">設定人數</string>
 
 
+    <!--Home Page CardView-->
+
+    <string name="CardView_ManualAdd_Title">手動編號加入</string>
+    <string name="CardView_AutoAdd_Title">自動編號加入</string>
+    <string name="CardView_ManualAdd_detail">您可以手動編輯自己要的</string>
+    <string name="CardView_AutoAdd_detail">您只需要過濾自己不需要的</string>
+    <string name="CardView_RollCall">點名</string>
+    <string name="CardView_Set_BLE_Device">設置藍芽裝置</string>
+    <string name="CardView_Memorandum">待辦事項</string>
+    <string name="CardView_Not_Open">即將開放</string>
+    <string name="CardView_RollCall_detail">開始點名</string>
+    <string name="CardView_Set_BLE_Device_detail">設定時間提醒遊客</string>
+    <string name="CardView_Memorandum_detail">可以設置行程提醒</string>
+    <string name="CardView_Not_Open_detail">近期即將開放</string>
+
+    <!--Home Page CardView-->
+
+
+    <array name="spinner_time">
+        <item>10秒鐘</item>
+        <item>20秒鐘</item>
+        <item>30分鐘</item>
+        <item>45分鐘</item>
+        <item>1小時</item>
+        <item>1個半小時</item>
+        <item>2小時</item>
+    </array>
+
+
     <!--左側選單  Start-->
     <string name="Home">首頁</string>
     <string name="Set_People">設定人數</string>
@@ -62,6 +91,8 @@
     <string name="RollCall__NewFile_Dialog__Title_NewFile">新增檔案</string>
     <string name="RollCall__NewFile_Dialog__Title_EditName">修改名字</string>
 
+    <string name="RollCall__NewFile_Dialog__Title_Set_Timer">設定提醒時間</string>
+
     <string name="RollCall__NewFile_Dialog__Title_Rename">重新命名</string>
 
     <string name="RollCall__NewFile_Dialog__Title_WanttoAdd">想要加入人數的清單</string>
@@ -70,6 +101,10 @@
 
 
     <string name="RollCall_local_folder">本地清單</string>
+
+    <string name="RollCall_PleaseAddListFirst">請先新增清單</string>
+
+    <string name="RollCall_HaveNoAnyList">還沒有任何清單可以選擇</string>
 
     <string name="RollCall_local_folder_ForJudgement">本地清單</string>
 
@@ -100,7 +135,77 @@
     <string name="RollCall_List_CardView_ManualAdd">手動加入</string>
     <string name="RollCall_List_CardView_AutoAdd">自動加入</string>
 
+    <string name="DuplicateName">"失敗操作！\n重複清單名稱！!</string>
 
+    <string name="Remaining_time">剩下的時間：</string>
+
+    <string name="Not_yet_open">尚未開放</string>
+
+    <string name="ListIsNull">清單是空的!!</string>
+
+    <string name="NotYetScanAnyDevice">尚未找到任何裝置!!</string>
+
+    <string name="NotYetEnteredFileName">尚未輸入檔案名稱</string>
+
+    <string name="LeaveThiePage">離開此頁面?</string>
+
+    <string name="LeaveThiePage_meassage">離開後記錄將不會保存,是否離開?</string>
+
+    <string name="LeaveThiePage_btnYes">確定離開</string>
+
+    <string name="SetDevice_btnYes">確定</string>
+
+    <string name="Cancel">取消</string>
+
+    <string name="ContinueEdit">繼續編輯</string>
+
+    <string name="NoAddAnyData">沒有加入任何資料</string>
+
+    <string name="YouNoAddAnyData">沒有加入任何資料</string>
+
+    <string name="DoNothing">什麼都不做,離開此頁面?</string>
+
+    <string name="PleaseTurnOnPermissions">你確定在此次加入中移除此項嗎?</string>
+
+    <string name="AreYouSureRemoteThisItem">你確定在此次加入中移除此項嗎?</string>
+
+    <string name="Notification_Meassage1">成功加入</string>
+
+
+
+    <string name="Extra_Add_People">額外增加人數</string>
+
+    <string name="Extra_Add_People_Title">什麼是額外增加人數?</string>
+
+    <string name="Extra_Add_People_Message">
+        當你成功加入了一筆清單的資料之後\n(不論手動還自動)\n
+        若是你發現你有任何"遺漏"或是有不小心沒加入的人員資料\n
+        可藉由額外增加人數來補充加入,\n此時系統並不會把你之前的資料覆蓋掉\n
+        會再繼續往裡面加入新的資料。\n
+        (系統預設額外加入是手動加入,\n若想使用系統預設名稱,\n則不必理會彈出來的編輯視窗\n直接加入即可)
+    </string>
+
+    <string name="Extra_Add_People_btnOk">確定並繼續</string>
+
+    <string name="Notification_Meassage2">筆資料</string>
+
+    <string name="Notification_Meassage3">已成功人數將加入到"</string>
+
+    <string name="Notification_Meassage4">"清單中</string>
+
+    <string name="BeGoingToAddList">"將加入清單！！</string>
+
+
+    <string name="AreYouSureAddToList_Message1">"確定將</string>
+    <string name="AreYouSureAddToList_Message2">"筆資料加入清單內?</string>
+    <string name="AreYouSureAddToList_Btn">"確定加入</string>
+
+
+    <string name="Note_Title">待辦事項</string>
+
+
+    <string name="NotSupportBLE">"不支援BLE</string>
     <string name="CLIENT_CHARACTERISTIC_CONFIG">00002902-0000-1000-8000-00805f9b34fb"</string>
-
+    <string name="title_activity_note__recycler_view_">Note_RecyclerView_Activity</string>
+    <string name="title_activity_roll_call__google_map">Map</string>
 </resources>

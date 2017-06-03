@@ -1,18 +1,14 @@
 package com.example.administrator.rollcall_10.ble_device_setting;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -23,48 +19,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.example.administrator.rollcall_10.R;
+
 import com.example.administrator.rollcall_10.main.MainActivity;
+import com.example.administrator.rollcall_10.notifications.AlarmClock_Notification;
+import com.example.administrator.rollcall_10.rollcall_dialog.RollCall_Dialog;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import dmax.dialog.SpotsDialog;
+
 public class setBLEDevice_connect extends AppCompatActivity {
+    private static final int REQUEST_ENABLE_BT=1;
+    private static final int SCAN_TIME=120000;
 
-    static String cmd_3000="$3000#";
-    static String stop="$stop#";
+    public  static final String CHOOSE_SECOND="choose_second";
+    public  static final String DEVICE_ARRAYLIST="Device_ArrayList";
+    public  static final String SELECTED_FILE_NAME="Selected_File_Name";
+    public  static final String CHOOSE_TIME="Choose_Time";
 
-    private String senddata;
-
-
-    private BluetoothGatt bluetoothGatt;
-
-    private BluetoothGattCharacteristic characteristic;
-    private  BluetoothGattService service;
-
-    private List<BluetoothGattCharacteristic> listGattCharacteristic;
-    private List<BluetoothGattService> supportedGattServices;
-
-
-    private BluetoothDevice device;
 
 
     private Menu mymenu;
@@ -73,73 +59,61 @@ public class setBLEDevice_connect extends AppCompatActivity {
 
     private CountDownTimer mCountDown;
 
-
-    //*scan
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
-    private static final int REQUEST_ENABLE_BT=1;
-    private static final int SCAN_TIME=10000;
     private ArrayList<BluetoothDevice> Device_ArrayList=new ArrayList<>();
     private Handler handler;
     private Boolean scanning;
     private ListAdapter listAdapter;
     private ArrayList<String> deviceName;
-    private String path;
+    private String Seletor_File_path;
 
-    //**傳進來的清單,要放的ArrayList
-    ArrayList<String> ReadyScanList =new ArrayList<>();
+    private String choose_second;
 
-    //**有KEY有值得HashMap 拿來判斷
+    private String Selected_File_Name;
+    private String Choose_Time;
+    private BLE_CallBack[] ble_callBack;
+
     private HashMap<String,String> MainHashMapList=new HashMap<>();
 
-    ArrayList<String> RollCall_successful_key =new ArrayList<>();
+    private ArrayList<String> ScanList_Key =new ArrayList<>();
 
-    //**拿來保存要給MainHashMapList的暫時ArrayList
-    ArrayList<String> ScanList_Key =new ArrayList<>();
-    ArrayList<String> ScanList_Name =new ArrayList<>();
-    //**拿來保存要給MainHashMapList的暫時ArrayList
+    private void LoadingTxtData()
+    {
 
-
-
-
-    private void LoadingTxtData(){
-
-        Bundle bundle = getIntent().getExtras();
-        String Seletor_File = bundle.getString("Selected_File_Path");
+        Bundle bundle = this.getIntent().getExtras();
+        Seletor_File_path =  bundle.getString(Set_BLE_Device.SELECTED_FILE_PATH);
+        choose_second=bundle.getString(Set_BLE_Device.CHOOSE_SECOND);
+        Selected_File_Name=bundle.getString(Set_BLE_Device.SELECTED_FILE_NAME);
+        Choose_Time=bundle.getString(Set_BLE_Device.CHOOSE_TIME_SPINNER_ITEM);
 
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
-        try {
-            fileReader = new FileReader(Seletor_File);
-            bufferedReader= new BufferedReader(fileReader);
 
+        try {
+
+            fileReader = new FileReader(Seletor_File_path);
+
+            bufferedReader= new BufferedReader(fileReader);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-
 
         try {
             while(bufferedReader.ready()){
 
                 String data_split=bufferedReader.readLine();
 
+
                 Log.e("readLine","readLine的data"+data_split);
 
                 String[] array_data_split=data_split.split(",");
 
                 ScanList_Key.add(array_data_split[1]);
-                ScanList_Name.add(array_data_split[0]);
 
-                MainHashMapList.put(array_data_split[0],array_data_split[1]);
 
-            }
-
-            for(int i=0;i<MainHashMapList.size();i++){
-                Log.e("0508",""+MainHashMapList);
+                MainHashMapList.put(array_data_split[1],array_data_split[0]);
             }
 
         } catch (IOException e) {
@@ -147,62 +121,6 @@ public class setBLEDevice_connect extends AppCompatActivity {
         }
 
 
-
-
-//        do {
-//
-//
-//            try {
-//                ListWith_Address = bufferedReader.readLine();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//
-//            //**防止空值
-//            if(ListWith_Address!= null) {
-//                //**把要掃描的清單內的資料取出來
-//                ReadyScanList.add(ListWith_Address);
-//
-//                Log.e("-++++++++++///","::::::::::::::"+ListWith_Address);
-//
-//            }
-//
-//        } while (ListWith_Address != null);
-
-//        for(int i=0;i<ReadyScanList.size();i+=2) {
-//
-//            Log.e("ScanList_Name的for",ReadyScanList.get(i));
-//            ScanList_Name.add(ReadyScanList.get(i));
-//        }
-//
-//
-//        for(int i=1;i<ReadyScanList.size();i+=2) {
-//
-//            Log.e("ScanList_Key的for",ReadyScanList.get(i));
-//            ScanList_Key.add(ReadyScanList.get(i));
-//        }
-//
-//
-//
-//        for(int i=0;i<ScanList_Key.size();i++) {
-//
-//            MainHashMapList.put(ScanList_Key.get(i),ScanList_Name.get(i));
-//
-//        }
-
-
-
-
-//        for(int i=0;i<ReadyScanList.size()/2;i++) {
-//
-//            Log.e("shawn2017-02-22","清單內容----:"+ReadyScanList.toString());
-//            Log.e("shawn2017-02-22","清單長度:"+ReadyScanList.size());
-//
-//            Log.e("shawn2017-02-22", "第"+i+"個的字為:" + ReadyScanList.get(i));
-//
-//        }
 
     }
 
@@ -222,7 +140,7 @@ public class setBLEDevice_connect extends AppCompatActivity {
 
         if(bluetoothAdapter==null)
         {
-            Toast.makeText(getBaseContext(),"不支援BLE",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),getResources().getString(R.string.NotSupportBLE),Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -233,258 +151,87 @@ public class setBLEDevice_connect extends AppCompatActivity {
     @Override
     public Intent getSupportParentActivityIntent() {
         finish();
-        bluetoothGatt.close();
         return null;
-    }
-
-
-   private void Shawn_Test_Log_List(String path){
-        String ListWith_Address = null;
-
-        FileReader fr = null;
-
-        try {
-            fr = new FileReader(path);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        BufferedReader br = new BufferedReader(fr);
-
-
-        do {
-            try {
-                ListWith_Address = br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-
-            //**防止空值
-            if(ListWith_Address!= null) {
-                //**把要掃描的清單內的資料取出來
-                ReadyScanList.add(ListWith_Address);
-
-                Log.e("-++++++++++///","::::::::::::::"+ListWith_Address);
-
-            }
-
-        } while (ListWith_Address != null);
-
-
-
-
-        for(int i=0;i<ReadyScanList.size();i+=2) {
-
-            Log.e("ScanList_Name的for",ReadyScanList.get(i));
-            ScanList_Name.add(ReadyScanList.get(i));
-        }
-
-
-        for(int i=1;i<ReadyScanList.size();i+=2) {
-
-            Log.e("ScanList_Key的for",ReadyScanList.get(i));
-            ScanList_Key.add(ReadyScanList.get(i));
-        }
-
-
-
-        for(int i=0;i<ScanList_Key.size();i++) {
-
-            MainHashMapList.put(ScanList_Key.get(i),ScanList_Name.get(i));
-
-        }
-
-
-
-
-//        for(int i=0;i<ReadyScanList.size()/2;i++) {
-//
-//            Log.e("shawn2017-02-22","清單內容----:"+ReadyScanList.toString());
-//            Log.e("shawn2017-02-22","清單長度:"+ReadyScanList.size());
-//
-//            Log.e("shawn2017-02-22", "第"+i+"個的字為:" + ReadyScanList.get(i));
-//
-//        }
-
-
-        Log.e("shawn2017-02-22","MainHashMapList內容----:"+MainHashMapList);
-
     }
 
 
     private void init_UI(){
 
-        Bundle bundle = this.getIntent().getExtras();
-        path =  bundle.getString("Selected_File_Path");
-        int int_senddata=bundle.getInt("Choose_second");
-
-        //把要傳的資料轉成String
-        senddata=""+int_senddata;
-
-
-
-        Shawn_Test_Log_List(path);
         deviceName=new ArrayList<String>();
         ListView listView = (ListView) findViewById(R.id.SetDevice_listview);
         listAdapter=new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_expandable_list_item_1,deviceName);//ListView使用的Adapter，
         listView.setAdapter(listAdapter);//將listView綁上Adapter
 
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-               device = Device_ArrayList.get(position);
-
-                bluetoothGatt = device.connectGatt(setBLEDevice_connect.this, false, mGattCallback);
-
-
-            }
-        });
-
-
         Button btn_connect=(Button)findViewById(R.id.connect);
+        btn_connect.setText(getResources().getString(R.string.RollCall_List_Delete_Button_yes));
         btn_connect.setOnClickListener(new Btn_Connect());
     }
 
-
-    private class Btn_Connect implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-//
-           write_Into();
-
-
-//                device = Device_ArrayList.get(0);
-//                bluetoothGatt = device.connectGatt(setBLEDevice_connect.this, false, mGattCallback);
-
-
-
-
-        }
-    }
-
-
-
-
-    private void write_Into(){
-
-        service = bluetoothGatt.getService(UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e"));
-
-        characteristic = service.getCharacteristic(UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e"));
-
-
-        try {
-            characteristic.setValue(cmd_3000.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-        bluetoothGatt.writeCharacteristic(characteristic);
-
-        Log.e("測試測試測試測試測試測試測試","write_Into_into:");
-        enableTXNotification();
-
-    }
-
-
-
-    private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            super.onConnectionStateChange(gatt, status, newState);
-
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-                //連接成功後啟動服務發現
-
-
-                Log.e("onConnectionStateChange", "啟動服務發現:");
-
-
-                    bluetoothGatt.discoverServices();
-
-            }
-        }
-
-
-
-        @Override
-        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicWrite(gatt, characteristic, status);
-            if (status == BluetoothGatt.GATT_SUCCESS)
-            {
-                Log.e("20170424", "寫入成功" +characteristic);
-                Log.e("20170424", "onCharacteristicWrite:就是"+ new String(characteristic.getValue()));
-
-
-            }
-
-
-        }
-
-
-
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            super.onServicesDiscovered(gatt, status);
-
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-
-                supportedGattServices =bluetoothGatt.getServices();
-
-                for(int i=0;i<supportedGattServices.size();i++){
-
-                    Log.e("20170424","Service 的 UUID : BluetoothGattService UUID=:"+supportedGattServices.get(i).getUuid());
-                    listGattCharacteristic=supportedGattServices.get(i).getCharacteristics();
-
-                    for(int j=0;j<listGattCharacteristic.size();j++)
-                    {
-                        Log.e("20170424","Characteristic 的 UUID : BluetoothGattCharacteristic UUID=:"+listGattCharacteristic.get(j).getUuid());
-                    }
-
-                }
-
-                write_Into();
-                enableTXNotification();
-            }
-        }
-    };
-
-
-    public void enableTXNotification()
+    private class Btn_Connect implements View.OnClickListener
     {
 
-        BluetoothGattService RxService = bluetoothGatt.getService(UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e"));
-        if (RxService == null) {
-            Log.e("FuckyouBLE","UART service not found!");
+        @Override
+        public void onClick(View view)
+        {
+            if(Device_ArrayList.size() != 0)
+            {
+                onPause();
 
-            return;
+                RollCall_Dialog.Builder rd=new RollCall_Dialog.Builder(setBLEDevice_connect.this);
+                        rd.setTitle("設定時間到裝置裡").
+                        setMessage("確定設定這 " +Device_ArrayList.size() + " 個裝置嗎?").
+                        setPositiveButton(getResources().getString(R.string.SetDevice_btnYes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NotificationService();
+
+                            }
+                        }).
+                        setNegativeButton(getResources().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                onResume();
+                            }
+                        });
+
+                rd.show();
+
+            }else
+            {
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.NotYetScanAnyDevice),Toast.LENGTH_SHORT).show();
+            }
+
         }
-        BluetoothGattCharacteristic TxChar = RxService.getCharacteristic(UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e"));
-        if (TxChar == null) {
-            Log.e("FuckyouBLE","Tx charateristic not found!");
-            return;
-        }
-        bluetoothGatt.setCharacteristicNotification(TxChar, true);
-
-        BluetoothGattDescriptor descriptor = TxChar.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
-        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-        bluetoothGatt.writeDescriptor(descriptor);
-
     }
 
+    private void NotificationService()
+    {
 
+        final SpotsDialog spotsDialog= new SpotsDialog(setBLEDevice_connect.this,R.style.connect_loding);
+            spotsDialog.show();
 
+        Intent intent=new Intent(setBLEDevice_connect.this, AlarmClock_Notification.class);
 
+        Bundle bundle=new Bundle();
 
+        bundle.putString(CHOOSE_SECOND ,choose_second);
+        bundle.putSerializable(DEVICE_ARRAYLIST,Device_ArrayList);
+        bundle.putString(SELECTED_FILE_NAME,Selected_File_Name);
+        bundle.putString(CHOOSE_TIME,Choose_Time);
+        intent.putExtras(bundle);
 
+        startService(intent);
 
-
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                spotsDialog.dismiss();
+            }
+        }, 4000);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -494,6 +241,8 @@ public class setBLEDevice_connect extends AppCompatActivity {
         setContentView(R.layout.activity_set_bledevice_connect);
 
         CheckBluetooth_support();
+
+        LoadingTxtData();
 
         //****Scan返回鍵監聽事件
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -534,11 +283,21 @@ public class setBLEDevice_connect extends AppCompatActivity {
 
     public void StopScan(){
         scanning=false;
-        bluetoothGatt.close();
+        if(ble_callBack != null) {
+            for (int i = 0; i < ble_callBack.length; i++) {
+                ble_callBack[i].bluetoothGatt.close();
+            }
+        }
         bluetoothAdapter.stopLeScan(LeScanCallback);
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        scanning=false;
+        bluetoothAdapter.stopLeScan(LeScanCallback);
+    }
 
     private BluetoothAdapter.LeScanCallback LeScanCallback=new BluetoothAdapter.LeScanCallback(){
 
@@ -558,18 +317,19 @@ public class setBLEDevice_connect extends AppCompatActivity {
                         if(bluetoothDevice.getName()!=null)
                         {
 
-//                        if (ReadyScanList.contains(bluetoothDevice.getAddress())) {
+                            if (ScanList_Key.contains(bluetoothDevice.getAddress()))
+                            {
 
                             Device_ArrayList.add(bluetoothDevice);         //如沒重複則添加到bluetoothdevices中
 
-                            deviceName.add(bluetoothDevice.getName() + "\r\n" + bluetoothDevice.getAddress()); //將device的Name、rssi、address裝到此ArrayList<Strin>中
+                            deviceName.add(MainHashMapList.get(bluetoothDevice.getAddress()) + "\r\n" + bluetoothDevice.getAddress()); //將device的Name、rssi、address裝到此ArrayList<String>中
 
                             ((BaseAdapter) listAdapter).notifyDataSetChanged();//使用notifyDataSetChanger()更新listAdapter的內容
 
 
+                            }
                         }
                     }
-
                 }
             });
 
@@ -587,6 +347,7 @@ public class setBLEDevice_connect extends AppCompatActivity {
             startActivityForResult(intent,REQUEST_ENABLE_BT); //再利用startActivityForResult啟動該Intent
         }
         ScanDevice(true); //使用ScanFunction(true) 開啟BLE搜尋功能，該Function在下面部分
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -598,22 +359,13 @@ public class setBLEDevice_connect extends AppCompatActivity {
     }
 
 
-    protected void onPause() {
-        super.onPause();
-
-        bluetoothAdapter.stopLeScan(LeScanCallback);
-    }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.scan_set, menu);
-        mymenu = menu;
 
+        mymenu = menu;
         countdown= mymenu.findItem(R.id.conutdown);
         scan = mymenu.findItem(R.id.action_scan).setIcon(R.drawable.stopscanbtn);
         countdown();
@@ -625,14 +377,16 @@ public class setBLEDevice_connect extends AppCompatActivity {
 
     public void countdown()
     {
-        mCountDown = new CountDownTimer(SCAN_TIME, 1000) {
+        mCountDown = new CountDownTimer(SCAN_TIME, 1000)
+        {
+            long millis;
 
-            public void onTick(long millisUntilFinished) {
-                long millis = millisUntilFinished;
+            public void onTick(long millisUntilFinished)
+            {
+                millis = millisUntilFinished;
 
 
-
-                countdown_time = "剩下時間："+
+                countdown_time = getResources().getString(R.string.Remaining_time)+
                         (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))+":"+
                         (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
@@ -653,12 +407,12 @@ public class setBLEDevice_connect extends AppCompatActivity {
                 Log.e("1","倒數結束");
 
             }
+
         }.start();
 
     }
 
 
-    //**Toolbar元鍵控制
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -680,5 +434,5 @@ public class setBLEDevice_connect extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    //**Toolbar元鍵控制
+
 }
