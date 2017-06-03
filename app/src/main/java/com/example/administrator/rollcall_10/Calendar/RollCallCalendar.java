@@ -27,6 +27,8 @@ public class RollCallCalendar extends AppCompatActivity implements com.andexert.
 
         dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
         dayPickerView.setController(this);
+
+
     }
 
     @Override
