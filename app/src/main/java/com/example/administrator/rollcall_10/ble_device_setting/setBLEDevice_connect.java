@@ -113,6 +113,8 @@ public class setBLEDevice_connect extends AppCompatActivity {
                 ScanList_Key.add(array_data_split[1]);
 
 
+                
+
                 MainHashMapList.put(array_data_split[1],array_data_split[0]);
             }
 
